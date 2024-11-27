@@ -17,7 +17,7 @@ app.use("/places", placesRouter);
 
 
 //--------------------------------------------------------------
-//TODO Faire les routes
+//TODO Faire les routes = ajoutergetbyid en +
 //TODO Faire les schémas
 //TODO Faire les services
 //TODO valider les données avant de les envoyer à Firestore avec zod
