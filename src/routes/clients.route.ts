@@ -6,7 +6,7 @@ import { ClientsService } from "../services/clients.service";
 const router = Router();
 
 //GET
-router.get("/list", async (req, res) => {
+router.get("/list", async (_req, res) => {
   const clients = await ClientsService.getAllClients();
   res.json(clients);
 });

@@ -10,6 +10,7 @@ export interface Client {
 
 //   Définition de la classe ClientsService qui gère les opérations sur clients
   export class ClientsService {
+     // Récupérer toutes les clients
     static async getAllClients() {
       try {
         const snapshot = await db.collection("clients").get();
@@ -19,7 +20,7 @@ export interface Client {
         throw error;
       }
     }
-  
+   // Ajouter un nouveau client
     static async addClient(clientData: any) {
       try {
         await db.collection("clients").add(clientData);
@@ -28,7 +29,7 @@ export interface Client {
         throw error;
       }
     }
-  
+  // Mettre à jour un client existant
     static async updateClient(id: string, updateData: any) {
       try {
         await db.collection("clients").doc(id).update(updateData);
@@ -37,7 +38,7 @@ export interface Client {
         throw error;
       }
     }
-  
+   // Supprimer un client
     static async deleteClient(id: string) {
       try {
         await db.collection("clients").doc(id).delete();

@@ -2,6 +2,7 @@
 
 import express from "express";
 import clientsRouter from "./routes/clients.route";
+import placesRouter from "./routes/places.routes";
 
 
 const app = express();
@@ -9,13 +10,13 @@ app.use(express.json());
 
 // Routes
 app.use("/clients", clientsRouter);
+app.use("/places", placesRouter); 
 
 
 
 
 
 //--------------------------------------------------------------
-//TODO Route de test pour la connexion à Firestore
 //TODO Faire les routes
 //TODO Faire les schémas
 //TODO Faire les services
