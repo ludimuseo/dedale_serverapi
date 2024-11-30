@@ -10,6 +10,7 @@ router.get("/list", async (_req, res) => {
   const places = await PlacesService.getAllPlaces();
   res.json(places);
 });
+// TODO Route pour récupérer un lieu spécifique par ID
 
 // POST
 router.post("/create", async (req, res) => {
