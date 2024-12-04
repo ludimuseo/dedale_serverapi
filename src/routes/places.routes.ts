@@ -36,8 +36,8 @@ router.post("/create", async (req, res) => {
   res.status(201).send("Place added");
 });
 
-// PUT ou PATCH ?
-router.put("/update/:id", async (req, res) => {
+// PATCH 
+router.patch("/update/:id", async (req, res) => {
   await PlacesService.updatePlace(req.params.id, req.body);
   res.status(200).send("Place updated");
 });
