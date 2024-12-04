@@ -34,8 +34,8 @@ router.post("/create", async (req, res) => {
   res.status(201).send("Client added");
 });
 
-//PUT 
-router.put("/update/:id", async (req, res) => {
+//PATCH 
+router.patch("/update/:id", async (req, res) => {
   await ClientsService.updateClient(req.params.id, req.body);
   res.status(200).send("Client updated");
 });
