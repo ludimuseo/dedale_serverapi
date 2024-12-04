@@ -3,6 +3,7 @@
 import express from "express";
 import clientsRouter from "./routes/clients.route";
 import placesRouter from "./routes/places.routes";
+import gamesRouter from "./routes/games.routes";
 
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 // Routes
 app.use("/clients", clientsRouter);
 app.use("/places", placesRouter); 
+app.use("/games", gamesRouter);
 
 
 
