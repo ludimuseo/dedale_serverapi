@@ -10,7 +10,25 @@ router.get("/list", async (_req, res) => {
   const places = await PlacesService.getAllPlaces();
   res.json(places);
 });
-// TODO Route pour récupérer un lieu spécifique par ID
+
+// GET place by ID
+router.get("/find/:id", async (req, res) => {
+  try {
+    const place = await PlacesService.getPlaceById(req.params.id);
+    if (!place) {
+      return res.status(404).json({ error: "Lieu introuvable" });
+    }
+    res.json(place);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Erreur serveur" });
+    }
+  }
+});
+
+
 
 // POST
 router.post("/create", async (req, res) => {

@@ -15,6 +15,27 @@ export class PlacesService {
       throw error;
     }
   }
+
+// Récupérer un lieu par son ID
+static async getPlaceById(id: string): Promise<Place | null> {
+  try {
+    const doc = await db.collection("places").doc(id).get();
+    if (!doc.exists) {
+      throw new Error("Lieu introuvable");
+    }
+    const data = doc.data();
+    if (!data) {
+      throw new Error("Données du lieu introuvables");
+    }
+
+    // Retourne directement les données qui correspondent au modèle Places dans Firestore
+    return data as Place;
+  } catch (error) {
+    console.error("Erreur lors de la récupération du lieu:", error);
+    throw error;
+  }
+}
+
   // Ajouter un nouveau lieu
   static async addPlace(placeData: Place) {
     try {
