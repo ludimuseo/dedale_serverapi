@@ -38,8 +38,13 @@ router.post("/create", async (req, res) => {
 
 // PATCH 
 router.patch("/update/:id", async (req, res) => {
-  await PlacesService.updatePlace(req.params.id, req.body);
-  res.status(200).send("Place updated");
+  try {
+    await PlacesService.updatePlace(req.params.id, req.body);
+    res.status(200).send("Place updated");
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour:", error);
+    res.status(500).json({ error: "Erreur interne du serveur" });
+  }
 });
 
 // DELETE
