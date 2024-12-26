@@ -45,15 +45,25 @@ static async getPlaceById(id: string): Promise<Place | null> {
       throw error;
     }
   }
+  
   // Mettre à jour un lieu existant
   static async updatePlace(id: string, updateData: Partial<Place>) {
     try {
+      // Vérifie que des données ont été envoyées pour la mise à jour
+      if (Object.keys(updateData).length === 0) {
+        throw new Error("Aucune donnée à mettre à jour");
+      }
+  
+      // Effectuer la mise à jour partielle
       await db.collection("places").doc(id).update(updateData);
+  
+      console.log(`Place ${id} mise à jour avec succès`);
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du lieu:", error);
+      console.error("Erreur lors de la mise à jour du lieu :");
       throw error;
     }
   }
+  
   // Supprimer un lieu
   static async deletePlace(id: string) {
     try {

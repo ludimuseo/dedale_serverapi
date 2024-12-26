@@ -1,72 +1,98 @@
 // games.scheme.ts
 
-export interface StandardTranslation {
-    fr: string;
+export interface GameScheme {
+  image: string;
+  level: string;
+  name: {
+    de: string;
     en: string;
     es: string;
-    de: string;
+    fr: string;
     it: string;
-  }
-  
-  export interface FalcTranslation extends StandardTranslation {
-    isValidate: boolean; // Indique si le FALC est validé.
-  }
-  
-  export interface Question {
-    standard: StandardTranslation;
-    falc: FalcTranslation;
-  }
-  
-  export interface Audio {
-    standard: StandardTranslation;
-    falc: StandardTranslation;
-  }
-  
-  export interface Response {
+  };
+  pieceID: string;
+  question: {
+    audio?: string; // Optionnel
+    falc: {
+      de: string;
+      en: string;
+      es: string;
+      fr: string;
+      it: string;
+    };
+    standard: {
+      de: string;
+      en: string;
+      es: string;
+      fr: string;
+      it: string;
+    };
+  };
+  response: {
+    explanation: {
+      falc: {
+        de: string;
+        en: string;
+        es: string;
+        fr: string;
+        it: string;
+      };
+      standard: {
+        de: string;
+        en: string;
+        es: string;
+        fr: string;
+        it: string;
+      };
+    };
     responseTrue: {
-      standard: StandardTranslation;
-      falc: FalcTranslation;
+      falc: {
+        de: string;
+        en: string;
+        es: string;
+        fr: string;
+        it: string;
+      };
+      standard: {
+        de: string;
+        en: string;
+        es: string;
+        fr: string;
+        it: string;
+      };
     };
-    response1: {
-      standard: StandardTranslation;
-      falc: FalcTranslation;
+    response_1: {
+      falc: {
+        de: string;
+        en: string;
+        es: string;
+        fr: string;
+        it: string;
+      };
+      standard: {
+        de: string;
+        en: string;
+        es: string;
+        fr: string;
+        it: string;
+      };
     };
-    response2: {
-      standard: StandardTranslation;
-      falc: FalcTranslation;
+    response_2: {
+      falc: {
+        de: string;
+        en: string;
+        es: string;
+        fr: string;
+        it: string;
+      };
+      standard: {
+        de: string;
+        en: string;
+        es: string;
+        fr: string;
+        it: string;
+      };
     };
-  }
-  
-  export interface Explanation {
-    responseTrue: {
-      standard: StandardTranslation;
-      falc: FalcTranslation;
-    };
-    response1: {
-      standard: StandardTranslation;
-      falc: FalcTranslation;
-    };
-    response2: {
-      standard: StandardTranslation;
-      falc: FalcTranslation;
-    };
-  }
-  
-  export interface Status {
-    isActive: boolean;
-    isPublished: boolean;
-  }
-  
-  export interface Game {
-    pieceId: string;
-    name: StandardTranslation;
-    type: string; // e.g., 'quiz'
-    level: string;
-    image: string;
-    question: Question;
-    audio: Audio;
-    response: Response;
-    explanation: Explanation;
-    status: Status;
-  }
-  
+  };
+  type: string; // Exemple : "quizz"
+}

@@ -44,6 +44,7 @@ router.patch("/update/:id", async (req, res) => {
       await GamesService.updateGame(req.params.id, req.body);
       res.status(200).send("Jeu mis à jour");
     } catch (error) {
+      console.error("Erreur lors de la mise à jour:", error);
       res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
     }
   });
