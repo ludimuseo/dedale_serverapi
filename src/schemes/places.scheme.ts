@@ -1,10 +1,16 @@
 //places.scheme.ts
 
+export interface Content {
+  image?: string;
+  type:string;
+
+};
+
 export interface Address {
     address: string;
-    country: string;
+    city: string;
     postal: string;  
-    town: string;
+    country: string;
 };
 
 export interface Language{
@@ -16,32 +22,34 @@ export interface Language{
 };
 
 export interface Audio {
-  falc: Language;
   standard: Language;
+  falc: Language;
 };
 
 export interface Coords {
   lat: number;
   lon: number;
+  isLocationRequired: boolean;
 };
 
 export interface Description {
-  falc: Language;
   standard: Language;
+  falc: Language;
 };
 
 export interface PlaceScheme { 
-  address: Address;
-  audio: Audio;
-  available: boolean;
   clientID: string;
+  medals: string;
+  content: Content;
+  name:Language;
+  status: {
+    isActive: boolean; 
+    isPublished : boolean;
+  };
+  address: Address;
   coords: Coords;
   description: Description;
-  image?: string;
-  // (type à préciser)
-  medals: any[]; 
-  name:Language;
-  type:string;
+  audio: Audio;
   };
 
 
