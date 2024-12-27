@@ -35,7 +35,7 @@ placeId:string ;
 medal: string;
 image: string;
 duration: number;
-locationRequired : boolean;
+locationRequired: boolean;
 name: Language;
 address: Address;
 coords: Coords ;
