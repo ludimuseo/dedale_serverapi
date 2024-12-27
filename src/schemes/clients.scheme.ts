@@ -1,26 +1,26 @@
-//client.scheme.ts
+//clients.schmes.ts
 
 export interface ClientScheme {
-    company: {
-      name: string;
-      siret: string;
-      tva: string;
-      website: string;
-    };
-    address: {
-      address: string;
-      postal: number;
-      city: string;
-      country: string;
-    };
-    contact: {
-      name: string;
-      email: string;
-      tel: number;
-      note: string;
-    };
-    status: {
-      isActive: boolean;  ///superAdmin => suppression/désactivation du client.
-    };
-  }
-  
+  id?: string; 
+  company: {
+    name: string;
+    siret: string;
+    tva: string;
+    website?: string;  // Si "website" est optionnel, on le rend facultatif
+  };
+  address: {
+    address: string;
+    postal: string;  // Changer en string pour les codes postaux, si nécessaire
+    city: string;
+    country: string;
+  };
+  contact: {
+    name: string;
+    email: string;
+    tel: string;  // Changer en string pour gérer les numéros de téléphone
+    note?: string;  // Rendre "note" optionnel si nécessaire
+  };
+  status: {
+    isActive: boolean;  // Représente si le client est actif ou non
+  };
+}
