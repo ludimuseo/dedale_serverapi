@@ -19,7 +19,7 @@ app.use("/games", gamesRouter);
 
 
 //--------------------------------------------------------------
-//TODO Faire les routes = ajoutergetbyid en +
+//TODO Faire les routes
 //TODO Faire les schémas
 //TODO Faire les services
 //TODO valider les données avant de les envoyer à Firestore avec zod

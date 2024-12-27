@@ -19,7 +19,6 @@ export interface Reponse{
 };
 
 export interface GameScheme {
-  id?: string
   audio: Audio;
   explanation: {
     reponse_1:Reponse;
@@ -36,9 +35,11 @@ export interface GameScheme {
     reponse_1:Reponse;
     reponse_2:Reponse;
   };
-  type:string;
+  status: {
+    isActive: boolean; 
+    isPublished : boolean;
   };
-
-  
+  type:string;
+}
  
 

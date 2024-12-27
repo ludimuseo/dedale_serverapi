@@ -1,7 +1,6 @@
-//clients.schmes.ts
+//clients.schemes.ts
 
 export interface ClientScheme {
-  id?: string; 
   company: {
     name: string;
     siret: string;

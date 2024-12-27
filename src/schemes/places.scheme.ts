@@ -30,8 +30,7 @@ export interface Description {
   standard: Language;
 };
 
-export interface PlaceScheme {
-  id?: string; 
+export interface PlaceScheme { 
   address: Address;
   audio: Audio;
   available: boolean;

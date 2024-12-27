@@ -3,7 +3,6 @@
 import { db } from "../config/firebase.config";
 import { PlaceScheme } from "../schemes/places.scheme";
 
-//   Définition de la classe PlacesService qui gère les opérations sur places
 export class PlacesService {
   // Récupérer toutes les lieux
   static async getAllPlaces(): Promise<(PlaceScheme & { id: string })[]> {
@@ -18,6 +17,7 @@ export class PlacesService {
            throw error;
          }
        }
+
 // Récupérer un lieu par son ID
 static async getPlaceById(id: string): Promise<(PlaceScheme & { id: string }) | null> {
   try {
@@ -31,8 +31,8 @@ static async getPlaceById(id: string): Promise<(PlaceScheme & { id: string }) | 
           console.error(`Erreur lors de la récupération du lieu avec l'ID ${id}:`, error);
           throw error;
         }
-}
-
+      }
+      
   // Ajouter un nouveau lieu
   static async addPlace(placeData: PlaceScheme): Promise<{ id: string }> { // On retourne l'ID du lieu
     try {
