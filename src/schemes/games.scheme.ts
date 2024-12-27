@@ -9,28 +9,41 @@ export interface Language{
 };
 
 export interface Audio {
-  falc: Language;
   standard: Language;
+  falc: Language;
 };
 
 export interface Reponse{
-  falc: Language;
   standard: Language;
+  falc: {
+    isValidate: boolean;
+    langage: Language;
+  };
 };
 
+export interface Question{
+  standard: Language;
+  falc: {
+    isValidate: boolean;
+    langage: Language;
+  };
+};
+
+
 export interface GameScheme {
+  pieceID: string;
+  type:string;
+  level: string;
+  image?: string;
+  name:Language;
+  question:Question;
   audio: Audio;
-  explanation: {
+  reponse: {
+    reponse_true:Reponse;
     reponse_1:Reponse;
     reponse_2:Reponse;
-    reponse_true:Reponse;
   };
-  image?: string;
-  level: string;
-  name:Language;
-  pieceID: string;
-  question:Reponse;
-  reponse: {
+  explanation: {
     reponse_true:Reponse;
     reponse_1:Reponse;
     reponse_2:Reponse;
@@ -39,7 +52,6 @@ export interface GameScheme {
     isActive: boolean; 
     isPublished : boolean;
   };
-  type:string;
-}
+};
  
 
