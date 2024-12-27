@@ -1,62 +1,71 @@
-// games.routes.ts
-
 import { Router } from "express";
 import { GamesService } from "../services/games.service";
+import { GameScheme } from "../schemes/games.scheme"; 
 
 const router = Router();
 
-// GET: Liste de tous les jeux
+// GET - Récupérer la liste des jeux
 router.get("/list", async (_req, res) => {
   try {
     const games = await GamesService.getAllGames();
-    res.json(games);
+    res.status(200).json(games);
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
+    console.error("Erreur lors de la récupération des jeux:", error);
+    res.status(500).json({ message: "Erreur interne du serveur" });
   }
 });
 
-// GET: Jeu par ID
+// GET - Récupérer un jeu par son ID
 router.get("/find/:id", async (req, res) => {
   try {
-    const game = await GamesService.getGameById(req.params.id);
+    const { id } = req.params;
+    const game = await GamesService.getGameById(id);
     if (!game) {
-      return res.status(404).json({ error: "Jeu introuvable" });
+      return res.status(404).json({ message: `Jeu avec l'ID ${id} introuvable.` });
     }
-    res.json(game);
+    res.status(200).json(game);
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
+    console.error("Erreur lors de la récupération du jeu par ID:", error);
+    res.status(500).json({ message: "Erreur interne du serveur" });
   }
 });
 
-// POST: Ajouter un nouveau jeu
+// POST - Créer un nouveau jeu
 router.post("/create", async (req, res) => {
   try {
-    await GamesService.addGame(req.body);
-    res.status(201).send("Jeu ajouté");
+    const gameData: GameScheme = req.body;
+    const newGame = await GamesService.addGame(gameData);
+    res.status(201).json({ message: "Jeu ajouté avec succès", gameId: newGame.id });
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
+    console.error("Erreur lors de l'ajout du jeu:", error);
+    res.status(500).json({ message: "Erreur interne lors de l'ajout du jeu" });
   }
 });
 
-// PATCH: Mettre à jour un jeu partiellement
+// PATCH - Mettre à jour un jeu existant
 router.patch("/update/:id", async (req, res) => {
-    try {
-      await GamesService.updateGame(req.params.id, req.body);
-      res.status(200).send("Jeu mis à jour");
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour:", error);
-      res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
-    }
-  });
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+    await GamesService.updateGame(id, updateData);
+    res.status(200).json({ message: `Jeu ${id} mis à jour avec succès.` });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du jeu:", error);
+    res.status(500).json({ message: "Erreur interne lors de la mise à jour du jeu" });
+  }
+});
 
-// DELETE: Supprimer un jeu
+// DELETE - Supprimer un jeu
 router.delete("/delete/:id", async (req, res) => {
   try {
-    await GamesService.deleteGame(req.params.id);
-    res.status(200).send("Jeu supprimé");
+    const { id } = req.params;
+    await GamesService.deleteGame(id);
+    res.status(200).json({ message: `Jeu ${id} supprimé avec succès.` });
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
+    console.error("Erreur lors de la suppression du jeu:", error);
+    res.status(500).json({ message: "Erreur interne lors de la suppression du jeu" });
   }
 });
 
 export default router;
+

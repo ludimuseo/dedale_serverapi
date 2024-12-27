@@ -1,52 +1,53 @@
 //places.scheme.ts
 
-export type PlaceType = 'museum' | 'monument' | 'town-village' | 'outdoor' | 'castle';
-
 export interface Address {
-  address: string;
-  postal: string;
-  city: string;
-  country: string;
-  lat: number;
-  lon: number;
-}
+    address: string;
+    country: string;
+    postal: string;  
+    town: string;
+};
 
-export interface StandardDescription {
-  fr: string;
+export interface Language{
+  de: string;
   en: string;
   es: string;
-  de: string;
+  fr: string;
   it: string;
-}
-
-export interface FalcDescription extends StandardDescription {
-  isValidate: boolean; // FALC validé ou non
-}
-
-export interface Description {
-  standard: StandardDescription;
-  falc: FalcDescription;
-}
+};
 
 export interface Audio {
-  standard: StandardDescription;
-  falc: StandardDescription;
-}
+  falc: Language;
+  standard: Language;
+};
 
-export interface PlaceStatus {
-  isActive: boolean;
-  isPublished: boolean;
-}
+export interface Coords {
+  lat: number;
+  lon: number;
+};
 
-export interface Place {
-  clientId: string;
-  name: StandardDescription;
-  medal: string;
-  type: PlaceType;
-  image: string;
-  locationRequired: boolean;
+export interface Description {
+  falc: Language;
+  standard: Language;
+};
+
+export interface PlaceScheme { 
   address: Address;
-  description: Description;
   audio: Audio;
-  status: PlaceStatus;
-}
+  available: boolean;
+  clientID: string;
+  coords: Coords;
+  description: Description;
+  image?: string;
+  // (type à préciser)
+  medals: any[]; 
+  name:Language;
+  type:string;
+  };
+
+
+  
+
+
+
+
+

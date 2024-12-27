@@ -1,98 +1,45 @@
 // games.scheme.ts
 
+export interface Language{
+  de: string;
+  en: string;
+  es: string;
+  fr: string;
+  it: string;
+};
+
+export interface Audio {
+  falc: Language;
+  standard: Language;
+};
+
+export interface Reponse{
+  falc: Language;
+  standard: Language;
+};
+
 export interface GameScheme {
-  image: string;
+  audio: Audio;
+  explanation: {
+    reponse_1:Reponse;
+    reponse_2:Reponse;
+    reponse_true:Reponse;
+  };
+  image?: string;
   level: string;
-  name: {
-    de: string;
-    en: string;
-    es: string;
-    fr: string;
-    it: string;
-  };
+  name:Language;
   pieceID: string;
-  question: {
-    audio?: string; // Optionnel
-    falc: {
-      de: string;
-      en: string;
-      es: string;
-      fr: string;
-      it: string;
-    };
-    standard: {
-      de: string;
-      en: string;
-      es: string;
-      fr: string;
-      it: string;
-    };
+  question:Reponse;
+  reponse: {
+    reponse_true:Reponse;
+    reponse_1:Reponse;
+    reponse_2:Reponse;
   };
-  response: {
-    explanation: {
-      falc: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-      standard: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-    };
-    responseTrue: {
-      falc: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-      standard: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-    };
-    response_1: {
-      falc: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-      standard: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-    };
-    response_2: {
-      falc: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-      standard: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-    };
+  status: {
+    isActive: boolean; 
+    isPublished : boolean;
   };
-  type: string; // Exemple : "quizz"
+  type:string;
 }
+ 
+

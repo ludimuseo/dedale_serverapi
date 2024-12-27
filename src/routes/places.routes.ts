@@ -2,55 +2,75 @@
 
 import { Router } from "express";
 import { PlacesService } from "../services/places.service";
+import { PlaceScheme } from "../schemes/places.scheme";
 
 const router = Router();
 
-// GET
+// GET Récupérer la liste des lieux
 router.get("/list", async (_req, res) => {
-  const places = await PlacesService.getAllPlaces();
-  res.json(places);
+  try {
+   const places = await PlacesService.getAllPlaces();
+   res.status(200).json(places); 
+} catch (error) {
+  console.error("Erreur lors de la récupération des lieux:", error);
+  res.status(500).json({ message: "Erreur interne du serveur" });  
+}
 });
 
-// GET place by ID
+
+// GET - Récupérer un lieu par son ID
 router.get("/find/:id", async (req, res) => {
   try {
     const place = await PlacesService.getPlaceById(req.params.id);
     if (!place) {
       return res.status(404).json({ error: "Lieu introuvable" });
     }
-    res.json(place);
+    res.status(200).json(place); 
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Erreur serveur" });
+    console.error("Erreur lors de la récupération du lieu par ID:", error);
+    res.status(500).json({ error: "Erreur serveur" });
     }
+  });
+
+
+
+// POST - Créer un nouveau lieu 
+router.post("/create", async (req, res) => {
+  try {
+    const placeData: PlaceScheme = req.body;
+    const newPlace = await PlacesService.addPlace(placeData);
+    res.status(201).json({ message: "Lieu ajouté avec succès", placeId: newPlace.id });  
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du lieu:", error);
+    res.status(500).json({ message: "Erreur interne lors de l'ajout du lieu" }); 
   }
 });
 
 
-
-// POST
-router.post("/create", async (req, res) => {
-  await PlacesService.addPlace(req.body);
-  res.status(201).send("Place added");
-});
-
-// PATCH 
+// PATCH - Mettre à jour un lieu existant
 router.patch("/update/:id", async (req, res) => {
   try {
-    await PlacesService.updatePlace(req.params.id, req.body);
-    res.status(200).send("Place updated");
+    const { id } =req.params;
+    const updateData = req.body;
+    await PlacesService.updatePlace(id,updateData);
+    res.status(200).json({ message: `Lieu ${id} mis à jour avec succès.` }); 
   } catch (error) {
-    console.error("Erreur lors de la mise à jour:", error);
-    res.status(500).json({ error: "Erreur interne du serveur" });
+    console.error("Erreur lors de la mise à jour du lieu:", error);
+    res.status(500).json({ message: "Erreur interne lors de la mise à jour du lieu" });
   }
 });
 
-// DELETE
+// DELETE - Supprimer un lieu
 router.delete("/delete/:id", async (req, res) => {
-  await PlacesService.deletePlace(req.params.id);
-  res.status(200).send("Place deleted");
+  try {
+    const { id } = req.params;
+    await PlacesService.deletePlace(id);
+    res.status(200).json({ message: `Lieu ${id} supprimé avec succès.` });  
+  } catch (error) {
+    console.error("Erreur lors de la suppression du lieu:", error);
+    res.status(500).json({ message: "Erreur interne lors de la suppression du lieu" });  
+  }
 });
+ 
 
 export default router;
