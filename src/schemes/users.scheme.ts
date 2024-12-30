@@ -6,8 +6,9 @@ export enum UserRole {
   CONTRIBUTOR = 'CONTRIBUTOR',
   USER = 'USER',
   CORRECTOR = 'CORRECTOR',
+  REFERENT = 'REFERENT',
   }
-// ou export type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'CONTRIBUTOR' | 'USER' | 'CORRECTOR';
+// ou export type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'CONTRIBUTOR' | 'USER' | 'CORRECTOR'| 'REFERENT';
 
 export interface Profile {
 username: string;
