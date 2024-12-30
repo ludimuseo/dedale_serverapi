@@ -1,10 +1,11 @@
 //src/server.ts
 
 import express from "express";
-import clientsRouter from "./routes/clients.route";
+import clientsRouter from "./routes/clients.routes";
 import placesRouter from "./routes/places.routes";
 import gamesRouter from "./routes/games.routes";
 import journeysRouter from "./routes/journeys.routes";
+import stepsRouter from "./routes/steps.routes";
 
 
 const app = express();
@@ -15,6 +16,7 @@ app.use("/clients", clientsRouter);
 app.use("/places", placesRouter); 
 app.use("/games", gamesRouter);
 app.use("/journeys", journeysRouter);
+app.use("/steps", stepsRouter);
 
 
 

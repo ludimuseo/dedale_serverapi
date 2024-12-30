@@ -1,4 +1,4 @@
-//clients.route.ts
+//clients.routes.ts
 
 import { Router } from "express";
 import { ClientsService } from "../services/clients.service";
