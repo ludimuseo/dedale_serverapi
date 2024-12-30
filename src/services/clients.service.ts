@@ -1,4 +1,4 @@
-// client.service.ts
+// clients.service.ts
 
 import { db } from "../config/firebase.config";
 import { ClientScheme } from "../schemes/clients.scheme"; 

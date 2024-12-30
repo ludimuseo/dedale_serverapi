@@ -31,10 +31,10 @@ export interface Language{
   };
 
 export interface JourneyScheme {
-placeId:string ;
-medal: string;
-image: string;
-duration: number;
+placeId?:string ;
+medal?: string;
+image?: string;
+duration?: number;
 locationRequired: boolean;
 name: Language;
 address: Address;

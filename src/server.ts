@@ -4,6 +4,7 @@ import express from "express";
 import clientsRouter from "./routes/clients.route";
 import placesRouter from "./routes/places.routes";
 import gamesRouter from "./routes/games.routes";
+import journeysRouter from "./routes/journeys.routes";
 
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/clients", clientsRouter);
 app.use("/places", placesRouter); 
 app.use("/games", gamesRouter);
+app.use("/journeys", journeysRouter);
 
 
 
@@ -20,7 +22,6 @@ app.use("/games", gamesRouter);
 
 //--------------------------------------------------------------
 //TODO Faire les routes
-//TODO Faire les schémas
 //TODO Faire les services
 //TODO valider les données avant de les envoyer à Firestore avec zod
 //TODO Configurer le serveur Express pour écouter les requêtes HTTP
