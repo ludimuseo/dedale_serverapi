@@ -6,7 +6,7 @@ import placesRouter from "./routes/places.routes";
 import gamesRouter from "./routes/games.routes";
 import journeysRouter from "./routes/journeys.routes";
 import stepsRouter from "./routes/steps.routes";
-
+import piecesRouter from "./routes/pieces.routes";
 
 const app = express();
 app.use(express.json());
@@ -17,7 +17,7 @@ app.use("/places", placesRouter);
 app.use("/games", gamesRouter);
 app.use("/journeys", journeysRouter);
 app.use("/steps", stepsRouter);
-
+app.use("/pieces", piecesRouter);
 
 
 
