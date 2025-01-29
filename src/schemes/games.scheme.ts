@@ -1,5 +1,11 @@
 // games.scheme.ts
 
+export interface Content {
+  image?: string[];
+  type: string;
+  level: string;
+};
+
 export interface Language{
   de: string;
   en: string;
@@ -13,40 +19,47 @@ export interface Audio {
   falc: Language;
 };
 
-export interface Reponse{
+export interface Response{
   standard: Language;
-  falc: {
-    isValidate: boolean;
+  falcResp: {
+    falcCertified: string;
     langage: Language;
   };
 };
 
+export interface StatusFalc {
+  isValidate: boolean;
+  isCertified: boolean;
+  certifiedDate: Date;
+  isCorrected: boolean;
+  };
+
 export interface Question{
   standard: Language;
-  falc: {
-    isValidate: boolean;
-    langage: Language;
+  falcQuest: {
+    language:Language;
+    falcCertified: string;
+    userId: string;
   };
+  statusFalc: StatusFalc;
 };
 
 
 export interface GameScheme {
-  pieceID: string;
-  type:string;
-  level: string;
-  image?: string;
-  name:Language;
-  question:Question;
+  pieceId: string;
+  content: Content;
+  name: Language;
+  question: Question;
   audio: Audio;
   reponse: {
-    reponse_true:Reponse;
-    reponse_1:Reponse;
-    reponse_2:Reponse;
+    reponse_true:Response;
+    reponse_1:Response;
+    reponse_2:Response;
   };
   explanation: {
-    reponse_true:Reponse;
-    reponse_1:Reponse;
-    reponse_2:Reponse;
+    reponse_true:Response;
+    reponse_1:Response;
+    reponse_2:Response;
   };
   status: {
     isActive: boolean; 

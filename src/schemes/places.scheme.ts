@@ -3,7 +3,6 @@
 export interface Content {
   image?: string[];
   type:string;
-
 };
 
 export interface Address {
