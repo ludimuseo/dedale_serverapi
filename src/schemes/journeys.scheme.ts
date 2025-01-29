@@ -40,11 +40,11 @@ export interface Content {
     };
   
   export interface Description {
+    standard: Language;
     falc: Language;
     falcCertified: string;
     userId: string;
     statusFalc: StatusFalc ;
-    standard: Language;
   };
 
 export interface JourneyScheme {

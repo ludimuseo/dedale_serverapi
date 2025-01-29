@@ -10,14 +10,19 @@ export interface Language{
 
 export type AssignedType = 'placeId' | 'journeyId' | 'stepId';
 
-export interface Coords {
-    lat: number;
-    lon: number;
+export interface StatusFalc {
+  isValidate: boolean;
+  isCertified: boolean;
+  certifiedDate: Date;
+  isCorrected: boolean;
   };
 
 export interface Description {
-    falc: Language;
-    standard: Language;
+  standard: Language;
+  falc: Language;
+  falcCertified: string;
+  userId: string;
+  statusFalc: StatusFalc ;
   };
   
 export interface Audio {
@@ -25,12 +30,12 @@ export interface Audio {
   standard: Language;
 };
 
-
 export interface MedalScheme {
-image: string;
+content: {
+  image?: string[];
+};
 name: Language;
 status: AssignedType;
-coords: Coords;
 description: Description;
 audio: Audio;
 };
