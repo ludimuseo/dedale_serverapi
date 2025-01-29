@@ -1,8 +1,11 @@
 //users.routes.ts
 
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import { UsersService } from "../services/users.service";
 import { UserScheme } from "../schemes/users.scheme";
+import { validateUserCreation, validateUserUpdate } from "../middlewares/userValidation";
+import { validationResult } from "express-validator";
+
 
 const router = Router();
 
@@ -33,7 +36,13 @@ router.get("/find/:id", async (req, res) => {
 });
 
 // POST - Créer un nouvel utilisateur
-router.post("/create", async (req, res) => {
+router.post("/create",validateUserCreation, async (req: Request, res: Response) => {
+  //Add validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const userData: UserScheme = req.body;
     const newUser = await UsersService.addUser(userData);
@@ -44,8 +53,15 @@ router.post("/create", async (req, res) => {
   }
 });
 
+
+
 // PATCH - Mettre à jour un utilisateur existant
-router.patch("/update/:id", async (req, res) => {
+router.patch("/update/:id", validateUserUpdate, async (req: Request, res: Response) => {
+  //Add validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const { id } = req.params;
     const updateData = req.body;  
