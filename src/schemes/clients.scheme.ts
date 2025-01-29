@@ -1,9 +1,17 @@
 //clients.schemes.ts
 
+export enum ClientType {
+  ASSOCIATION = 'ASSOCIATION',
+  PROFESSIONAL = 'PROFESSIONAL',
+  PARTICULAR = 'PARTICULAR',
+  }
+// ou export type ClientType = 'ASSOCIATION' | 'PROFESSIONAL' | 'PARTICULAR';
+
 export interface Company{
   name: string;
   siret: string;
   tva: string;
+  type: ClientType;
   website?: string; 
 };
 
