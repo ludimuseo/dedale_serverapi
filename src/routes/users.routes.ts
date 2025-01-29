@@ -3,7 +3,7 @@
 import { Router, Request, Response } from "express";
 import { UsersService } from "../services/users.service";
 import { UserScheme } from "../schemes/users.scheme";
-import { validateUserCreation, validateUserUpdate } from "../middlewares/userValidation";
+import { validateUserCreation, validateUserUpdate, validateUserId } from "../middlewares/validation";
 import { validationResult } from "express-validator";
 
 
@@ -21,7 +21,14 @@ router.get("/list", async (_req, res) => {
 });
 
 // GET - Récupérer un utilisateur par son ID
-router.get("/find/:id", async (req, res) => {
+router.get("/find/:id",  validateUserId, async (req: Request, res: Response) => {
+
+  // Vérifier la validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const { id } = req.params;
     const user = await UsersService.getUserById(id);
@@ -37,7 +44,7 @@ router.get("/find/:id", async (req, res) => {
 
 // POST - Créer un nouvel utilisateur
 router.post("/create",validateUserCreation, async (req: Request, res: Response) => {
-  //Add validation
+  // Vérifier la validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -54,16 +61,24 @@ router.post("/create",validateUserCreation, async (req: Request, res: Response) 
 });
 
 
-
 // PATCH - Mettre à jour un utilisateur existant
-router.patch("/update/:id", validateUserUpdate, async (req: Request, res: Response) => {
-  //Add validation
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  try {
+router.patch("/update/:id", validateUserId, validateUserUpdate, async (req: Request, res: Response) => {
+
+    // Vérifier si l'utilisateur existe avant la validation des champs
     const { id } = req.params;
+    const user = await UsersService.getUserById(id);
+    if (!user) {
+      return res.status(404).json({ message: `Utilisateur avec l'ID ${id} introuvable.` });
+    }
+  
+    // Appliquer la validation des champs après avoir validé l'ID
+    await Promise.all(validateUserUpdate.map(validation => validation.run(req)));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+  
+  try {
     const updateData = req.body;  
     await UsersService.updateUser(id, updateData);
     res.status(200).json({ message: `Utilisateur ${id} mis à jour avec succès.` });  
@@ -74,9 +89,23 @@ router.patch("/update/:id", validateUserUpdate, async (req: Request, res: Respon
 });
 
 // DELETE - Supprimer un utilisateur
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", validateUserId, async (req: Request, res: Response) => {
+  // Vérifier la validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+
   try {
     const { id } = req.params;
+
+    // Vérifier si l'utilisateur existe avant suppression
+    const user = await UsersService.getUserById(id);
+    if (!user) {
+      return res.status(404).json({ message: `Utilisateur avec l'ID ${id} introuvable.` });
+    }
+
     await UsersService.deleteUser(id);
     res.status(200).json({ message: `Utilisateur ${id} supprimé avec succès.` });  
   } catch (error) {

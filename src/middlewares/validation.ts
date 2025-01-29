@@ -1,6 +1,9 @@
-//userValidation.ts : validation des données des users routes
+//validation.ts : validation des données des users routes
 
-import { body } from "express-validator";
+import { body,param } from "express-validator";
+
+
+//-------------------------USERS-------------------------------------------
 
 // Validation pour la création d'un utilisateur - POST
 export const validateUserCreation = [
@@ -22,5 +25,20 @@ export const validateUserUpdate = [
     .optional()
     .isLength({ min: 6 })
     .withMessage("Le mot de passe doit contenir au moins 6 caractères"),
+];
+
+//-------------------------CLIENTS-------------------------------------------
+
+
+
+
+
+
+
+
+//-------------------------GENERAL-------------------------------------------
+// Validation de l'ID utilisateur pour DELETE, GET et PATCH
+export const validateUserId = [
+  param("id").isString().withMessage("L'ID de l'utilisateur doit être une chaîne de caractères valide"),
 ];
 
