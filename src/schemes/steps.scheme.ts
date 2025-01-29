@@ -18,10 +18,21 @@ export interface Language{
   export interface Coords {
     lat: number;
     lon: number;
+    locationRequired: boolean;
   };
+  
+  export interface StatusFalc {
+    isValidate: boolean;
+    isCertified: boolean;
+    certifiedDate: Date;
+    isCorrected: boolean;
+    };
   
   export interface Description {
     falc: Language;
+    falcCertified: string;
+    userID: string;
+    statusFalc: StatusFalc ;
     standard: Language;
   };
   
@@ -30,13 +41,16 @@ export interface Audio {
   standard: Language;
 };
 
-
 export interface StepScheme {
     journeyId : string;
-    medal: string;
-    image: string;
-    locationRequired: boolean;
+    medalId: string;
+    content: {
+      image: string[];
+    };
     name: Language;
+    stage: {
+      stepNumber: number; 
+    };
     status: {
         isActive: boolean; 
         isPublished : boolean;

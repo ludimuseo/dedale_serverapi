@@ -43,13 +43,13 @@ export interface Description {
   standard: Language;
   falc: Language;
   falcCertified: string;
-  userID: string;
+  userId: string;
   statusFalc: StatusFalc ;
 };
 
 export interface PlaceScheme { 
-  clientID: string;
-  medalID: string;
+  clientId: string;
+  medalId: string;
   content: Content;
   name:Language;
   status: {

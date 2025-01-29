@@ -42,7 +42,7 @@ export interface Content {
   export interface Description {
     falc: Language;
     falcCertified: string;
-    userID: string;
+    userId: string;
     statusFalc: StatusFalc ;
     standard: Language;
   };
