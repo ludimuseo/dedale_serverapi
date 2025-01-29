@@ -1,10 +1,5 @@
 //pieces.schemes.ts
 
-export interface Coords {
-    lat: number;
-    lon: number;
-  };
-
   export interface Address{
     address: string;
     postal: string;  
@@ -20,8 +15,18 @@ export interface Coords {
     it: string;
   };
 
+  export interface StatusFalc {
+    isValidate: boolean;
+    isCertified: boolean;
+    certifiedDate: Date;
+    isCorrected: boolean;
+    };
+
   export interface Description {
     falc: Language;
+    falcCertified: string;
+    userId: string;
+    statusFalc: StatusFalc ;
     standard: Language;
   };
   
@@ -33,15 +38,14 @@ export interface Audio {
 
 export interface PieceScheme {
 stepId : string;
-image: string;
-locationRequired : boolean;
-name: Language;
+content: {
+  image: string[];
+};
 status: {
     isActive: boolean; 
     isPublished : boolean;
   };
 address: Address;
-coords: Coords;
 description: Description;
 audio: Audio;
 };
