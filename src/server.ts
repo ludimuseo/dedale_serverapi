@@ -25,9 +25,6 @@ app.use("/users", usersRouter);
 
 
 //--------------------------------------------------------------
-//TODO Faire les routes
-//TODO Faire les services
-//TODO Configurer le serveur Express pour écouter les requêtes HTTP
 //TODO Gestion des erreurs et validation des données avec express-validator
 //TODO Sécu
 //TODO Tests avec Jest 
