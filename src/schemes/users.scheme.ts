@@ -20,6 +20,7 @@ clientId : string;
 role: UserRole;
 created_at: Date;
 updated_at: Date;
+logs: Date[];
 };
 
 export interface Language{

@@ -27,7 +27,6 @@ app.use("/users", usersRouter);
 //--------------------------------------------------------------
 //TODO Faire les routes
 //TODO Faire les services
-//TODO valider les données avant de les envoyer à Firestore avec zod
 //TODO Configurer le serveur Express pour écouter les requêtes HTTP
 //TODO Gestion des erreurs et validation des données avec express-validator
 //TODO Sécu
