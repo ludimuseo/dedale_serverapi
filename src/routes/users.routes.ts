@@ -3,7 +3,7 @@
 import { Router, Request, Response } from "express";
 import { UsersService } from "../services/users.service";
 import { UserScheme } from "../schemes/users.scheme";
-import { validateUserCreation, validateUserUpdate, validateUserId } from "../middlewares/validation";
+import { validateUserCreation, validateUserUpdate, validateId } from "../middlewares/validation";
 import { validationResult } from "express-validator";
 
 
@@ -21,7 +21,7 @@ router.get("/list", async (_req, res) => {
 });
 
 // GET - Récupérer un utilisateur par son ID
-router.get("/find/:id",  validateUserId, async (req: Request, res: Response) => {
+router.get("/find/:id",  validateId, async (req: Request, res: Response) => {
 
   // Vérifier la validation
   const errors = validationResult(req);
@@ -62,7 +62,7 @@ router.post("/create",validateUserCreation, async (req: Request, res: Response) 
 
 
 // PATCH - Mettre à jour un utilisateur existant
-router.patch("/update/:id", validateUserId, validateUserUpdate, async (req: Request, res: Response) => {
+router.patch("/update/:id", validateId, validateUserUpdate, async (req: Request, res: Response) => {
 
     // Vérifier si l'utilisateur existe avant la validation des champs
     const { id } = req.params;
@@ -89,7 +89,7 @@ router.patch("/update/:id", validateUserId, validateUserUpdate, async (req: Requ
 });
 
 // DELETE - Supprimer un utilisateur
-router.delete("/delete/:id", validateUserId, async (req: Request, res: Response) => {
+router.delete("/delete/:id", validateId, async (req: Request, res: Response) => {
   // Vérifier la validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
