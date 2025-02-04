@@ -9,6 +9,7 @@ import stepsRouter from "./routes/steps.routes";
 import piecesRouter from "./routes/pieces.routes";
 import medalsRouter from "./routes/medals.routes";
 import usersRouter from "./routes/users.routes";
+import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 app.use(express.json());
@@ -22,6 +23,7 @@ app.use("/steps", stepsRouter);
 app.use("/pieces", piecesRouter);
 app.use("/medals", medalsRouter);
 app.use("/users", usersRouter);
+app.use(errorHandler);
 
 
 //--------------------------------------------------------------
