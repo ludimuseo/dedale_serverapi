@@ -1,4 +1,4 @@
-// clients.service.ts
+// clients.service.ts = logique métier
 
 import { db } from "../config/firebase.config";
 import { ClientScheme } from "../schemes/clients.scheme"; 
