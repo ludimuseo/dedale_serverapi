@@ -1,26 +1,25 @@
 // steps.controller.ts
 
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { StepsService } from "../services/steps.service";
 import { validationResult } from "express-validator";
 
 /**
  * Récupérer toutes les étapes
  */
-export const getAllSteps = async (_req: Request, res: Response) => {
+export const getAllSteps = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const steps = await StepsService.getAllSteps();
     res.status(200).json(steps);
   } catch (error) {
-    console.error("Erreur lors de la récupération des étapes :", error);
-    res.status(500).json({ message: "Erreur interne du serveur" });
+    next(error);
   }
 };
 
 /**
  * Récupérer une étape par son ID
  */
-export const getStepById = async (req: Request, res: Response) => {
+export const getStepById = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -34,15 +33,14 @@ export const getStepById = async (req: Request, res: Response) => {
     }
     res.status(200).json(step);
   } catch (error) {
-    console.error("Erreur lors de la récupération de l'étape :", error);
-    res.status(500).json({ message: "Erreur interne du serveur" });
+    next(error);
   }
 };
 
 /**
  * Ajouter une nouvelle étape
  */
-export const createStep = async (req: Request, res: Response) => {
+export const createStep = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -53,15 +51,14 @@ export const createStep = async (req: Request, res: Response) => {
     const newStep = await StepsService.addStep(stepData);
     res.status(201).json({ message: "Étape ajoutée avec succès", stepId: newStep.id });
   } catch (error) {
-    console.error("Erreur lors de l'ajout de l'étape :", error);
-    res.status(500).json({ message: "Erreur interne lors de l'ajout de l'étape" });
+    next(error);
   }
 };
 
 /**
  * Mettre à jour une étape existante
  */
-export const updateStep = async (req: Request, res: Response) => {
+export const updateStep = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -73,15 +70,14 @@ export const updateStep = async (req: Request, res: Response) => {
     await StepsService.updateSteps(id, updateData);
     res.status(200).json({ message: `Étape ${id} mise à jour avec succès.` });
   } catch (error) {
-    console.error("Erreur lors de la mise à jour de l'étape :", error);
-    res.status(500).json({ message: "Erreur interne lors de la mise à jour de l'étape" });
+    next(error);
   }
 };
 
 /**
  * Supprimer une étape
  */
-export const deleteStep = async (req: Request, res: Response) => {
+export const deleteStep = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -92,7 +88,8 @@ export const deleteStep = async (req: Request, res: Response) => {
     await StepsService.deleteSteps(id);
     res.status(200).json({ message: `Étape ${id} supprimée avec succès.` });
   } catch (error) {
-    console.error("Erreur lors de la suppression de l'étape :", error);
-    res.status(500).json({ message: "Erreur interne lors de la suppression de l'étape" });
+    next(error);
   }
 };
+
+
