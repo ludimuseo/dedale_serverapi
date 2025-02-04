@@ -1,20 +1,28 @@
 const { DataTypes} = require("sequelize");
 const Sequelize = require("../server.ts");
 
-const Medal = Sequelize.define("medal", {
+const Journey = Sequelize.define("journey", {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    image: {
+    duration: {
         type: DataTypes.STRING,
         allowNull: false
       },
-    level: {
-      type: DataTypes.INTEGER,
+    image: {
+      type: DataTypes.STRING,
       allowNull: false
+      },
+    isPublished: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+      },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
       }
       },
         {
@@ -22,4 +30,4 @@ const Medal = Sequelize.define("medal", {
           timestamps: false // Dont add createdAt and updatedAt in the query
  });
 
- export default Medal;
+ export default Journey;
