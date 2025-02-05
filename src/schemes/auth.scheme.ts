@@ -27,7 +27,23 @@ const Auth = Sequelize.define("auth", {
     creatAt: {
       type: DataTypes.BOOLEAN,
       allowNull: false
-      }
+      },
+    google_id: {
+      type: DataTypes.STRING,
+      allowNull: true
+      },
+    google_access_token: {
+      type: DataTypes.TEXT,
+      allowNull: true
+      },
+    google_refresh_token: {
+      type: DataTypes.TEXT,
+      allowNull: true
+      },
+    google_expires_at: {
+      type: DataTypes.TEXT,
+      allowNull: true
+      },
       },
         {
           freezeTableName: true, // Empêche Sequelize d'ajouter un "s" à la fin du nom de la table
