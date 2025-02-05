@@ -1,98 +1,70 @@
 // games.scheme.ts
 
-export interface GameScheme {
-  image: string;
+export interface Content {
+  image?: string[];
+  type: string;
   level: string;
-  name: {
-    de: string;
-    en: string;
-    es: string;
-    fr: string;
-    it: string;
+};
+
+export interface Language{
+  de: string;
+  en: string;
+  es: string;
+  fr: string;
+  it: string;
+};
+
+export interface Audio {
+  standard: Language;
+  falc: Language;
+};
+
+export interface Response{
+  standard: Language;
+  falcResp: {
+    falcCertified: string;
+    langage: Language;
   };
-  pieceID: string;
-  question: {
-    audio?: string; // Optionnel
-    falc: {
-      de: string;
-      en: string;
-      es: string;
-      fr: string;
-      it: string;
-    };
-    standard: {
-      de: string;
-      en: string;
-      es: string;
-      fr: string;
-      it: string;
-    };
+};
+
+export interface StatusFalc {
+  isValidate: boolean;
+  isCertified: boolean;
+  certifiedDate: Date;
+  isCorrected: boolean;
   };
-  response: {
-    explanation: {
-      falc: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-      standard: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-    };
-    responseTrue: {
-      falc: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-      standard: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-    };
-    response_1: {
-      falc: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-      standard: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-    };
-    response_2: {
-      falc: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-      standard: {
-        de: string;
-        en: string;
-        es: string;
-        fr: string;
-        it: string;
-      };
-    };
+
+export interface Question{
+  standard: Language;
+  falcQuest: {
+    language:Language;
+    falcCertified: string;
+    userId: string;
   };
-  type: string; // Exemple : "quizz"
-}
+  statusFalc: StatusFalc;
+};
+
+
+export interface GameScheme {
+  pieceId: string;
+  content: Content;
+  name: Language;
+  question: Question;
+  audio: Audio;
+  reponse: {
+    reponse_true:Response;
+    reponse_1:Response;
+    reponse_2:Response;
+  };
+  explanation: {
+    reponse_true:Response;
+    reponse_1:Response;
+    reponse_2:Response;
+  };
+  status: {
+    isActive: boolean; 
+    isPublished : boolean;
+  };
+};
+ 
+

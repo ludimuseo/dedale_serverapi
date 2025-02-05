@@ -1,52 +1,70 @@
 //places.scheme.ts
 
-export type PlaceType = 'museum' | 'monument' | 'town-village' | 'outdoor' | 'castle';
+export interface Content {
+  image?: string[];
+  type:string;
+};
 
 export interface Address {
-  address: string;
-  postal: string;
-  city: string;
-  country: string;
-  lat: number;
-  lon: number;
-}
+    address: string;
+    city: string;
+    postal: string;  
+    country: string;
+};
 
-export interface StandardDescription {
-  fr: string;
+export interface Language{
+  de: string;
   en: string;
   es: string;
-  de: string;
+  fr: string;
   it: string;
-}
-
-export interface FalcDescription extends StandardDescription {
-  isValidate: boolean; // FALC validé ou non
-}
-
-export interface Description {
-  standard: StandardDescription;
-  falc: FalcDescription;
-}
+};
 
 export interface Audio {
-  standard: StandardDescription;
-  falc: StandardDescription;
-}
+  standard: Language;
+  falc: Language;
+};
 
-export interface PlaceStatus {
-  isActive: boolean;
-  isPublished: boolean;
-}
+export interface Coords {
+  lat: number;
+  lon: number;
+  isLocationRequired: boolean;
+};
 
-export interface Place {
+export interface StatusFalc {
+  isValidate: boolean;
+  isCertified: boolean;
+  certifiedDate: Date;
+  isCorrected: boolean;
+  };
+
+export interface Description {
+  standard: Language;
+  falc: Language;
+  falcCertified: string;
+  userId: string;
+  statusFalc: StatusFalc ;
+};
+
+export interface PlaceScheme { 
   clientId: string;
-  name: StandardDescription;
-  medal: string;
-  type: PlaceType;
-  image: string;
-  locationRequired: boolean;
+  medalId: string;
+  content: Content;
+  name:Language;
+  status: {
+    isActive: boolean; 
+    isPublished : boolean;
+  };
   address: Address;
+  coords: Coords;
   description: Description;
   audio: Audio;
-  status: PlaceStatus;
-}
+  };
+
+
+  
+
+
+
+
+

@@ -1,26 +1,40 @@
-//client.scheme.ts
+//clients.schemes.ts
+
+export enum ClientType {
+  ASSOCIATION = 'ASSOCIATION',
+  PROFESSIONAL = 'PROFESSIONAL',
+  PARTICULAR = 'PARTICULAR',
+  }
+// ou export type ClientType = 'ASSOCIATION' | 'PROFESSIONAL' | 'PARTICULAR';
+
+export interface Company{
+  name: string;
+  siret: string;
+  tva: string;
+  type: ClientType;
+  website?: string; 
+};
+
+export interface Address{
+  address: string;
+  postal: string;  
+  city: string;
+  country: string;
+};
+
+export interface Contact{
+  name: string;
+  email: string;
+  phone: number;  
+  note?: string;
+};
+
 
 export interface ClientScheme {
-    company: {
-      name: string;
-      siret: string;
-      tva: string;
-      website: string;
-    };
-    address: {
-      address: string;
-      postal: number;
-      city: string;
-      country: string;
-    };
-    contact: {
-      name: string;
-      email: string;
-      tel: number;
-      note: string;
-    };
-    status: {
-      isActive: boolean;  ///superAdmin => suppression/désactivation du client.
-    };
-  }
-  
+  company: Company ;
+  address: Address;
+  contact: Contact ;
+  status: {
+    isActive: boolean; 
+  };
+};
