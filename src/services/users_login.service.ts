@@ -15,7 +15,7 @@ export class UsersLoginService {
 
   static async connectUser(login: string, passwd: string) {  
     console.log(typeof sequelize.define);
-    User.findAll({
+    Auth.findAll({
       where: {
         id: 1,
       },
