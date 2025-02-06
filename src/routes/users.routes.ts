@@ -2,7 +2,6 @@
 
 import { Router } from "express";
 import {
-  signIn,
   getAllUsers,
   getUserById,
   createUser,
@@ -12,8 +11,6 @@ import {
 import { validateUserCreation, validateUserUpdate, validateId } from "../middlewares/validation";
 
 const router = Router();
-
-router.post("/signin", signIn);
 
 router.get("/list", getAllUsers);
 router.get("/find/:id", validateId, getUserById);

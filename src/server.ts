@@ -9,6 +9,7 @@ import stepsRouter from "./routes/steps.routes";
 import piecesRouter from "./routes/pieces.routes";
 import medalsRouter from "./routes/medals.routes";
 import usersRouter from "./routes/users.routes";
+import authRouter from "./routes/auth.routes";
 import { errorHandler } from "./middlewares/errorHandler";
 import sequelize from "./database";
 
@@ -26,6 +27,7 @@ app.use("/steps", stepsRouter);
 app.use("/pieces", piecesRouter);
 app.use("/medals", medalsRouter);
 app.use("/users", usersRouter);
+app.use("/auth", authRouter);
 app.use(errorHandler);
 
 

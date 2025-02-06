@@ -12,10 +12,11 @@ const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
 const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN;
 const SALT = Number(process.env.SALT);
 
-export const signIn = async (_req: Request, res: Response, next: NextFunction) => {
+export const login = async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await UsersLoginService.connectUser("a", "b");
-    res.status(200).json( {message: user});
+    const user = await UsersLoginService.connectUser(_req.body.login, _req.body.passwd);
+    if(user) {res.status(200).json( user );}else{res.status(400).json({ message: "error"});}
+    
   } catch (error) {
     next(error);
   }

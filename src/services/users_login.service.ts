@@ -1,7 +1,7 @@
 // users.service.ts
 
-import User from "../schemes/user.scheme"; 
-import Auth from "../schemes/auth.scheme"
+import { Auth } from "../schemes/auth.scheme";
+import { User } from "../schemes/user.scheme";
 import sequelize from "../database";
 
 const bcrypt = require('bcrypt');
@@ -12,17 +12,48 @@ const SALT = process.env.SALT;
 
 
 export class UsersLoginService {
-
-  static async connectUser(login: string, passwd: string) {  
-    console.log(typeof sequelize.define);
-    Auth.findAll({
-      where: {
-        id: 1,
-      },
+  static async connectUser(login: string, passwd: string) {
+    const authUser = await Auth.findOne({
+      where: { email: login },
+      include: [{
+        model: User,
+        required: true,  // Assurez-vous que User est chargé avec Auth
+      }],
     });
-   
-  
-  
-    return { login: login };
-  }
+
+    if (!authUser) return null; // No user found in DB
+
+    // Accéder aux attributs de l'utilisateur lié à Auth
+    const user = authUser.get("user");  // Cela devrait être correct maintenant
+
+    console.log(user?.name);  // Exemple d'accès aux propriétés de User
+
+    const isMatch = await bcrypt.compare(passwd, authUser.password);
+    if (isMatch) {
+
+      // Update the time of connection
+      const timestamp = new Date();
+      Auth.update(
+        { log: timestamp },  // Nouveau timestamp pour le champ 'log'
+        {
+          where: {
+            id: authUser.id  // Condition pour sélectionner l'enregistrement
+          }
+        }
+      )
+
+      // Gen jwt token
+      const tokenUser = jwt.sign(
+        { userId: authUser.id },
+        RANDOM_TOKEN_SECRET,
+        { expiresIn: TOKEN_EXPIRES_IN }
+      );
+      
+      const data = { userId: authUser.id, token: tokenUser };
+      return data;
+    } else {
+      return null;
+    }
+  };
 }
+   
