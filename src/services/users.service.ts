@@ -2,6 +2,8 @@
 
 import { db } from "../config/firebase.config";
 import { UserScheme } from "../schemes/users.scheme"; 
+import User from "../schemes/user.scheme"; 
+const sequelize = require("../server");
 
 
 export class UsersService {

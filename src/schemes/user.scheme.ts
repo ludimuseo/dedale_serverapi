@@ -1,7 +1,11 @@
-const { DataTypes} = require("sequelize");
-const Sequelize = require("../server.ts");
+import sequelize from "../database";
+import { Sequelize, DataTypes } from "sequelize";
 
-const User = Sequelize.define("user", {
+console.log("Sequelize instance in user.scheme.ts:", sequelize);
+console.log("sequelize.define:", typeof sequelize.define);
+
+
+const User = sequelize.define("user", {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -56,6 +60,7 @@ const User = Sequelize.define("user", {
         {
           freezeTableName: true, // Empêche Sequelize d'ajouter un "s" à la fin du nom de la table
           timestamps: false // Dont add createdAt and updatedAt in the query
- });
+       }
+);
 
  export default User;

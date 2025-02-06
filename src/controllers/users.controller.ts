@@ -2,7 +2,24 @@
 
 import { Request, Response, NextFunction } from "express";
 import { UsersService } from "../services/users.service";
+import { UsersLoginService } from "../services/users_login.service";
 import { validationResult } from "express-validator";
+import { log } from "node:console";
+
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
+const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN;
+const SALT = Number(process.env.SALT);
+
+export const signIn = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await UsersLoginService.connectUser("a", "b");
+    res.status(200).json( {message: user});
+  } catch (error) {
+    next(error);
+  }
+};
 
 /**
  * Récupérer la liste des utilisateurs

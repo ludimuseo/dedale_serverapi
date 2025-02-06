@@ -1,5 +1,5 @@
 const { DataTypes} = require("sequelize");
-const Sequelize = require("../server.ts");
+const { Sequelize } = require("../server.ts");
 
 const Auth = Sequelize.define("auth", {
     id: {

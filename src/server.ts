@@ -10,6 +10,9 @@ import piecesRouter from "./routes/pieces.routes";
 import medalsRouter from "./routes/medals.routes";
 import usersRouter from "./routes/users.routes";
 import { errorHandler } from "./middlewares/errorHandler";
+import sequelize from "./database";
+
+
 
 const app = express();
 app.use(express.json());
