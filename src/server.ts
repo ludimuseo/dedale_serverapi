@@ -11,7 +11,6 @@ import medalsRouter from "./routes/medals.routes";
 import usersRouter from "./routes/users.routes";
 import authRouter from "./routes/auth.routes";
 import { errorHandler } from "./middlewares/errorHandler";
-import sequelize from "./database";
 
 
 
