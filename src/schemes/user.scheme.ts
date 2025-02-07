@@ -12,7 +12,7 @@ interface UserAttributes {
   isFalc?: boolean;
   fontsize?: number;
   language: string;
-  tutorial?: string;
+  tutorial?: boolean;
   role?: string;
   isActive?: boolean;
   authId?: number;
@@ -60,7 +60,7 @@ const User = sequelize.define<UserInstance>("user", {
     allowNull: false,
   },
   tutorial: {
-    type: DataTypes.STRING,
+    type: DataTypes.BOOLEAN,
     allowNull: true,
   },
   role: {

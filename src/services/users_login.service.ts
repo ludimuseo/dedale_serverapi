@@ -13,6 +13,7 @@ const SALT = process.env.SALT;
 
 export class UsersLoginService {
   static async connectUser(login: string, passwd: string) {
+    
     const authUser = await Auth.findOne({
       where: { email: login },
       include: [{
@@ -24,9 +25,12 @@ export class UsersLoginService {
     if (!authUser) return null; // No user found in DB
 
     // Accéder aux attributs de l'utilisateur lié à Auth
-    const user = authUser.get("user");  // Cela devrait être correct maintenant
+    const user = authUser.get("user");  // Move user info in to user
 
-    console.log(user?.name);  // Exemple d'accès aux propriétés de User
+    // If user disable
+    if(!user?.isActive){ return "isActiveFalse";}
+
+    // console.log(user?.name);  // Exemple d'accès aux propriétés de User
 
     const isMatch = await bcrypt.compare(passwd, authUser.password);
     if (isMatch) {
@@ -49,7 +53,20 @@ export class UsersLoginService {
         { expiresIn: TOKEN_EXPIRES_IN }
       );
       
-      const data = { userId: authUser.id, token: tokenUser };
+      const data = { 
+        userId: authUser.id,
+        token: tokenUser,
+        name: user?.name,
+        firstname: user?.firstname,
+        pseudo: user?.pseudo,
+        avatar: user?.avatar,
+        isContrast: user?.isContrast,
+        isFalc: user?.isFalc,
+        fontsize: user?.fontsize,
+        language: user?.language,
+        tutorial: user?.tutorial,
+        role: user?.role,
+      };
       return data;
     } else {
       return null;
