@@ -1,7 +1,7 @@
-const { DataTypes} = require("sequelize");
-const Sequelize = require("../server.ts");
+import sequelize from "../database";
+import { Sequelize, DataTypes } from "sequelize";
 
-const Description = Sequelize.define("description", {
+const Description = sequelize.define("description", {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
