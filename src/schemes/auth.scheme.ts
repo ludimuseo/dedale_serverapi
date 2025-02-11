@@ -9,7 +9,7 @@ interface AuthAttributes {
   email: string;
   password: string;
   token: string;
-  log?: Date;
+  log?: Number;
   creatAt?: Date;
   google_id?: string;
   google_access_token?: string;
@@ -42,7 +42,7 @@ const Auth = sequelize.define<AuthInstance>("auth", {
     allowNull: false,
   },
   log: {
-    type: DataTypes.DATE,
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   creatAt: {
