@@ -8,7 +8,7 @@ interface Auth_LogAttributes {
   ip_adresse: string;
   user_agent: Text;
   status?: string;
-  raisons?: string;
+  reason?: string;
   authId?: number;
 }
 
@@ -22,7 +22,7 @@ class Auth_Log extends Model<Auth_LogAttributes, Auth_LogCreationAttributes> imp
   public ip_adresse!: string;
   public user_agent!: Text;
   public status?: string;
-  public raisons?: string;
+  public reason?: string;
   public authId?: number;
 }
 
@@ -51,7 +51,7 @@ Auth_Log.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    raisons: {
+    reason: {
       type: DataTypes.STRING,
       allowNull: true,
     },

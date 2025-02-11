@@ -20,7 +20,7 @@ export class UsersLoginService {
     let successStatus = "";
     let data;
     let userID;
-    let raisons;
+    let reason;
     let isMatch;
 
     const authUser = await Auth.findOne({
@@ -75,17 +75,17 @@ export class UsersLoginService {
         role: user?.role,
       };
       userID = authUser.id;
-      raisons = "Login succes"
+      reason = "Login succes"
       success = true;
       // return data;
     } else {
-      raisons = "Password invalid"
+      reason = "Password invalid"
       success = false;
       // return null;
     }
 
-    !user?.isActive ? raisons = "User inactive" : null;
-    !authUser ? raisons = "user not found" : null;
+    !user?.isActive ? reason = "User inactive" : null;
+    !authUser ? reason = "user not found" : null;
     
     success ? successStatus = "succes" : successStatus = "failure"
     
@@ -94,7 +94,7 @@ export class UsersLoginService {
       ip_adresse: ipAdress,
       user_agent: userAgent,
       status: successStatus,
-      raisons: raisons,
+      reason: reason,
       authId: userID
     });
 
