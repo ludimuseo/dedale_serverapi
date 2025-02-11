@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { User } from "../schemes/user.scheme";
+import { Auth } from "../schemes/auth.scheme";
 
 interface AuthRequest extends Request {
     auth: {
-        userId: any;
+        userId: number;
         role?: string; // Add role in req.auth
     };
 }
@@ -14,6 +15,16 @@ const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
 module.exports = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         
+        // Verifier si token == a celui de la BDD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // const authUser = await Auth.findOne({
+        //     where: { email: req },
+        //     include: [{
+        //       model: User,
+        //       required: true,  // Assurez-vous que User est chargé avec Auth
+        //     }],
+        //   });
+
+
         const token = req.headers.authorization?.split(' ')[1];
         // If no token, return error
         if(!token) {return res.status(401).json({ message: "Invalid Token" })};
