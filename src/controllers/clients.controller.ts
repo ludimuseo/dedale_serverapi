@@ -2,7 +2,9 @@
 
 import { Request, Response, NextFunction } from "express";
 import { ClientsService } from "../services/clients.service";
+import { ClientService } from "../services/client.service";
 import { validationResult } from "express-validator";
+import { AuthenticatedRequest } from "../utils/types";
 
 /**
  * Récupérer la liste des clients
@@ -40,16 +42,24 @@ export const getClientById = async (req: Request, res: Response, next: NextFunct
 /**
  * Créer un nouveau client
  */
-export const createClient = async (req: Request, res: Response, next: NextFunction) => {
+export const createClient = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
   try {
-    const clientData = req.body;
-    const newClient = await ClientsService.addClient(clientData);
-    res.status(201).json({ message: "Client ajouté avec succès", clientId: newClient.id });
+    const clientData = req.body;    
+    const newClient = await ClientService.addClient(clientData, req.auth, req);
+    
+    if ("error" in newClient) {
+      return res.status(400).json({ error: newClient.error });
+    }
+    
+    res.status(201).json({ 
+      "message": "Le client a été créé avec succès.",
+      client_id: newClient.id });
+    
   } catch (error) {
     next(error);
   }
