@@ -18,7 +18,7 @@ const app = express();
 app.use(express.json());
 
 // Routes
-app.use("/clients", clientsRouter);
+app.use("/api/clients", clientsRouter);
 app.use("/places", placesRouter); 
 app.use("/games", gamesRouter);
 app.use("/journeys", journeysRouter);
