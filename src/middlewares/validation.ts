@@ -37,10 +37,11 @@ export const validateUserUpdate = generateValidationRules(userUpdateFields);
 
 // Champs pour la création d'un client
 const clientFields = {
-  "company.name": "required_string",
-  "company.siret": "required_string",
-  "company.tva": "required_string",
+  "company.name": "string",
+  "company.siret": "string",
+  "company.tva": "string",
   "company.website": "url",
+  "company.type": "string",
 
   "address.address": "required_string",
   "address.postal": "required_string",
@@ -48,8 +49,9 @@ const clientFields = {
   "address.country": "required_string",
 
   "contact.name": "required_string",
-  "contact.email": "email",
-  "contact.phone": "required_string"
+  "contact.note": "string",
+  "contact.email": "required_email",
+  "contact.tel": "string"
 };
 
 // Champs pour la mise à jour d'un client

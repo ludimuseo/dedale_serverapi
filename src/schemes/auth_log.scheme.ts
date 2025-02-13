@@ -45,7 +45,7 @@ Auth_Log.init(
     },
     user_agent: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
     status: {
       type: DataTypes.STRING,
