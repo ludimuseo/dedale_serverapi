@@ -1,4 +1,4 @@
-//places.routes.ts
+// places.routes.ts
 
 import { Router } from "express";
 import { PlacesService } from "../services/places.service";
@@ -28,15 +28,13 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
-
-
 // POST
 router.post("/create", async (req, res) => {
   await PlacesService.addPlace(req.body);
   res.status(201).send("Place added");
 });
 
-// PATCH 
+// PATCH
 router.patch("/update/:id", async (req, res) => {
   try {
     await PlacesService.updatePlace(req.params.id, req.body);

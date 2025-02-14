@@ -1,4 +1,4 @@
-//client.service.ts
+// client.service.ts
 
 import { db } from "../config/firebase.config";
 import { ClientScheme } from "../schemes/clients.scheme"; // Import de l'interface
@@ -9,7 +9,10 @@ export class ClientsService {
   static async getAllClients(): Promise<(ClientScheme & { id: string })[]> {
     try {
       const snapshot = await db.collection("clients").get();
-      return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as ClientScheme & { id: string }));
+      return snapshot.docs.map(
+        (doc) =>
+          ({ id: doc.id, ...doc.data() }) as ClientScheme & { id: string },
+      );
     } catch (error) {
       console.error("Erreur lors de la récupération des clients:", error);
       throw error;
@@ -17,7 +20,9 @@ export class ClientsService {
   }
 
   // Récupérer un client par son ID
-  static async getClientById(id: string): Promise<(ClientScheme & { id: string }) | null> {
+  static async getClientById(
+    id: string,
+  ): Promise<(ClientScheme & { id: string }) | null> {
     try {
       const doc = await db.collection("clients").doc(id).get();
       if (!doc.exists) {
@@ -26,11 +31,13 @@ export class ClientsService {
       }
       return { id: doc.id, ...doc.data() } as ClientScheme & { id: string };
     } catch (error) {
-      console.error(`Erreur lors de la récupération du client avec l'ID ${id}:`, error);
+      console.error(
+        `Erreur lors de la récupération du client avec l'ID ${id}:`,
+        error,
+      );
       throw error;
     }
   }
-
 
   // Ajouter un nouveau client
   static async addClient(clientData: ClientScheme): Promise<void> {
@@ -43,7 +50,10 @@ export class ClientsService {
   }
 
   // Mettre à jour un client existant
-  static async updateClient(id: string, updateData: Partial<ClientScheme>): Promise<void> {
+  static async updateClient(
+    id: string,
+    updateData: Partial<ClientScheme>,
+  ): Promise<void> {
     try {
       await db.collection("clients").doc(id).update(updateData);
     } catch (error) {
@@ -62,4 +72,3 @@ export class ClientsService {
     }
   }
 }
-

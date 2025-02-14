@@ -1,6 +1,11 @@
-//places.scheme.ts
+// places.scheme.ts
 
-export type PlaceType = 'museum' | 'monument' | 'town-village' | 'outdoor' | 'castle';
+export type PlaceType =
+  | "museum"
+  | "monument"
+  | "town-village"
+  | "outdoor"
+  | "castle";
 
 export interface Address {
   address: string;

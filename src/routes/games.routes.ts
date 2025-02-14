@@ -11,7 +11,9 @@ router.get("/list", async (_req, res) => {
     const games = await GamesService.getAllGames();
     res.json(games);
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
+    res
+      .status(500)
+      .json({ error: (error as Error).message || "Erreur serveur" });
   }
 });
 
@@ -24,7 +26,9 @@ router.get("/find/:id", async (req, res) => {
     }
     res.json(game);
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
+    res
+      .status(500)
+      .json({ error: (error as Error).message || "Erreur serveur" });
   }
 });
 
@@ -34,20 +38,24 @@ router.post("/create", async (req, res) => {
     await GamesService.addGame(req.body);
     res.status(201).send("Jeu ajouté");
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
+    res
+      .status(500)
+      .json({ error: (error as Error).message || "Erreur serveur" });
   }
 });
 
 // PATCH: Mettre à jour un jeu partiellement
 router.patch("/update/:id", async (req, res) => {
-    try {
-      await GamesService.updateGame(req.params.id, req.body);
-      res.status(200).send("Jeu mis à jour");
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour:", error);
-      res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
-    }
-  });
+  try {
+    await GamesService.updateGame(req.params.id, req.body);
+    res.status(200).send("Jeu mis à jour");
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour:", error);
+    res
+      .status(500)
+      .json({ error: (error as Error).message || "Erreur serveur" });
+  }
+});
 
 // DELETE: Supprimer un jeu
 router.delete("/delete/:id", async (req, res) => {
@@ -55,7 +63,9 @@ router.delete("/delete/:id", async (req, res) => {
     await GamesService.deleteGame(req.params.id);
     res.status(200).send("Jeu supprimé");
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message || "Erreur serveur" });
+    res
+      .status(500)
+      .json({ error: (error as Error).message || "Erreur serveur" });
   }
 });
 

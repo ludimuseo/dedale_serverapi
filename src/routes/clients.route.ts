@@ -1,4 +1,4 @@
-//clients.routes.ts
+// clients.routes.ts
 
 import { Router } from "express";
 import { ClientsService } from "../services/clients.service";
@@ -11,14 +11,15 @@ router.get("/list", async (_req, res) => {
   res.json(clients);
 });
 
-
 // GET client by ID
 router.get("/find/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const client = await ClientsService.getClientById(id);
     if (!client) {
-      return res.status(404).json({ message: `Client avec l'ID ${id} introuvable.` });
+      return res
+        .status(404)
+        .json({ message: `Client avec l'ID ${id} introuvable.` });
     }
     res.status(200).json(client);
   } catch (error) {
@@ -27,14 +28,13 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
-
 //POST
 router.post("/create", async (req, res) => {
   await ClientsService.addClient(req.body);
   res.status(201).send("Client added");
 });
 
-//PATCH 
+//PATCH
 router.patch("/update/:id", async (req, res) => {
   await ClientsService.updateClient(req.params.id, req.body);
   res.status(200).send("Client updated");
