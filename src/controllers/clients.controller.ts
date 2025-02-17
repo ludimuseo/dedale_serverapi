@@ -1,8 +1,7 @@
 // clients.controller.ts = requête HTTP
 
 import { Request, Response, NextFunction } from "express";
-import { ClientsService } from "../services/clients.service";
-import { ClientService } from "../services/client.service";
+import { ClientService } from "../services/clients.service";
 import { validationResult } from "express-validator";
 import { validateClientCreation } from "../middlewares/validation";
 import { AuthenticatedRequest } from "../utils/types";
@@ -12,7 +11,7 @@ import { AuthenticatedRequest } from "../utils/types";
  */
 export const getAllClients = async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const clients = await ClientsService.getAllClients();
+    const clients = await ClientService.getAllClients();
     res.status(200).json(clients);
   } catch (error) {
     next(error);
@@ -30,7 +29,7 @@ export const getClientById = async (req: Request, res: Response, next: NextFunct
 
   try {
     const { id } = req.params;
-    const client = await ClientsService.getClientById(id);
+    const client = await ClientService.getClientById(id);
     if (!client) {
       return res.status(404).json({ message: `Client avec l'ID ${id} introuvable.` });
     }
@@ -79,12 +78,12 @@ export const updateClient = async (req: Request, res: Response, next: NextFuncti
   }
 
   try {
-    const client = await ClientsService.getClientById(id);
+    const client = await ClientService.getClientById(id);
     if (!client) {
       return res.status(404).json({ message: `Client avec l'ID ${id} introuvable.` });
     }
 
-    await ClientsService.updateClient(id, req.body);
+    await ClientService.updateClient(id, req.body);
     res.status(200).json({ message: `Client ${id} mis à jour avec succès.` });
   } catch (error) {
     next(error);
@@ -102,12 +101,12 @@ export const deleteClient = async (req: Request, res: Response, next: NextFuncti
 
   try {
     const { id } = req.params;
-    const client = await ClientsService.getClientById(id);
+    const client = await ClientService.getClientById(id);
     if (!client) {
       return res.status(404).json({ message: `Client avec l'ID ${id} introuvable.` });
     }
 
-    await ClientsService.deleteClient(id);
+    await ClientService.deleteClient(id);
     res.status(200).json({ message: `Client ${id} supprimé avec succès.` });
   } catch (error) {
     next(error);

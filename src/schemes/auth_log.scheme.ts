@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../database";
+import sequelize from "../config/database";  // Assure-toi que ce fichier exporte bien une instance Sequelize
 
 // Définir les attributs du modèle
 interface Auth_LogAttributes {
@@ -59,7 +59,7 @@ Auth_Log.init(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: "auth", // Assure-toi que la table "auth" existe bien
+        model: "auth", 
         key: "id",
       },
       onUpdate: "CASCADE",

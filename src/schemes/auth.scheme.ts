@@ -1,4 +1,4 @@
-import sequelize from "../database";
+import sequelize from "../config/database";
 import { DataTypes, Model, Optional } from "sequelize";
 import { User } from "../schemes/user.scheme";
 import { UserInstance } from './user.scheme';

@@ -30,12 +30,6 @@ app.use("/auth", authRouter);
 app.use(errorHandler);
 
 
-//--------------------------------------------------------------
-//TODO Gestion des erreurs et validation des données avec express-validator
-//TODO Sécu
-//TODO Tests avec Jest 
-//--------------------------------------------------------------
-
 app.listen(4000, async () => {
     console.log("Le serveur est lancé sur le port 4000");
   });
