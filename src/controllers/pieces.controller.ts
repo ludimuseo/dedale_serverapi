@@ -1,7 +1,7 @@
 // pieces.controller.ts
 
 import { Request, Response, NextFunction } from "express";
-import { PiecesService } from "../services/pieces.service";
+import { PieceService } from "../services/pieces.service";
 import { validationResult } from "express-validator";
 
 /**
@@ -9,7 +9,7 @@ import { validationResult } from "express-validator";
  */
 export const getAllPieces = async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const pieces = await PiecesService.getAllPieces();
+    const pieces = await PieceService.getAllPieces();
     res.status(200).json(pieces);
   } catch (error) {
     next(error);
@@ -27,7 +27,7 @@ export const getPieceById = async (req: Request, res: Response, next: NextFuncti
 
   try {
     const { id } = req.params;
-    const piece = await PiecesService.getPieceById(id);
+    const piece = await PieceService.getPieceById(id);
     if (!piece) {
       return res.status(404).json({ message: `Pièce avec l'ID ${id} introuvable.` });
     }
@@ -48,7 +48,7 @@ export const createPiece = async (req: Request, res: Response, next: NextFunctio
 
   try {
     const pieceData = req.body;
-    const newPiece = await PiecesService.addPiece(pieceData);
+    const newPiece = await PieceService.addPiece(pieceData);
     res.status(201).json({ message: "Pièce ajoutée avec succès", pieceId: newPiece.id });
   } catch (error) {
     next(error);
@@ -67,7 +67,7 @@ export const updatePiece = async (req: Request, res: Response, next: NextFunctio
   try {
     const { id } = req.params;
     const updateData = req.body;
-    await PiecesService.updatePiece(id, updateData);
+    await PieceService.updatePiece(id, updateData);
     res.status(200).json({ message: `Pièce ${id} mise à jour avec succès.` });
   } catch (error) {
     next(error);
@@ -85,7 +85,7 @@ export const deletePiece = async (req: Request, res: Response, next: NextFunctio
 
   try {
     const { id } = req.params;
-    await PiecesService.deletePiece(id);
+    await PieceService.deletePiece(id);
     res.status(200).json({ message: `Pièce ${id} supprimée avec succès.` });
   } catch (error) {
     next(error);

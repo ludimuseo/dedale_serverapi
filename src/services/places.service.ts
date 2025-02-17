@@ -1,73 +1,72 @@
 //places.service.ts
 
-import { db } from "../config/firebase.config";
-import { PlaceScheme } from "../schemes/places.scheme";
+import Place from "../schemes/place.scheme";
 
 export class PlacesService {
-  // Récupérer toutes les lieux
-  static async getAllPlaces(): Promise<(PlaceScheme & { id: string })[]> {
+  // Retrieve all places
+  static async getAllPlaces(): Promise<InstanceType<typeof Place>[]> {
     try {
-      const snapshot = await db.collection("places").get();
-     return snapshot.docs.map((doc) => ({
-             id: doc.id,
-             ...doc.data(),
-           }) as PlaceScheme & { id: string });
-         } catch (error) {
-           console.error("Erreur lors de la récupération des lieux:", error);
-           throw error;
-         }
-       }
+      return await Place.findAll();
+    } catch (error) {
+      console.error("Error retrieving places:", error);
+      throw error;
+    }
+  }
 
-// Récupérer un lieu par son ID
-static async getPlaceById(id: string): Promise<(PlaceScheme & { id: string }) | null> {
-  try {
-    const doc = await db.collection("places").doc(id).get();
-    if (!doc.exists) {
-      console.warn(`Lieu avec l'ID ${id} introuvable.`);
-      return null;
-    }
-    return { id: doc.id, ...doc.data() } as PlaceScheme & { id: string };
-        } catch (error) {
-          console.error(`Erreur lors de la récupération du lieu avec l'ID ${id}:`, error);
-          throw error;
-        }
-      }
-      
-  // Ajouter un nouveau lieu
-  static async addPlace(placeData: PlaceScheme): Promise<{ id: string }> { // On retourne l'ID du lieu
+  // Retrieve a place by ID
+  static async getPlaceById(id: number): Promise<InstanceType<typeof Place> | null> {
     try {
-     const docRef = await db.collection("places").add(placeData);
-     return { id: docRef.id };
+      const place = await Place.findByPk(id);
+      if (!place) {
+        console.warn(`Place with ID ${id} not found.`);
+        return null;
+      }
+      return place;
     } catch (error) {
-      console.error("Erreur lors de l'ajout du lieu:", error);
+      console.error(`Error retrieving place with ID ${id}:`, error);
       throw error;
     }
   }
-  
-  // Mettre à jour un lieu existant
-  static async updatePlace(id: string, updateData: Partial<PlaceScheme>):Promise<void>  {
+
+  // Add a new place
+  static async addPlace(placeData: any): Promise<InstanceType<typeof Place>> {
     try {
-      // Vérifie que des données ont été envoyées pour la mise à jour
-      if (Object.keys(updateData).length === 0) {
-        throw new Error("Aucune donnée à mettre à jour");
-      }
-  
-      // Effectuer la mise à jour partielle
-      await db.collection("places").doc(id).update(updateData);
-  
-      console.log(`Place ${id} mise à jour avec succès`);
+      const newPlace = await Place.create(placeData);
+      return newPlace;
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du lieu :");
+      console.error("Error adding place:", error);
       throw error;
     }
   }
-  
-  // Supprimer un lieu
-  static async deletePlace(id: string):Promise<void> {
+
+  // Update an existing place
+  static async updatePlace(id: number, updateData: any): Promise<InstanceType<typeof Place> | null> {
     try {
-      await db.collection("places").doc(id).delete();
+      const place = await Place.findByPk(id);
+      if (!place) {
+        console.warn(`Place with ID ${id} not found.`);
+        return null;
+      }
+      await place.update(updateData);
+      return place;
     } catch (error) {
-      console.error("Erreur lors de la suppression du lieu:", error);
+      console.error(`Error updating place with ID ${id}:`, error);
+      throw error;
+    }
+  }
+
+  // Delete a place
+  static async deletePlace(id: number): Promise<{ message: string } | null> {
+    try {
+      const place = await Place.findByPk(id);
+      if (!place) {
+        console.warn(`Place with ID ${id} not found.`);
+        return null;
+      }
+      await place.destroy();
+      return { message: `Place with ID ${id} deleted.` };
+    } catch (error) {
+      console.error(`Error deleting place with ID ${id}:`, error);
       throw error;
     }
   }

@@ -1,75 +1,114 @@
 // clients.service.ts = logique métier
 
-import { db } from "../config/firebase.config";
-import { ClientScheme } from "../schemes/clients.scheme"; 
+import Client from "../schemes/client.scheme";
+import Auth_Log from "../schemes/auth_log.scheme";
 
+export class ClientService {
+  
+  // Add a new client with role validation
+  static async addClient(clientData: any, req: any, header: any) {
+    // Check if the user has the "OWNER" role
+    const role = req.role.split('|');
+    if (!role.includes("OWNER")) {
+      const timestamp: number = Math.floor(Date.now() / 1000);
+      const userAgent: string = header.headers['user-agent'];
+      await Auth_Log.create({
+        login_attempt: timestamp,
+        ip_adresse: header.connection.remoteAddress,
+        user_agent: userAgent,
+        status: "failure",
+        reason: "unauthorized: " + header.url,
+        authId: header.auth.userId,
+      });
+      return { error: "Access denied: You must be an OWNER." };
+    }
 
-export class ClientsService {
-  // Récupérer tous les clients
-  static async getAllClients(): Promise<(ClientScheme & { id: string })[]> {
+    // Required field validations
+    if (!clientData.company?.name) return { error: "company.name is required." };
+    if (!clientData.contact?.email) return { error: "contact.email is required." };
+
+    // Validate company type
+    if (!["PARTICULIER", "ASSOCIATION", "ENTREPRISE"].includes(clientData.company.type)) {
+      return { error: "company.type must be 'PARTICULIER', 'ASSOCIATION', or 'ENTREPRISE'." };
+    }
+
     try {
-      const snapshot = await db.collection("clients").get();
-      return snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }) as ClientScheme & { id: string });
+      const newClient = await Client.create({
+        name: clientData.company.name,
+        type: clientData.company.type,
+        siret: clientData.company.siret,
+        tva: clientData.company.tva,
+        website: clientData.company.website,
+        adresse: clientData.address?.address,
+        city: clientData.address?.city,
+        postal: clientData.address?.postal,
+        country: clientData.address?.country,
+        contact: clientData.contact?.name,
+        email: clientData.contact.email,
+        note: clientData.contact?.note,
+        phone: clientData.contact?.tel,
+        isActive: clientData.status?.isActive ?? true,
+      });
+      return newClient;
     } catch (error) {
-      console.error("Erreur lors de la récupération des clients:", error);
+      console.error("Error adding client:", error);
       throw error;
     }
   }
 
-  // Récupérer un client par son ID
-  static async getClientById(
-    id: string
-  ): Promise<(ClientScheme & { id: string }) | null> {
+  // Retrieve all clients
+  static async getAllClients() {
     try {
-      const doc = await db.collection("clients").doc(id).get();
-      if (!doc.exists) {
-        console.warn(`Client avec l'ID ${id} introuvable.`);
+      return await Client.findAll();
+    } catch (error) {
+      console.error("Error retrieving clients:", error);
+      throw error;
+    }
+  }
+
+  // Retrieve a client by ID
+  static async getClientById(id: string) {
+    try {
+      const client = await Client.findByPk(id);
+      if (!client) {
+        console.warn(`Client with ID ${id} not found.`);
         return null;
       }
-      return { id: doc.id, ...doc.data() } as ClientScheme & { id: string };
+      return client;
     } catch (error) {
-      console.error(`Erreur lors de la récupération du client avec l'ID ${id}:`, error);
+      console.error(`Error retrieving client with ID ${id}:`, error);
       throw error;
     }
   }
 
-  // Ajouter un nouveau client
-  static async addClient(
-    clientData: ClientScheme
-  ): Promise<{ id: string }> { // On retourne l'ID du client
+  // Update an existing client
+  static async updateClient(id: string, updateData: Partial<Client>) {
     try {
-      const docRef = await db.collection("clients").add(clientData); 
-      return { id: docRef.id }; // Retourner l'ID du document créé
+      const client = await Client.findByPk(id);
+      if (!client) {
+        console.warn(`Client with ID ${id} not found.`);
+        return null;
+      }
+      await client.update(updateData);
+      return client;
     } catch (error) {
-      console.error("Erreur lors de l'ajout du client:", error);
+      console.error(`Error updating client with ID ${id}:`, error);
       throw error;
     }
   }
 
-// Mettre à jour un client existant
-static async updateClient(
-  id: string,
-  updateData: Partial<ClientScheme>
-): Promise<void> {
-  try {
-    ;
-    await db.collection("clients").doc(id).update(updateData);
-  } catch (error) {
-    console.error("Erreur lors de la mise à jour du client:", error);
-    throw error;
-  }
-}
-
-
-  // Supprimer un client
-  static async deleteClient(id: string): Promise<void> {
+  // Delete a client
+  static async deleteClient(id: string) {
     try {
-      await db.collection("clients").doc(id).delete(); 
+      const client = await Client.findByPk(id);
+      if (!client) {
+        console.warn(`Client with ID ${id} not found.`);
+        return null;
+      }
+      await client.destroy();
+      return { message: `Client with ID ${id} deleted.` };
     } catch (error) {
-      console.error("Erreur lors de la suppression du client:", error);
+      console.error(`Error deleting client with ID ${id}:`, error);
       throw error;
     }
   }

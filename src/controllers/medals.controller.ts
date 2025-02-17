@@ -1,7 +1,7 @@
 // medals.controller.ts
 
 import { Request, Response, NextFunction } from "express";
-import { MedalsService } from "../services/medals.service";
+import { MedalService } from "../services/medals.service";
 import { validationResult } from "express-validator";
 
 /**
@@ -9,7 +9,7 @@ import { validationResult } from "express-validator";
  */
 export const getAllMedals = async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const medals = await MedalsService.getAllMedals();
+    const medals = await MedalService.getAllMedals();
     res.status(200).json(medals);
   } catch (error) {
     next(error);
@@ -27,7 +27,7 @@ export const getMedalById = async (req: Request, res: Response, next: NextFuncti
 
   try {
     const { id } = req.params;
-    const medal = await MedalsService.getMedalById(id);
+    const medal = await MedalService.getMedalById(id);
     if (!medal) {
       return res.status(404).json({ message: `Médaille avec l'ID ${id} introuvable.` });
     }
@@ -48,7 +48,7 @@ export const createMedal = async (req: Request, res: Response, next: NextFunctio
 
   try {
     const medalData = req.body;
-    const newMedal = await MedalsService.addMedal(medalData);
+    const newMedal = await MedalService.addMedal(medalData);
     res.status(201).json({ message: "Médaille ajoutée avec succès", medalId: newMedal.id });
   } catch (error) {
     next(error);
@@ -67,7 +67,7 @@ export const updateMedal = async (req: Request, res: Response,  next: NextFuncti
   try {
     const { id } = req.params;
     const updateData = req.body;
-    await MedalsService.updateMedal(id, updateData);
+    await MedalService.updateMedal(id, updateData);
     res.status(200).json({ message: `Médaille ${id} mise à jour avec succès.` });
   } catch (error) {
     next(error);
@@ -85,7 +85,7 @@ export const deleteMedal = async (req: Request, res: Response,  next: NextFuncti
 
   try {
     const { id } = req.params;
-    await MedalsService.deleteMedal(id);
+    await MedalService.deleteMedal(id);
     res.status(200).json({ message: `Médaille ${id} supprimée avec succès.` });
   } catch (error) {
     next(error);

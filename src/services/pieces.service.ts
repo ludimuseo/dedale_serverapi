@@ -1,76 +1,72 @@
 //pieces.service.ts
 
+import Piece from "../schemes/piece.scheme";
 
-import { db } from "../config/firebase.config";
-import { PieceScheme } from "../schemes/pieces.scheme"; 
-
-
-export class PiecesService {
-  // Récupérer toutes les pièces
-  static async getAllPieces(): Promise<(PieceScheme & { id: string })[]> {
+export class PieceService {
+  // Retrieve all pieces
+  static async getAllPieces(): Promise<InstanceType<typeof Piece>[]> {
     try {
-      const snapshot = await db.collection("pieces").get();
-      return snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }) as PieceScheme & { id: string });
+      return await Piece.findAll();
     } catch (error) {
-      console.error("Erreur lors de la récupération des pièces:", error);
+      console.error("Error retrieving pieces:", error);
       throw error;
     }
   }
 
-  // Récupérer une pièce par son ID
-  static async getPieceById(
-    id: string
-  ): Promise<(PieceScheme & { id: string }) | null> {
+  // Retrieve a piece by ID
+  static async getPieceById(id: number): Promise<InstanceType<typeof Piece> | null> {
     try {
-      const doc = await db.collection("pieces").doc(id).get();
-      if (!doc.exists) {
-        console.warn(`Pièce avec l'ID ${id} introuvable.`);
+      const piece = await Piece.findByPk(id);
+      if (!piece) {
+        console.warn(`Piece with ID ${id} not found.`);
         return null;
       }
-      return { id: doc.id, ...doc.data() } as PieceScheme & { id: string };
+      return piece;
     } catch (error) {
-      console.error(`Erreur lors de la récupération de la pièce avec l'ID ${id}:`, error);
+      console.error(`Error retrieving piece with ID ${id}:`, error);
       throw error;
     }
   }
 
-  // Ajouter une nouvelle pièce
-  static async addPiece(
-    pieceData: PieceScheme
-  ): Promise<{ id: string }> { // On retourne l'ID de la pièce
+  // Add a new piece
+  static async addPiece(pieceData: any): Promise<InstanceType<typeof Piece>> {
     try {
-      const docRef = await db.collection("pieces").add(pieceData); 
-      return { id: docRef.id }; // Retourner l'ID du document créé
+      const newPiece = await Piece.create(pieceData);
+      return newPiece;
     } catch (error) {
-      console.error("Erreur lors de l'ajout de la pièce:", error);
+      console.error("Error adding piece:", error);
       throw error;
     }
   }
 
-// Mettre à jour une pièce existante
-static async updatePiece(
-  id: string,
-  updateData: Partial<PieceScheme>
-): Promise<void> {
-  try {
-    ;
-    await db.collection("pieces").doc(id).update(updateData);
-  } catch (error) {
-    console.error("Erreur lors de la mise à jour de la pièce:", error);
-    throw error;
-  }
-}
-
-
-  // Supprimer une pièce
-  static async deletePiece(id: string): Promise<void> {
+  // Update an existing piece
+  static async updatePiece(id: number, updateData: any): Promise<InstanceType<typeof Piece> | null> {
     try {
-      await db.collection("pieces").doc(id).delete(); 
+      const piece = await Piece.findByPk(id);
+      if (!piece) {
+        console.warn(`Piece with ID ${id} not found.`);
+        return null;
+      }
+      await piece.update(updateData);
+      return piece;
     } catch (error) {
-      console.error("Erreur lors de la suppression de la pièce:", error);
+      console.error(`Error updating piece with ID ${id}:`, error);
+      throw error;
+    }
+  }
+
+  // Delete a piece
+  static async deletePiece(id: number): Promise<{ message: string } | null> {
+    try {
+      const piece = await Piece.findByPk(id);
+      if (!piece) {
+        console.warn(`Piece with ID ${id} not found.`);
+        return null;
+      }
+      await piece.destroy();
+      return { message: `Piece with ID ${id} deleted.` };
+    } catch (error) {
+      console.error(`Error deleting piece with ID ${id}:`, error);
       throw error;
     }
   }

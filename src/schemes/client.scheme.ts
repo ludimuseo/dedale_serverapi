@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../database";  // Assure-toi que ce fichier exporte une instance Sequelize
+import sequelize from "../config/database";  
 
 // Interface pour définir les attributs du modèle
 interface ClientAttributes {
@@ -14,8 +14,8 @@ interface ClientAttributes {
   country: string;
   contact?: string;
   email: string;
-  website: Text;
-  note?: Text;
+  website: string;
+  note?: string;
   phone: string;
   isActive: boolean;
 }
@@ -36,8 +36,8 @@ class Client extends Model<ClientAttributes, ClientCreationAttributes> implement
   public country!: string;
   public contact?: string;
   public email!: string;
-  public website!: Text
-  public note?: Text;
+  public website!: string;
+  public note?: string;
   public phone!: string;
   public isActive!: boolean;
 }
@@ -96,7 +96,7 @@ Client.init(
       allowNull: true,
     },
     note: {
-      type: DataTypes.TEXT,
+      type: DataTypes.TEXT, // ajouter longueur CHAR, définir les contraintes dans le modele sequelize
       allowNull: true,
     },
     phone: {
