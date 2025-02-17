@@ -1,21 +1,24 @@
 import Client from "../schemes/client.scheme";
 import  Auth_Log  from "../schemes/auth_log.scheme";
+import { AuthenticatedRequest } from "../utils/types"; // Importer le type étendu
 
 export class ClientService {
-    static async addClient(clientData: any, req: any, header: any) {
+    static async addClient(clientData: any, req: AuthenticatedRequest) {
 
 // Route only for OWNER role !!!!!!!!!!!!!!!
-const role = req.role.split('|');
+console.log(req);
+
+const role = req.auth.role.split('|');
 if(role.find((element: string) => element == "OWNER") === "OWNER"){null}else{
     const timestamp: number = Math.floor(Date.now() / 1000);
-    const userAgent: Text = header.headers['user-agent']
+    const userAgent: string = req.headers["user-agent"] || "Unknown";
     const auth_Log = await Auth_Log.create({
         login_attempt: timestamp,
-        ip_adresse: header.connection.remoteAddress,
+        ip_adresse: req.socket.remoteAddress || req.connection?.remoteAddress || "Unknown",
         user_agent: userAgent,
         status: "failure",
-        reason: "unauthorized: " + header.url,
-        authId: header.auth.userId
+        reason: "unauthorized: " + req.url,
+        authId: req.auth.userId
       });
     return { error: "Accès interdit : vous devez être OWNER." };
 }

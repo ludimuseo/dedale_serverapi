@@ -1,54 +1,58 @@
-import { Request, Response, NextFunction } from 'express';
-import { User } from "../schemes/user.scheme";
-import { Auth } from "../schemes/auth.scheme";
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import { User } from "../schemes/user.scheme"; // Vérifie le bon chemin vers ton modèle User
+import { AuthenticatedRequest } from "../utils/types"; // Importer le type étendu
 
-
-interface AuthRequest extends Request {
-    auth: {
-        userId: number;
-        role?: string; // Add role in req.auth
-    };
-}
-
-const jwt = require('jsonwebtoken');
-
-
-module.exports = async (req: AuthRequest, res: Response, next: NextFunction) => {
+const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+    const typedReq = req as AuthenticatedRequest;
     try {
         const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
-        
-        // Verifier si token == a celui de la BDD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // const authUser = await Auth.findOne({
-        //     where: { email: req },
-        //     include: [{
-        //       model: User,
-        //       required: true,  // Assurez-vous que User est chargé avec Auth
-        //     }],
-        //   });
 
-
+        // Récupérer le token
         const token = req.headers.authorization?.split(' ')[1];
-        
-        // If no token, return error
-        if(!token) {return res.status(401).json({ message: "Invalid Token" })};
-        console.log(RANDOM_TOKEN_SECRET);
-        const decodedToken = jwt.verify(token, RANDOM_TOKEN_SECRET);
-        const userId = decodedToken.userId;
-        
-        // Verify Token validyti
-        !userId ? res.status(401).json({ message: "Invalid Token" }) : null; 
 
-        // Find role by userid stored in token
-        const UserRole = await User.findOne({
+        // Si pas de token, erreur 401
+        if (!token) {
+            return res.status(401).json({ message: "Invalid Token" });
+        }
+
+        // Vérifier et décoder le token
+        if (!RANDOM_TOKEN_SECRET) {
+            return res.status(500).json({ message: "Server error: Missing token secret" });
+        }
+        const decodedToken = jwt.verify(token, RANDOM_TOKEN_SECRET) as jwt.JwtPayload;
+
+if (!decodedToken || typeof decodedToken !== "object" || !decodedToken.userId) {
+    return res.status(401).json({ message: "Invalid Token" });
+}
+
+const userId = decodedToken.userId as number;
+
+        // Vérifier si l'ID utilisateur est bien extrait
+        if (!userId) {
+            return res.status(401).json({ message: "Invalid Token" });
+        }
+
+        // Trouver le rôle de l'utilisateur
+        const user = await User.findOne({
             where: { id: userId },
-          });
+        });
 
-        req.auth = {
-            userId: userId,
-            role: UserRole?.role,
+        if (!user) {
+            return res.status(401).json({ message: "User not found" });
+        }
+
+        // Ajouter auth à req
+        typedReq.auth = {
+            userId: user.id,
+            role: user.role ?? "USER",
         };
+
         next();
-    } catch(error) {
-        res.status(401).json({ message: "tokenError" });
+    } catch (error) {
+        console.error("Erreur dans auth.ts :", error);
+        res.status(401).json({ message: "Token error" });
     }
 };
+
+export default authMiddleware;

@@ -19,7 +19,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/clients", clientsRouter);
-app.use("/places", placesRouter); 
+app.use("/api/places", placesRouter); 
 app.use("/games", gamesRouter);
 app.use("/journeys", journeysRouter);
 app.use("/steps", stepsRouter);

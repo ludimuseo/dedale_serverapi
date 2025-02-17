@@ -1,8 +1,8 @@
-import { Request } from "express";
+import { Request, Response, NextFunction } from "express";
 
 export interface AuthenticatedRequest extends Request {
-  auth?: {
+  auth: {
     userId: number;
-    role?: string;
+    role: string;
   };
 }

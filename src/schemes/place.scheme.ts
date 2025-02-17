@@ -1,41 +1,89 @@
-import sequelize from "../database";
-import { Sequelize, DataTypes } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
+import sequelize from "../database";  // Assure-toi que ce fichier exporte une instance Sequelize
 
-const Place = sequelize.define("place", {
+// Interface pour définir les attributs du modèle
+interface PlaceAttributes {
+  id: number;
+  medal_id?: number;
+  lat?: number;
+  long?: number;
+  type: string;
+  image?: string;
+  isPublished: boolean;
+  isActive?: boolean;
+  location_required?: boolean;
+}
+
+// Interface pour la création (permet l'absence de `id` car il est auto-incrémenté)
+interface PlaceCreationAttributes extends Optional<PlaceAttributes, "id"> {}
+
+// Définition du modèle Place
+class Place extends Model<PlaceAttributes, PlaceCreationAttributes> implements PlaceAttributes {
+  public id!: number;
+  public medal_id?: number;
+  public lat?: number;
+  public long?: number;
+  public type!: string;
+  public image?: string;
+  public isPublished!: boolean;
+  public isActive?: boolean;
+  public location_required?: boolean;
+}
+
+// Initialisation du modèle Sequelize
+Place.init(
+  {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
+    },
+    medal_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: "medal",
+        key: "id",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
     },
     lat: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
     long: {
-      type: DataTypes.STRING,
-      allowNull: true
-      },
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
     type: {
       type: DataTypes.STRING,
-      allowNull: false
-      },
+      allowNull: false,
+    },
     image: {
       type: DataTypes.STRING,
-      allowNull: true
-      },
+      allowNull: true,
+    },
     isPublished: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
-      },
+      allowNull: false,
+    },
     isActive: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
-      }
-      },
-        {
-          freezeTableName: true, // Empêche Sequelize d'ajouter un "s" à la fin du nom de la table
-          timestamps: false // Dont add createdAt and updatedAt in the query
- });
+      allowNull: true,
+    },
+    location_required: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    tableName: "place",
+    freezeTableName: true, // Empêche Sequelize de modifier le nom de la table
+    timestamps: false, // Désactive createdAt et updatedAt
+  }
+);
 
- export default Place;
+export default Place;

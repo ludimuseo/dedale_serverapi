@@ -1,7 +1,7 @@
 //places.scheme.ts
 
 export interface Content {
-  image?: string[];
+  image?: string;
   type:string;
 };
 
@@ -48,7 +48,7 @@ export interface Description {
 
 export interface PlaceScheme { 
   clientId: string;
-  medalId: string;
+  medalId: number;
   content: Content;
   name:Language;
   status: {

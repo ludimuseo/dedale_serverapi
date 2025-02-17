@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from "express";
 import { ClientsService } from "../services/clients.service";
 import { ClientService } from "../services/client.service";
 import { validationResult } from "express-validator";
+import { validateClientCreation } from "../middlewares/validation";
 import { AuthenticatedRequest } from "../utils/types";
 
 /**
@@ -42,15 +43,16 @@ export const getClientById = async (req: Request, res: Response, next: NextFunct
 /**
  * Créer un nouveau client
  */
-export const createClient = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const errors = validationResult(req);
+export const createClient = async (req: Request, res: Response, next: NextFunction) => {
+  const typedReq = req as AuthenticatedRequest;
+  const errors = validationResult(req);  
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
   try {
     const clientData = req.body;    
-    const newClient = await ClientService.addClient(clientData, req.auth, req);
+    const newClient = await ClientService.addClient(clientData, typedReq);
     
     if ("error" in newClient) {
       return res.status(400).json({ error: newClient.error });
