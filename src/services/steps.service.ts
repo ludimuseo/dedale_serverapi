@@ -1,75 +1,72 @@
 //steps.services.ts
 
-import { db } from "../config/firebase.config";
-import { StepScheme } from "../schemes/steps.scheme"; 
-
+import Step from "../schemes/step.scheme";
 
 export class StepsService {
-  // Récupérer toutes les étapes
-  static async getAllSteps(): Promise<(StepScheme & { id: string })[]> {
+  // Retrieve all steps
+  static async getAllSteps(): Promise<InstanceType<typeof Step>[]> { 
     try {
-      const snapshot = await db.collection("steps").get();
-      return snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }) as StepScheme & { id: string });
+      return await Step.findAll();
     } catch (error) {
-      console.error("Erreur lors de la récupération des étapes:", error);
+      console.error("Error retrieving steps:", error);
       throw error;
     }
   }
 
-  // Récupérer une étape par son ID
-  static async getStepById(
-    id: string
-  ): Promise<(StepScheme & { id: string }) | null> {
+  // Retrieve a step by ID
+  static async getStepById(id: number): Promise<InstanceType<typeof Step> | null> { 
     try {
-      const doc = await db.collection("steps").doc(id).get();
-      if (!doc.exists) {
-        console.warn(`Etape avec l'ID ${id} introuvable.`);
+      const step = await Step.findByPk(id);
+      if (!step) {
+        console.warn(`Step with ID ${id} not found.`);
         return null;
       }
-      return { id: doc.id, ...doc.data() } as StepScheme & { id: string };
+      return step;
     } catch (error) {
-      console.error(`Erreur lors de la récupération de l'étape avec l'ID ${id}:`, error);
+      console.error(`Error retrieving step with ID ${id}:`, error);
       throw error;
     }
   }
 
-  // Ajouter une nouvelle étape
-  static async addStep(
-    stepData: StepScheme
-  ): Promise<{ id: string }> { // On retourne l'ID de l'étape
+  // Add a new step
+  static async addStep(stepData: any): Promise<InstanceType<typeof Step>> { 
     try {
-      const docRef = await db.collection("steps").add(stepData); 
-      return { id: docRef.id }; // Retourner l'ID du document créé
+      const newStep = await Step.create(stepData);
+      return newStep;
     } catch (error) {
-      console.error("Erreur lors de l'ajout de l'étape:", error);
+      console.error("Error adding step:", error);
       throw error;
     }
   }
 
-// Mettre à jour une étape existante
-static async updateSteps(
-  id: string,
-  updateData: Partial<StepScheme>
-): Promise<void> {
-  try {
-    ;
-    await db.collection("steps").doc(id).update(updateData);
-  } catch (error) {
-    console.error("Erreur lors de la mise à jour de l'étape:", error);
-    throw error;
-  }
-}
-
-
-  // Supprimer une étape
-  static async deleteSteps(id: string): Promise<void> {
+  // Update an existing step
+  static async updateStep(id: number, updateData: any): Promise<InstanceType<typeof Step> | null> { 
     try {
-      await db.collection("steps").doc(id).delete(); 
+      const step = await Step.findByPk(id);
+      if (!step) {
+        console.warn(`Step with ID ${id} not found.`);
+        return null;
+      }
+      await step.update(updateData);
+      return step;
     } catch (error) {
-      console.error("Erreur lors de la suppression de l'étape:", error);
+      console.error(`Error updating step with ID ${id}:`, error);
+      throw error;
+    }
+  }
+
+  // Delete a step
+  static async deleteStep(id: number): Promise<{ message: string } | null> { 
+    try {
+      const step = await Step.findByPk(id);
+      if (!step) {
+        console.warn(`Step with ID ${id} not found.`);
+        return null;
+      }
+      await step.destroy();
+      return { message: `Step with ID ${id} deleted.` };
+    } catch (error) {
+      console.error(`Error deleting step with ID ${id}:`, error);
       throw error;
     }
   }

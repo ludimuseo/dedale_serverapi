@@ -1,7 +1,10 @@
 //places.service.ts
 
-import { db } from "../config/firebase.config";
-import { PlaceScheme } from "../schemes/places.scheme";
+import Medal from "../schemes/medal.scheme";
+import Auth_Log from "../schemes/auth_log.scheme";
+import { AuthenticatedRequest } from "../utils/types";
+import Place from "../schemes/place.scheme";
+import Description from "../schemes/description.scheme";
 
 export class PlacesService {
   // Récupérer toutes les lieux

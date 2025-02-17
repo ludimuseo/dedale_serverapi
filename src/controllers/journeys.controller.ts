@@ -1,7 +1,7 @@
 // journeys.controller.ts
 
 import { Request, Response, NextFunction } from "express";
-import { JourneysService } from "../services/journeys.service";
+import { JourneyService } from "../services/journeys.service";
 import { validationResult } from "express-validator";
 
 /**
@@ -9,7 +9,7 @@ import { validationResult } from "express-validator";
  */
 export const getAllJourneys = async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const journeys = await JourneysService.getAllJourneys();
+    const journeys = await JourneyService.getAllJourneys();
     res.status(200).json(journeys);
   } catch (error) {
     next(error);
@@ -27,7 +27,7 @@ export const getJourneyById = async (req: Request, res: Response, next: NextFunc
 
   try {
     const { id } = req.params;
-    const journey = await JourneysService.getJourneyById(id);
+    const journey = await JourneyService.getJourneyById(id);
     if (!journey) {
       return res.status(404).json({ message: `Journey avec l'ID ${id} introuvable.` });
     }
@@ -48,7 +48,7 @@ export const createJourney = async (req: Request, res: Response, next: NextFunct
 
   try {
     const journeyData = req.body;
-    const newJourney = await JourneysService.addJourney(journeyData);
+    const newJourney = await JourneyService.addJourney(journeyData);
     res.status(201).json({ message: "Journey ajoutée avec succès", journeyId: newJourney.id });
   } catch (error) {
     next(error);
@@ -67,7 +67,7 @@ export const updateJourney = async (req: Request, res: Response, next: NextFunct
   try {
     const { id } = req.params;
     const updateData = req.body;
-    await JourneysService.updateJourney(id, updateData);
+    await JourneyService.updateJourney(id, updateData);
     res.status(200).json({ message: `Journey ${id} mise à jour avec succès.` });
   } catch (error) {
     next(error);
@@ -85,7 +85,7 @@ export const deleteJourney = async (req: Request, res: Response, next: NextFunct
 
   try {
     const { id } = req.params;
-    await JourneysService.deleteJourney(id);
+    await JourneyService.deleteJourney(id);
     res.status(200).json({ message: `Journey ${id} supprimée avec succès.` });
   } catch (error) {
     next(error);

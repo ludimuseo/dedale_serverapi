@@ -1,10 +1,10 @@
-// users.service.ts
+// users_login.service.ts
 
 import { Auth } from "../schemes/auth.scheme";
 import  Auth_Log  from "../schemes/auth_log.scheme";
 import { User } from "../schemes/user.scheme";
 
-import sequelize from "../database";
+import sequelize from "../config/database";
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');

@@ -1,74 +1,72 @@
 // users.service.ts
 
-import { db } from "../config/firebase.config";
-import { UserScheme } from "../schemes/users.scheme"; 
-
+import { User } from "../schemes/user.scheme";
 
 export class UsersService {
-  // Récupérer tous les utilisateurs
-  static async getAllUsers(): Promise<(UserScheme & { id: string })[]> {
+  // Retrieve all users
+  static async getAllUsers(): Promise<InstanceType<typeof User>[]> {
     try {
-      const snapshot = await db.collection("users").get();
-      return snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }) as UserScheme & { id: string });
+      return await User.findAll();
     } catch (error) {
-      console.error("Erreur lors de la récupération des utilisateurs:", error);
+      console.error("Error retrieving users:", error);
       throw error;
     }
   }
 
-  // Récupérer un utilisateur par son ID
-  static async getUserById(
-    id: string
-  ): Promise<(UserScheme & { id: string }) | null> {
+  // Retrieve a user by ID
+  static async getUserById(id: number):Promise<InstanceType<typeof User> | null> { 
     try {
-      const doc = await db.collection("users").doc(id).get();
-      if (!doc.exists) {
-        console.warn(`Utilisateur avec l'ID ${id} introuvable.`);
+      const user = await User.findByPk(id);
+      if (!user) {
+        console.warn(`User with ID ${id} not found.`);
         return null;
       }
-      return { id: doc.id, ...doc.data() } as UserScheme & { id: string };
+      return user;
     } catch (error) {
-      console.error(`Erreur lors de la récupération de l'utilisateur avec l'ID ${id}:`, error);
+      console.error(`Error retrieving user with ID ${id}:`, error);
       throw error;
     }
   }
 
-  // Ajouter un nouvel utilisateur
-  static async addUser(
-    userData: UserScheme
-  ): Promise<{ id: string }> { // On retourne l'ID du user
+  // Add a new user
+  static async addUser(userData: any): Promise<InstanceType<typeof User>> {
     try {
-      const docRef = await db.collection("users").add(userData); 
-      return { id: docRef.id }; // Retourner l'ID du document créé
+      const newUser = await User.create(userData);
+      return newUser;
     } catch (error) {
-      console.error("Erreur lors de l'ajout de l'utilisateur:", error);
+      console.error("Error adding user:", error);
       throw error;
     }
   }
 
-// Mettre à jour un utilisateur existant
-static async updateUser(
-  id: string,
-  updateData: Partial<UserScheme>
-): Promise<void> {
-  try {
-    await db.collection("users").doc(id).update(updateData);
-  } catch (error) {
-    console.error("Erreur lors de la mise à jour de l'utilisateur:", error);
-    throw error;
-  }
-}
-
-
-  // Supprimer un utilisateur
-  static async deleteUser(id: string): Promise<void> {
+  // Update an existing user
+  static async updateUser(id: number, updateData: any): Promise<InstanceType<typeof User> | null> {
     try {
-      await db.collection("users").doc(id).delete(); 
+      const user = await User.findByPk(id);
+      if (!user) {
+        console.warn(`User with ID ${id} not found.`);
+        return null;
+      }
+      await user.update(updateData);
+      return user;
     } catch (error) {
-      console.error("Erreur lors de la suppression de l'utilisateur:", error);
+      console.error(`Error updating user with ID ${id}:`, error);
+      throw error;
+    }
+  }
+
+  // Delete a user
+  static async deleteUser(id: number): Promise<{ message: string } | null> {
+    try {
+      const user = await User.findByPk(id);
+      if (!user) {
+        console.warn(`User with ID ${id} not found.`);
+        return null;
+      }
+      await user.destroy();
+      return { message: `User with ID ${id} deleted.` };
+    } catch (error) {
+      console.error(`Error deleting user with ID ${id}:`, error);
       throw error;
     }
   }

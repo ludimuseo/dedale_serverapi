@@ -1,72 +1,72 @@
 // journeys.service.ts
 
-import { db } from "../config/firebase.config";
-import { JourneyScheme } from "../schemes/journeys.scheme"; 
+import Journey from "../schemes/journey.scheme";
 
-export class JourneysService {
-  // Récupérer tous les parcours
-  static async getAllJourneys(): Promise<(JourneyScheme & { id: string })[]> {
+export class JourneyService {
+  // Retrieve all journeys
+  static async getAllJourneys(): Promise<InstanceType<typeof Journey>[]> {
     try {
-      const snapshot = await db.collection("journeys").get();
-      return snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }) as JourneyScheme & { id: string });
+      return await Journey.findAll();
     } catch (error) {
-      console.error("Erreur lors de la récupération des journeys:", error);
+      console.error("Error retrieving journeys:", error);
       throw error;
     }
   }
 
-  // Récupérer un parcours par son ID
-  static async getJourneyById(
-    id: string
-  ): Promise<(JourneyScheme & { id: string }) | null> {
+  // Retrieve a journey by ID
+  static async getJourneyById(id: number): Promise<InstanceType<typeof Journey> | null> {
     try {
-      const doc = await db.collection("journeys").doc(id).get();
-      if (!doc.exists) {
-        console.warn(`Journey avec l'ID ${id} introuvable.`);
+      const journey = await Journey.findByPk(id);
+      if (!journey) {
+        console.warn(`Journey with ID ${id} not found.`);
         return null;
       }
-      return { id: doc.id, ...doc.data() } as JourneyScheme & { id: string };
+      return journey;
     } catch (error) {
-      console.error(`Erreur lors de la récupération du parcours avec l'ID ${id}:`, error);
+      console.error(`Error retrieving journey with ID ${id}:`, error);
       throw error;
     }
   }
 
-  // Ajouter une nouveau parcours
-  static async addJourney(
-    journeyData: JourneyScheme
-  ): Promise<{ id: string }> { // On retourne l'ID du parcours
+  // Add a new journey
+  static async addJourney(journeyData: any): Promise<InstanceType<typeof Journey>> {
     try {
-      const docRef = await db.collection("journeys").add(journeyData); 
-      return { id: docRef.id }; // Retourner l'ID du document créé
+      const newJourney = await Journey.create(journeyData);
+      return newJourney;
     } catch (error) {
-      console.error("Erreur lors de l'ajout du parcours:", error);
+      console.error("Error adding journey:", error);
       throw error;
     }
   }
 
-  // Mettre à jour un parcours existant
-  static async updateJourney(
-    id: string,
-    updateData: Partial<JourneyScheme>
-  ): Promise<void> {
+  // Update an existing journey
+  static async updateJourney(id: number, updateData: any): Promise<InstanceType<typeof Journey> | null> {
     try {
-      await db.collection("journeys").doc(id).update(updateData);
+      const journey = await Journey.findByPk(id);
+      if (!journey) {
+        console.warn(`Journey with ID ${id} not found.`);
+        return null;
+      }
+      await journey.update(updateData);
+      return journey;
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du parcours:", error);
+      console.error(`Error updating journey with ID ${id}:`, error);
       throw error;
     }
   }
 
-  // Supprimer un parcours
-  static async deleteJourney(id: string): Promise<void> {
+  // Delete a journey
+  static async deleteJourney(id: number): Promise<{ message: string } | null> {
     try {
-      await db.collection("journeys").doc(id).delete(); 
+      const journey = await Journey.findByPk(id);
+      if (!journey) {
+        console.warn(`Journey with ID ${id} not found.`);
+        return null;
+      }
+      await journey.destroy();
+      return { message: `Journey with ID ${id} deleted.` };
     } catch (error) {
-      console.error("Erreur lors de la suppression du parcours:", error);
+      console.error(`Error deleting journey with ID ${id}:`, error);
       throw error;
     }
   }
