@@ -1,5 +1,8 @@
 node_modules
 dedale-db58f-firebase-adminsdk-swtr6-8580a17964.json
 .env.development
+client_secret.json
+.qodo
+.vscode
 
 
