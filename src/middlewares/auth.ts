@@ -36,7 +36,7 @@ const authMiddleware = async (
 
     (req as AuthenticatedRequest).auth = {
       userId: decodedToken.userId,
-      role: UserRole ? UserRole.role ?? 'user' : 'user',
+      role: UserRole ? (UserRole.role ?? 'user') : 'user',
     };
     next();
   } catch (error) {
