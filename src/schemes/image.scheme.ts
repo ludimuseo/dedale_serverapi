@@ -1,5 +1,5 @@
 import sequelize from '../config/database';
-import { Sequelize, DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
 const Image = sequelize.define(
   'image',

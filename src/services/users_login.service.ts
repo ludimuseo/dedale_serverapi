@@ -91,7 +91,7 @@ export class UsersLoginService {
 
     success ? (successStatus = 'succes') : (successStatus = 'failure');
 
-    const auth_Log = await Auth_Log.create({
+    await Auth_Log.create({
       login_attempt: timestamp,
       ip_adresse: req.ip || 'undefined',
       user_agent: req.headers['user-agent'] || 'Unknown',

@@ -3,6 +3,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { PlacesService } from '../services/places.service';
 import { validationResult } from 'express-validator';
+import { AuthenticatedRequest } from '../utils/types';
 
 /**
  * Récupérer tous les lieux
@@ -61,8 +62,8 @@ export const createPlace = async (
   }
 
   try {
-    const placeData = req.body;
-    const newPlace = await PlacesService.addPlace(req);
+    const authReq = req as AuthenticatedRequest;
+    const newPlace = await PlacesService.addPlace(authReq);
     res
       .status(201)
       .json({ message: 'Lieu ajouté avec succès', placeId: newPlace.id });

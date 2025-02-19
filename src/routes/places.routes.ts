@@ -8,11 +8,14 @@ import {
   updatePlace,
   deletePlace,
 } from '../controllers/places.controller';
-import { validateId } from '../middlewares/validation';
+import { validateId, validateLieuCreation } from '../middlewares/validation';
+import auth from '../middlewares/auth';
+
 
 const router = Router();
 
 router.get('/list', getAllPlaces);
+router.post("/", auth, ...validateLieuCreation, createPlace);
 router.get('/find/:id', validateId, getPlaceById);
 router.post('/create', createPlace); // Ajouter des validations supplémentaires si nécessaire
 router.patch('/update/:id', validateId, updatePlace); // Ajouter des validations supplémentaires si nécessaire

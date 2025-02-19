@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from 'express';
 import { UsersService } from '../services/users.service';
 import { UsersLoginService } from '../services/users_login.service';
 import { validationResult } from 'express-validator';
-import { log } from 'node:console';
 import { AuthenticatedRequest } from '../utils/types';
 
 export const login = async (
