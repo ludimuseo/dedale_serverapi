@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../database";  // Assure-toi que ce fichier exporte une instance Sequelize
+import sequelize from "../config/database";  // Assure-toi que ce fichier exporte une instance Sequelize
 
 // Interface pour définir les attributs du modèle
 interface ClientAttributes {

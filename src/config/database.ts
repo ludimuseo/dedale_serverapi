@@ -1,11 +1,16 @@
 // Init Sequelize and connect to DB
 import { Sequelize, DataTypes } from "sequelize";
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.development" });
+
+console.log(process.env.DB_NAME as string);
+
 const sequelize = new Sequelize(
- 'dev-dedale_serverapi',
- 'dev-dedale_serverapi',
- '@qs4xX9h@W.UIlR2',
+  process.env.DB_NAME as string,
+  process.env.DB_LOGIN as string,
+  process.env.DB_PASSWD as string,
   {
-    host: '147.135.130.132',
+    host: process.env.CLUSTER_ADDR as string,
     dialect: 'mysql'
   }
 );
