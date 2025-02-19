@@ -3,6 +3,8 @@
 import { Request, Response,NextFunction } from "express";
 import { PlacesService } from "../services/places.service";
 import { validationResult } from "express-validator";
+import { AuthenticatedRequest } from "../utils/types";
+
 
 /**
  * Récupérer tous les lieux
@@ -41,6 +43,7 @@ export const getPlaceById = async (req: Request, res: Response, next: NextFuncti
  * Ajouter un nouveau lieu
  */
 export const createPlace = async (req: Request, res: Response, next: NextFunction) => {
+  const typedReq = req as AuthenticatedRequest;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -48,8 +51,9 @@ export const createPlace = async (req: Request, res: Response, next: NextFunctio
 
   try {
     const placeData = req.body;
-    const newPlace = await PlacesService.addPlace(placeData);
-    res.status(201).json({ message: "Lieu ajouté avec succès", placeId: newPlace.id });
+    const newPlace = await PlacesService.addPlace(typedReq);
+    
+    res.status(201).json({ message: "Lieu ajouté avec succès", placeId: newPlace});
   } catch (error) {
     next(error);
   }
