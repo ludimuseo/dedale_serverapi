@@ -50,7 +50,7 @@ export const createClient = async (req: AuthenticatedRequest, res: Response, nex
 
   try {
     const clientData = req.body;    
-    const newClient = await ClientService.addClient(clientData, req.auth, req);
+    const newClient = await ClientService.addClient(req);
     
     if ("error" in newClient) {
       return res.status(400).json({ error: newClient.error });
