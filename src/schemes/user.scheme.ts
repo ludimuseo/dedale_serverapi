@@ -1,5 +1,5 @@
-import sequelize from "../database";
-import { DataTypes, Model } from "sequelize";
+import sequelize from "../config/database";
+import { DataTypes, Model, Optional } from "sequelize";
 
 // Définir l'interface UserAttributes
 interface UserAttributes {

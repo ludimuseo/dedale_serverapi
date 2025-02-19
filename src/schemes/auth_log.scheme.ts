@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../database";  // Assure-toi que ce fichier exporte bien une instance Sequelize
+import sequelize from "../config/database";  // Assure-toi que ce fichier exporte bien une instance Sequelize
 
 // Définir les attributs du modèle
 interface Auth_LogAttributes {
