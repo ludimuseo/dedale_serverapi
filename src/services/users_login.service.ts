@@ -54,8 +54,10 @@ export class UsersLoginService {
 
       // Gen jwt token
       if (!RANDOM_TOKEN_SECRET) {
-        throw new Error("RANDOM_TOKEN_SECRET is not defined in environment variables.");
-    }
+        throw new Error(
+          'RANDOM_TOKEN_SECRET is not defined in environment variables.'
+        );
+      }
       const tokenUser = jwt.sign({ userId: authUser.id }, RANDOM_TOKEN_SECRET, {
         expiresIn: TOKEN_EXPIRES_IN,
       });

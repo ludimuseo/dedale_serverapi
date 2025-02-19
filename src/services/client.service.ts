@@ -6,7 +6,7 @@ export class ClientService {
   static async addClient(req: AuthenticatedRequest) {
     // Route only for OWNER role !!!!!!!!!!!!!!!
     if (!req.auth) {
-      throw new Error("Authentification requise");
+      throw new Error('Authentification requise');
     }
     const role = req.auth.role.split('|');
     if (role.find((element: string) => element == 'OWNER') === 'OWNER') {

@@ -7,9 +7,11 @@ import { validationResult } from 'express-validator';
 import { log } from 'node:console';
 import { AuthenticatedRequest } from '../utils/types';
 
-
-
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const authReq = req as AuthenticatedRequest;
   try {
     const user = await UsersLoginService.connectUser(authReq);
@@ -49,7 +51,11 @@ export const getAllUsers = async (
 /**
  * Récupérer un utilisateur par son ID
  */
-export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
+export const getUserById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
