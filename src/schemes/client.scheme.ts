@@ -1,5 +1,5 @@
-import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../config/database";  // Assure-toi que ce fichier exporte une instance Sequelize
+import { DataTypes, Model, Optional } from 'sequelize';
+import sequelize from '../config/database'; // Assure-toi que ce fichier exporte une instance Sequelize
 
 // Interface pour définir les attributs du modèle
 interface ClientAttributes {
@@ -21,10 +21,13 @@ interface ClientAttributes {
 }
 
 // Interface pour la création (permet l'absence de `id` car il est auto-incrémenté)
-interface ClientCreationAttributes extends Optional<ClientAttributes, "id"> {}
+interface ClientCreationAttributes extends Optional<ClientAttributes, 'id'> {}
 
 // Définition du modèle Client
-class Client extends Model<ClientAttributes, ClientCreationAttributes> implements ClientAttributes {
+class Client
+  extends Model<ClientAttributes, ClientCreationAttributes>
+  implements ClientAttributes
+{
   public id!: number;
   public name!: string;
   public type!: string;
@@ -36,7 +39,7 @@ class Client extends Model<ClientAttributes, ClientCreationAttributes> implement
   public country!: string;
   public contact?: string;
   public email!: string;
-  public website!: Text
+  public website!: Text;
   public note?: Text;
   public phone!: string;
   public isActive!: boolean;
@@ -110,7 +113,7 @@ Client.init(
   },
   {
     sequelize,
-    tableName: "client",
+    tableName: 'client',
     freezeTableName: true, // Empêche Sequelize de modifier le nom de la table
     timestamps: false, // Désactive createdAt et updatedAt
   }

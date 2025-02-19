@@ -1,23 +1,21 @@
 // users.service.ts
 
-import { Auth } from "../schemes/auth.scheme";
-import  Auth_Log  from "../schemes/auth_log.scheme";
-import { User } from "../schemes/user.scheme";
-import { AuthenticatedRequest } from "../utils/types";
+import { Auth } from '../schemes/auth.scheme';
+import Auth_Log from '../schemes/auth_log.scheme';
+import { User } from '../schemes/user.scheme';
+import { AuthenticatedRequest } from '../utils/types';
 
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
 const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN;
-const SALT = process.env.SALT;
-
 
 export class UsersLoginService {
-  static async connectUser(req: AuthenticatedRequest) {    
+  static async connectUser(req: AuthenticatedRequest) {
     const timestamp: number = Math.floor(Date.now() / 1000);
     let success = false;
-    let successStatus = "";
+    let successStatus = '';
     let data;
     let userID;
     let reason;
@@ -25,84 +23,89 @@ export class UsersLoginService {
 
     const authUser = await Auth.findOne({
       where: { email: req.body.login },
-      include: [{
-        model: User,
-        required: true,  // Assurez-vous que User est chargé avec Auth
-      }],
+      include: [
+        {
+          model: User,
+          required: true, // Assurez-vous que User est chargé avec Auth
+        },
+      ],
     });
 
-
     // Accéder aux attributs de l'utilisateur lié à Auth
-    const user = authUser?.get("user");  // Move user info in to user
+    const user = authUser?.get('user'); // Move user info in to user
     userID = user?.id;
-    
-  
+
     // console.log(user?.isActive);
-    if(authUser){isMatch = await bcrypt.compare(req.body.passwd, authUser.password);}
-    
+    if (authUser) {
+      isMatch = await bcrypt.compare(req.body.passwd, authUser.password);
+    }
+
     if (isMatch && user?.isActive && authUser) {
-      
       // Update the time of connection
-      
+
       Auth.update(
-        { log: timestamp },  // update timestamp pour le champ 'log'
+        { log: timestamp }, // update timestamp pour le champ 'log'
         {
           where: {
-            id: authUser.id  // Condition pour sélectionner l'enregistrement
-          }
+            id: authUser.id, // Condition pour sélectionner l'enregistrement
+          },
         }
-      )
+      );
 
       // Gen jwt token
-      const tokenUser = jwt.sign(
-        { userId: authUser.id },
-        RANDOM_TOKEN_SECRET,
-        { expiresIn: TOKEN_EXPIRES_IN }
-      );
-      
-      data = { 
+      if (!RANDOM_TOKEN_SECRET) {
+        throw new Error("RANDOM_TOKEN_SECRET is not defined in environment variables.");
+    }
+      const tokenUser = jwt.sign({ userId: authUser.id }, RANDOM_TOKEN_SECRET, {
+        expiresIn: TOKEN_EXPIRES_IN,
+      });
+
+      data = {
         userId: authUser.id,
         token: tokenUser,
-        name: user?.name,
-        firstname: user?.firstname,
-        pseudo: user?.pseudo,
-        avatar: user?.avatar,
-        isContrast: user?.isContrast,
-        isFalc: user?.isFalc,
-        fontsize: user?.fontsize,
-        language: user?.language,
-        tutorial: user?.tutorial,
-        role: user?.role,
+        name: user.name,
+        firstname: user.firstname,
+        pseudo: user.pseudo,
+        avatar: user.avatar,
+        isContrast: user.isContrast,
+        isFalc: user.isFalc,
+        fontsize: user.fontsize,
+        language: user.language,
+        tutorial: user.tutorial,
+        role: user.role,
       };
       userID = authUser.id;
-      reason = "Login succes"
+      reason = 'Login succes';
       success = true;
       // return data;
     } else {
-      reason = "Password invalid"
+      reason = 'Password invalid';
       success = false;
       // return null;
     }
 
-    !user?.isActive ? reason = "User inactive" : null;
-    !authUser ? reason = "user not found" : null;
-    
-    success ? successStatus = "succes" : successStatus = "failure"
-    
+    !user?.isActive ? (reason = 'User inactive') : null;
+    !authUser ? (reason = 'user not found') : null;
+
+    success ? (successStatus = 'succes') : (successStatus = 'failure');
+
     const auth_Log = await Auth_Log.create({
       login_attempt: timestamp,
-      ip_adresse: req.ip || "undefined",
-      user_agent: req.headers["user-agent"] || "Unknown",
+      ip_adresse: req.ip || 'undefined',
+      user_agent: req.headers['user-agent'] || 'Unknown',
       status: successStatus,
       reason: reason,
-      authId: userID
+      authId: userID,
     });
 
-    if(data){return data;}
-    else if(!authUser){return null;}
-    else if(!user?.isActive){return "isActiveFalse";}
-    else{return null;}
-
-  };
+    if (data) {
+      return data;
+    } else if (!authUser) {
+      return null;
+    } else if (!user?.isActive) {
+      return 'isActiveFalse';
+    } else {
+      return null;
+    }
+  }
 }
-   

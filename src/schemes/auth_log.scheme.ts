@@ -1,5 +1,5 @@
-import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../config/database";  // Assure-toi que ce fichier exporte bien une instance Sequelize
+import { DataTypes, Model, Optional } from 'sequelize';
+import sequelize from '../config/database'; // Assure-toi que ce fichier exporte bien une instance Sequelize
 
 // Définir les attributs du modèle
 interface Auth_LogAttributes {
@@ -13,10 +13,14 @@ interface Auth_LogAttributes {
 }
 
 // Permettre la création de logs sans définir `log_id` (auto-incrémenté)
-interface Auth_LogCreationAttributes extends Optional<Auth_LogAttributes, "log_id"> {}
+interface Auth_LogCreationAttributes
+  extends Optional<Auth_LogAttributes, 'log_id'> {}
 
 // Définition du modèle Sequelize
-class Auth_Log extends Model<Auth_LogAttributes, Auth_LogCreationAttributes> implements Auth_LogAttributes {
+class Auth_Log
+  extends Model<Auth_LogAttributes, Auth_LogCreationAttributes>
+  implements Auth_LogAttributes
+{
   public log_id!: number;
   public login_attempt!: number;
   public ip_adresse!: string;
@@ -59,16 +63,16 @@ Auth_Log.init(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: "auth", // Assure-toi que la table "auth" existe bien
-        key: "id",
+        model: 'auth', // Assure-toi que la table "auth" existe bien
+        key: 'id',
       },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
     },
   },
   {
     sequelize,
-    tableName: "auth_log",
+    tableName: 'auth_log',
     freezeTableName: true, // Empêche Sequelize de modifier le nom de la table
     timestamps: false, // Désactive createdAt et updatedAt
   }

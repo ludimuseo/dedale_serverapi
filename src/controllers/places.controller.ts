@@ -1,13 +1,17 @@
 // places.controller.ts
 
-import { Request, Response,NextFunction } from "express";
-import { PlacesService } from "../services/places.service";
-import { validationResult } from "express-validator";
+import { Request, Response, NextFunction } from 'express';
+import { PlacesService } from '../services/places.service';
+import { validationResult } from 'express-validator';
 
 /**
  * Récupérer tous les lieux
  */
-export const getAllPlaces = async (_req: Request, res: Response, next: NextFunction) => {
+export const getAllPlaces = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const places = await PlacesService.getAllPlaces();
     res.status(200).json(places);
@@ -19,7 +23,11 @@ export const getAllPlaces = async (_req: Request, res: Response, next: NextFunct
 /**
  * Récupérer un lieu par son ID
  */
-export const getPlaceById = async (req: Request, res: Response, next: NextFunction) => {
+export const getPlaceById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -29,7 +37,9 @@ export const getPlaceById = async (req: Request, res: Response, next: NextFuncti
     const { id } = req.params;
     const place = await PlacesService.getPlaceById(id);
     if (!place) {
-      return res.status(404).json({ message: `Lieu avec l'ID ${id} introuvable.` });
+      return res
+        .status(404)
+        .json({ message: `Lieu avec l'ID ${id} introuvable.` });
     }
     res.status(200).json(place);
   } catch (error) {
@@ -40,7 +50,11 @@ export const getPlaceById = async (req: Request, res: Response, next: NextFuncti
 /**
  * Ajouter un nouveau lieu
  */
-export const createPlace = async (req: Request, res: Response, next: NextFunction) => {
+export const createPlace = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -48,8 +62,10 @@ export const createPlace = async (req: Request, res: Response, next: NextFunctio
 
   try {
     const placeData = req.body;
-    const newPlace = await PlacesService.addPlace(placeData);
-    res.status(201).json({ message: "Lieu ajouté avec succès", placeId: newPlace.id });
+    const newPlace = await PlacesService.addPlace(req);
+    res
+      .status(201)
+      .json({ message: 'Lieu ajouté avec succès', placeId: newPlace.id });
   } catch (error) {
     next(error);
   }
@@ -58,7 +74,11 @@ export const createPlace = async (req: Request, res: Response, next: NextFunctio
 /**
  * Mettre à jour un lieu existant
  */
-export const updatePlace = async (req: Request, res: Response, next: NextFunction) => {
+export const updatePlace = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -77,7 +97,11 @@ export const updatePlace = async (req: Request, res: Response, next: NextFunctio
 /**
  * Supprimer un lieu
  */
-export const deletePlace = async (req: Request, res: Response, next: NextFunction) => {
+export const deletePlace = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });

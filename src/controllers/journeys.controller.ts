@@ -1,13 +1,17 @@
 // journeys.controller.ts
 
-import { Request, Response, NextFunction } from "express";
-import { JourneysService } from "../services/journeys.service";
-import { validationResult } from "express-validator";
+import { Request, Response, NextFunction } from 'express';
+import { JourneysService } from '../services/journeys.service';
+import { validationResult } from 'express-validator';
 
 /**
  * Récupérer tous les parcours
  */
-export const getAllJourneys = async (_req: Request, res: Response, next: NextFunction) => {
+export const getAllJourneys = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const journeys = await JourneysService.getAllJourneys();
     res.status(200).json(journeys);
@@ -19,7 +23,11 @@ export const getAllJourneys = async (_req: Request, res: Response, next: NextFun
 /**
  * Récupérer un parcours par son ID
  */
-export const getJourneyById = async (req: Request, res: Response, next: NextFunction) => {
+export const getJourneyById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -29,7 +37,9 @@ export const getJourneyById = async (req: Request, res: Response, next: NextFunc
     const { id } = req.params;
     const journey = await JourneysService.getJourneyById(id);
     if (!journey) {
-      return res.status(404).json({ message: `Journey avec l'ID ${id} introuvable.` });
+      return res
+        .status(404)
+        .json({ message: `Journey avec l'ID ${id} introuvable.` });
     }
     res.status(200).json(journey);
   } catch (error) {
@@ -40,7 +50,11 @@ export const getJourneyById = async (req: Request, res: Response, next: NextFunc
 /**
  * Ajouter un nouveau parcours
  */
-export const createJourney = async (req: Request, res: Response, next: NextFunction) => {
+export const createJourney = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -49,7 +63,10 @@ export const createJourney = async (req: Request, res: Response, next: NextFunct
   try {
     const journeyData = req.body;
     const newJourney = await JourneysService.addJourney(journeyData);
-    res.status(201).json({ message: "Journey ajoutée avec succès", journeyId: newJourney.id });
+    res.status(201).json({
+      message: 'Journey ajoutée avec succès',
+      journeyId: newJourney.id,
+    });
   } catch (error) {
     next(error);
   }
@@ -58,7 +75,11 @@ export const createJourney = async (req: Request, res: Response, next: NextFunct
 /**
  * Mettre à jour un parcours existant
  */
-export const updateJourney = async (req: Request, res: Response, next: NextFunction) => {
+export const updateJourney = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -77,7 +98,11 @@ export const updateJourney = async (req: Request, res: Response, next: NextFunct
 /**
  * Supprimer un parcours
  */
-export const deleteJourney = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteJourney = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
