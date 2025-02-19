@@ -1,15 +1,19 @@
 // clients.controller.ts = requête HTTP
 
-import { Request, Response, NextFunction } from "express";
-import { ClientsService } from "../services/clients.service";
-import { ClientService } from "../services/client.service";
-import { validationResult } from "express-validator";
-import { AuthenticatedRequest } from "../utils/types";
+import { Request, Response, NextFunction } from 'express';
+import { ClientsService } from '../services/clients.service';
+import { ClientService } from '../services/client.service';
+import { validationResult } from 'express-validator';
+import { AuthenticatedRequest } from '../utils/types';
 
 /**
  * Récupérer la liste des clients
  */
-export const getAllClients = async (_req: Request, res: Response, next: NextFunction) => {
+export const getAllClients = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const clients = await ClientsService.getAllClients();
     res.status(200).json(clients);
@@ -21,7 +25,11 @@ export const getAllClients = async (_req: Request, res: Response, next: NextFunc
 /**
  * Récupérer un client par son ID
  */
-export const getClientById = async (req: Request, res: Response, next: NextFunction) => {
+export const getClientById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -31,7 +39,9 @@ export const getClientById = async (req: Request, res: Response, next: NextFunct
     const { id } = req.params;
     const client = await ClientsService.getClientById(id);
     if (!client) {
-      return res.status(404).json({ message: `Client avec l'ID ${id} introuvable.` });
+      return res
+        .status(404)
+        .json({ message: `Client avec l'ID ${id} introuvable.` });
     }
     res.status(200).json(client);
   } catch (error) {
@@ -42,24 +52,27 @@ export const getClientById = async (req: Request, res: Response, next: NextFunct
 /**
  * Créer un nouveau client
  */
-export const createClient = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const createClient = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
   try {
-    const clientData = req.body;    
     const newClient = await ClientService.addClient(req);
-    
-    if ("error" in newClient) {
+
+    if ('error' in newClient) {
       return res.status(400).json({ error: newClient.error });
     }
-    
-    res.status(201).json({ 
-      "message": "Le client a été créé avec succès.",
-      client_id: newClient.id });
-    
+
+    res.status(201).json({
+      message: 'Le client a été créé avec succès.',
+      client_id: newClient.id,
+    });
   } catch (error) {
     next(error);
   }
@@ -68,7 +81,11 @@ export const createClient = async (req: AuthenticatedRequest, res: Response, nex
 /**
  * Mettre à jour un client existant
  */
-export const updateClient = async (req: Request, res: Response, next: NextFunction) => {
+export const updateClient = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { id } = req.params;
 
   const errors = validationResult(req);
@@ -79,7 +96,9 @@ export const updateClient = async (req: Request, res: Response, next: NextFuncti
   try {
     const client = await ClientsService.getClientById(id);
     if (!client) {
-      return res.status(404).json({ message: `Client avec l'ID ${id} introuvable.` });
+      return res
+        .status(404)
+        .json({ message: `Client avec l'ID ${id} introuvable.` });
     }
 
     await ClientsService.updateClient(id, req.body);
@@ -92,7 +111,11 @@ export const updateClient = async (req: Request, res: Response, next: NextFuncti
 /**
  * Supprimer un client
  */
-export const deleteClient = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteClient = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -102,7 +125,9 @@ export const deleteClient = async (req: Request, res: Response, next: NextFuncti
     const { id } = req.params;
     const client = await ClientsService.getClientById(id);
     if (!client) {
-      return res.status(404).json({ message: `Client avec l'ID ${id} introuvable.` });
+      return res
+        .status(404)
+        .json({ message: `Client avec l'ID ${id} introuvable.` });
     }
 
     await ClientsService.deleteClient(id);

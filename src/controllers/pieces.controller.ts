@@ -1,13 +1,17 @@
 // pieces.controller.ts
 
-import { Request, Response, NextFunction } from "express";
-import { PiecesService } from "../services/pieces.service";
-import { validationResult } from "express-validator";
+import { Request, Response, NextFunction } from 'express';
+import { PiecesService } from '../services/pieces.service';
+import { validationResult } from 'express-validator';
 
 /**
  * Récupérer toutes les pièces
  */
-export const getAllPieces = async (_req: Request, res: Response, next: NextFunction) => {
+export const getAllPieces = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const pieces = await PiecesService.getAllPieces();
     res.status(200).json(pieces);
@@ -19,7 +23,11 @@ export const getAllPieces = async (_req: Request, res: Response, next: NextFunct
 /**
  * Récupérer une pièce par son ID
  */
-export const getPieceById = async (req: Request, res: Response, next: NextFunction) => {
+export const getPieceById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -29,7 +37,9 @@ export const getPieceById = async (req: Request, res: Response, next: NextFuncti
     const { id } = req.params;
     const piece = await PiecesService.getPieceById(id);
     if (!piece) {
-      return res.status(404).json({ message: `Pièce avec l'ID ${id} introuvable.` });
+      return res
+        .status(404)
+        .json({ message: `Pièce avec l'ID ${id} introuvable.` });
     }
     res.status(200).json(piece);
   } catch (error) {
@@ -40,7 +50,11 @@ export const getPieceById = async (req: Request, res: Response, next: NextFuncti
 /**
  * Ajouter une nouvelle pièce
  */
-export const createPiece = async (req: Request, res: Response, next: NextFunction) => {
+export const createPiece = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -49,7 +63,9 @@ export const createPiece = async (req: Request, res: Response, next: NextFunctio
   try {
     const pieceData = req.body;
     const newPiece = await PiecesService.addPiece(pieceData);
-    res.status(201).json({ message: "Pièce ajoutée avec succès", pieceId: newPiece.id });
+    res
+      .status(201)
+      .json({ message: 'Pièce ajoutée avec succès', pieceId: newPiece.id });
   } catch (error) {
     next(error);
   }
@@ -58,7 +74,11 @@ export const createPiece = async (req: Request, res: Response, next: NextFunctio
 /**
  * Mettre à jour une pièce existante
  */
-export const updatePiece = async (req: Request, res: Response, next: NextFunction) => {
+export const updatePiece = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -77,7 +97,11 @@ export const updatePiece = async (req: Request, res: Response, next: NextFunctio
 /**
  * Supprimer une pièce
  */
-export const deletePiece = async (req: Request, res: Response, next: NextFunction) => {
+export const deletePiece = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });

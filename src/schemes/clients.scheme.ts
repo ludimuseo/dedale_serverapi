@@ -4,37 +4,36 @@ export enum ClientType {
   ASSOCIATION = 'ASSOCIATION',
   PROFESSIONAL = 'PROFESSIONAL',
   PARTICULAR = 'PARTICULAR',
-  }
+}
 // ou export type ClientType = 'ASSOCIATION' | 'PROFESSIONAL' | 'PARTICULAR';
 
-export interface Company{
+export interface Company {
   name: string;
   siret: string;
   tva: string;
   type: ClientType;
-  website?: string; 
-};
+  website?: string;
+}
 
-export interface Address{
+export interface Address {
   address: string;
-  postal: string;  
+  postal: string;
   city: string;
   country: string;
-};
+}
 
-export interface Contact{
+export interface Contact {
   name: string;
   email: string;
-  phone: number;  
+  phone: number;
   note?: string;
-};
-
+}
 
 export interface ClientScheme {
-  company: Company ;
+  company: Company;
   address: Address;
-  contact: Contact ;
+  contact: Contact;
   status: {
-    isActive: boolean; 
+    isActive: boolean;
   };
-};
+}
