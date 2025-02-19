@@ -45,6 +45,11 @@ static async getPlaceById(id: string): Promise<(PlaceScheme & { id: string }) | 
   static async addPlace(req: AuthenticatedRequest) {
     // On retourne l'ID du lieu
 
+    // Garantie que req.auth existe
+    if (!req.auth || !req.auth.role) {
+      return { error: "Erreur interne au serveur." };
+  }
+
     // Only for AWNER, ADMIN, SUPERADMIN
     const role = req.auth.role.split("|");
     if (["OWNER", "ADMIN", "SUPERADMIN"].some((r) => role.includes(r))) {
