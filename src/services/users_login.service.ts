@@ -3,8 +3,8 @@
 import { Auth } from "../schemes/auth.scheme";
 import  Auth_Log  from "../schemes/auth_log.scheme";
 import { User } from "../schemes/user.scheme";
+import { AuthenticatedRequest } from "../utils/types";
 
-import sequelize from "../config/database";
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -14,7 +14,7 @@ const SALT = process.env.SALT;
 
 
 export class UsersLoginService {
-  static async connectUser(login: string, passwd: string, userAgent: any, ipAdress:any) {    
+  static async connectUser(req: AuthenticatedRequest) {    
     const timestamp: number = Math.floor(Date.now() / 1000);
     let success = false;
     let successStatus = "";
@@ -24,7 +24,7 @@ export class UsersLoginService {
     let isMatch;
 
     const authUser = await Auth.findOne({
-      where: { email: login },
+      where: { email: req.body.login },
       include: [{
         model: User,
         required: true,  // Assurez-vous que User est chargé avec Auth
@@ -38,7 +38,7 @@ export class UsersLoginService {
     
   
     // console.log(user?.isActive);
-    if(authUser){isMatch = await bcrypt.compare(passwd, authUser.password);}
+    if(authUser){isMatch = await bcrypt.compare(req.body.passwd, authUser.password);}
     
     if (isMatch && user?.isActive && authUser) {
       
@@ -91,8 +91,8 @@ export class UsersLoginService {
     
     const auth_Log = await Auth_Log.create({
       login_attempt: timestamp,
-      ip_adresse: ipAdress,
-      user_agent: userAgent,
+      ip_adresse: req.ip || "undefined",
+      user_agent: req.headers["user-agent"] || "Unknown",
       status: successStatus,
       reason: reason,
       authId: userID

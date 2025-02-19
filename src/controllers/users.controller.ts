@@ -15,7 +15,7 @@ const SALT = Number(process.env.SALT);
 export const login = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     
-    const user = await UsersLoginService.connectUser(_req.body.login, _req.body.passwd, _req.headers['user-agent'], _req.socket.remoteAddress);
+    const user = await UsersLoginService.connectUser(_req);
     
     // If user disable return isActiveFalse
     if(user == "isActiveFalse"){return res.status(401).json({ message: "isActiveFalse"});}

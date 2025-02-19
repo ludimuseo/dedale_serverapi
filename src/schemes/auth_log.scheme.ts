@@ -6,7 +6,7 @@ interface Auth_LogAttributes {
   log_id: number;
   login_attempt: number;
   ip_adresse: string;
-  user_agent: Text;
+  user_agent: string;
   status?: string;
   reason?: string;
   authId?: number;
@@ -20,7 +20,7 @@ class Auth_Log extends Model<Auth_LogAttributes, Auth_LogCreationAttributes> imp
   public log_id!: number;
   public login_attempt!: number;
   public ip_adresse!: string;
-  public user_agent!: Text;
+  public user_agent!: string;
   public status?: string;
   public reason?: string;
   public authId?: number;
@@ -44,7 +44,7 @@ Auth_Log.init(
       allowNull: false,
     },
     user_agent: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     status: {
