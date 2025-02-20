@@ -16,7 +16,7 @@ export const logs = async (req: Request, res: Response, next: NextFunction) => {
     const authReq = req as AuthenticatedRequest;
     const dataLogs = await securedLogs.logs(authReq);
 
-    res.status(200).json( dataLogs );
+    res.status(200).json(dataLogs);
   } catch (error) {
     next(error);
   }
