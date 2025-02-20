@@ -13,7 +13,7 @@ export class ClientService {
       null;
     } else {
       const timestamp: number = Math.floor(Date.now() / 1000);
-      const auth_Log = await Auth_Log.create({
+      await Auth_Log.create({
         login_attempt: timestamp,
         ip_adresse: req.ip || 'undefined',
         user_agent: req.headers['user-agent'] || 'Unknown',

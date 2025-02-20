@@ -7,7 +7,7 @@ import { PlaceScheme } from '../schemes/places.scheme';
 import Auth_Log from '../schemes/auth_log.scheme';
 import Place from '../schemes/place.scheme';
 import Medal from '../schemes/medal.scheme';
-import Description from '../schemes/description.scheme';
+// import Description from '../schemes/description.scheme';
 
 export class PlacesService {
   // Récupérer toutes les lieux
@@ -61,9 +61,13 @@ export class PlacesService {
     } else {
       const timestamp: number = Math.floor(Date.now() / 1000);
       const userAgent: string = req.headers['user-agent'] ?? 'Unknown';
-      const auth_Log = await Auth_Log.create({
+      const cleanIp = req.socket.remoteAddress?.includes('::ffff:')
+        ? req.socket.remoteAddress.split('::ffff:')[1]
+        : (req.socket.remoteAddress ?? 'Unknown');
+
+      await Auth_Log.create({
         login_attempt: timestamp,
-        ip_adresse: req.socket.remoteAddress ?? 'Unknown',
+        ip_adresse: cleanIp,
         user_agent: userAgent,
         status: 'failure',
         reason: 'unauthorized: ' + req.url,
@@ -73,19 +77,18 @@ export class PlacesService {
     }
 
     try {
-      let medal = null;
       if (req.body.medalId !== null) {
-        medal = await Medal.findOne({
+        await Medal.findOne({
           where: { id: req.body.medalId },
         });
       }
 
-      const adress = req.body.address;
-      const audio = req.body.audio;
+      // const adress = req.body.address;
+      // const audio = req.body.audio;
       const content = req.body.content;
       const coords = req.body.coords;
-      const description = req.body.description;
-      const name = req.body.name;
+      // const description = req.body.description;
+      // const name = req.body.name;
       const status = req.body.status;
 
       // Check content.type

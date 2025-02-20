@@ -26,7 +26,7 @@ export class UsersLoginService {
       include: [
         {
           model: User,
-          required: true, // Assurez-vous que User est chargé avec Auth
+          required: true,
         },
       ],
     });
@@ -63,7 +63,6 @@ export class UsersLoginService {
       });
 
       data = {
-        userId: authUser.id,
         token: tokenUser,
         name: user.name,
         firstname: user.firstname,
@@ -77,7 +76,7 @@ export class UsersLoginService {
         role: user.role,
       };
       userID = authUser.id;
-      reason = 'Login succes';
+      reason = 'Login success';
       success = true;
       // return data;
     } else {
@@ -89,9 +88,9 @@ export class UsersLoginService {
     !user?.isActive ? (reason = 'User inactive') : null;
     !authUser ? (reason = 'user not found') : null;
 
-    success ? (successStatus = 'succes') : (successStatus = 'failure');
+    success ? (successStatus = 'success') : (successStatus = 'failure');
 
-    const auth_Log = await Auth_Log.create({
+    await Auth_Log.create({
       login_attempt: timestamp,
       ip_adresse: req.ip || 'undefined',
       user_agent: req.headers['user-agent'] || 'Unknown',

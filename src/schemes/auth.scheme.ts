@@ -1,5 +1,5 @@
 import sequelize from '../config/database';
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import { User } from '../schemes/user.scheme';
 import { UserInstance } from './user.scheme';
 

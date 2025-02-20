@@ -1,5 +1,5 @@
 import sequelize from '../config/database';
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 // Définir l'interface UserAttributes
 interface UserAttributes {
@@ -31,11 +31,11 @@ const User = sequelize.define<UserInstance>(
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     firstname: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     pseudo: {
       type: DataTypes.STRING,

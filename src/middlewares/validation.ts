@@ -1,4 +1,4 @@
-//validation.ts : validation des données des routes
+// validation.ts : Validation des données des routes
 
 import { param } from 'express-validator';
 import { generateValidationRules } from '../utils/validationHelpers';
@@ -16,7 +16,7 @@ export const validateId = [
 // Champs pour la création d'un utilisateur
 const userFields = {
   'profile.username': 'required_string',
-  'profile.email': 'email',
+  'profile.email': 'required_email', // Correction ici
   'profile.password': 'required_string',
   'profile.avatar': 'required_string',
   'profile.clientId': 'required_string',
@@ -70,10 +70,52 @@ const clientUpdateFields = {
 
   'contact.name': 'string',
   'contact.email': 'email',
-  'contact.phone': 'string',
+  'contact.tel': 'string',
   'contact.note': 'string',
 };
 
-// Validation dynamique des clients
+// Champs pour la création d'un lieu
+const lieuFields = {
+  'medalId': 'integer',
+  'address.address': 'string',
+  'address.city': 'string',
+  'address.country': 'string',
+  'address.postal': 'string',
+
+  'audio.falc.en': 'string',
+  'audio.falc.fr': 'string',
+  'audio.standard.en': 'string',
+  'audio.standard.fr': 'string',
+
+  'content.image': 'string',
+  'content.type': 'string',
+
+  'coords.isLocationRequired': 'boolean',
+  'coords.lat': 'float',
+  'coords.lon': 'float',
+
+  'description': 'array',
+  'description.*.falc.en': 'string',
+  'description.*.falc.fr': 'string',
+  'description.*.falc.falcCertified': 'boolean',
+  'description.*.falc.userId': 'string',
+
+  'description.*.falc.status.isValidate': 'boolean',
+  'description.*.falc.status.isCertified': 'boolean',
+  'description.*.falc.status.certifiedDate': 'string',
+  'description.*.falc.status.isCorrected': 'boolean',
+
+  'description.*.standard.en': 'string',
+  'description.*.standard.fr': 'string',
+
+  'name.en': 'string',
+  'name.fr': 'string',
+
+  'status.isActive': 'boolean',
+  'status.isPublished': 'boolean',
+};
+
+// Validation dynamique des clients et lieux
 export const validateClientCreation = generateValidationRules(clientFields);
 export const validateClientUpdate = generateValidationRules(clientUpdateFields);
+export const validateLieuCreation = generateValidationRules(lieuFields);

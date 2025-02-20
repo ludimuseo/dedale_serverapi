@@ -1,5 +1,5 @@
 import sequelize from '../config/database';
-import { Sequelize, Model, DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
 const Journey = sequelize.define(
   'journey',

@@ -53,7 +53,7 @@ export const getClientById = async (
  * Créer un nouveau client
  */
 export const createClient = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -63,7 +63,8 @@ export const createClient = async (
   }
 
   try {
-    const newClient = await ClientService.addClient(req);
+    const authReq = req as AuthenticatedRequest;
+    const newClient = await ClientService.addClient(authReq);
 
     if ('error' in newClient) {
       return res.status(400).json({ error: newClient.error });

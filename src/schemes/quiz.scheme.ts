@@ -1,5 +1,5 @@
 import sequelize from '../config/database';
-import { Sequelize, Model, DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
 const Quiz = sequelize.define(
   'quiz',
@@ -16,7 +16,7 @@ const Quiz = sequelize.define(
     },
     level: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {

@@ -3,6 +3,7 @@
 import express from 'express';
 import clientsRouter from './routes/clients.routes';
 import placesRouter from './routes/places.routes';
+import logsRouter from './routes/logs.routes';
 import gamesRouter from './routes/games.routes';
 import journeysRouter from './routes/journeys.routes';
 import stepsRouter from './routes/steps.routes';
@@ -20,6 +21,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/clients', clientsRouter);
+app.use('/logs', logsRouter);
 app.use('/places', placesRouter);
 app.use('/games', gamesRouter);
 app.use('/journeys', journeysRouter);

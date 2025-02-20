@@ -6,7 +6,7 @@ import {
   validateClientUpdate,
   validateId,
 } from '../middlewares/validation';
-const auth = require('../middlewares/auth');
+import authMiddleware from '../middlewares/auth';
 import {
   getAllClients,
   getClientById,
@@ -19,7 +19,7 @@ const router = Router();
 
 router.get('/list', getAllClients);
 router.get('/find/:id', validateId, getClientById);
-router.post('/create', auth, validateClientCreation, createClient);
+router.post('/create', authMiddleware, validateClientCreation, createClient);
 router.patch('/update/:id', validateId, validateClientUpdate, updateClient);
 router.delete('/delete/:id', validateId, deleteClient);
 
