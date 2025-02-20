@@ -77,7 +77,7 @@ export class UsersLoginService {
         role: user.role,
       };
       userID = authUser.id;
-      reason = 'Login succes';
+      reason = 'Login success';
       success = true;
       // return data;
     } else {
