@@ -16,7 +16,7 @@ const Quiz = sequelize.define(
     },
     level: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {

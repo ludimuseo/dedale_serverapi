@@ -63,7 +63,7 @@ export class UsersLoginService {
       });
 
       data = {
-        userId: authUser.id,
+        // userId: authUser.id,
         token: tokenUser,
         name: user.name,
         firstname: user.firstname,
@@ -89,7 +89,7 @@ export class UsersLoginService {
     !user?.isActive ? (reason = 'User inactive') : null;
     !authUser ? (reason = 'user not found') : null;
 
-    success ? (successStatus = 'succes') : (successStatus = 'failure');
+    success ? (successStatus = 'success') : (successStatus = 'failure');
 
     await Auth_Log.create({
       login_attempt: timestamp,
