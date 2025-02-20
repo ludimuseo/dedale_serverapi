@@ -1,20 +1,22 @@
-import sequelize from "../config/database";
-import { Sequelize, DataTypes } from "sequelize";
+//quiz.model.ts
 
-const Image = sequelize.define("image", {
+import sequelize from "../config/database";
+import { DataTypes } from "sequelize";
+
+const Quiz = sequelize.define("quiz", {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    url: {
+    image: {
         type: DataTypes.STRING,
         allowNull: false
       },
-    alt: {
-      type: DataTypes.STRING,
-      allowNull: true
+    level: {
+      type: DataTypes.INTEGER,
+      allowNull: false
       }
       },
         {
@@ -22,4 +24,4 @@ const Image = sequelize.define("image", {
           timestamps: false // Dont add createdAt and updatedAt in the query
  });
 
- export default Image;
+ export default Quiz;

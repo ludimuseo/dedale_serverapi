@@ -1,5 +1,7 @@
+//descriptions.model.ts
+
 import sequelize from "../config/database";
-import { Sequelize, DataTypes } from "sequelize";
+import { DataTypes } from "sequelize";
 
 // Interface pour définir les attributs du modèle
 interface DescriptionAttributes {

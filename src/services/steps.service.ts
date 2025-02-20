@@ -1,10 +1,10 @@
 //steps.services.ts
 
-import Step from "../schemes/step.scheme";
+import Step from "../models/steps.model";
 
 export class StepsService {
   // Retrieve all steps
-  static async getAllSteps(): Promise<InstanceType<typeof Step>[]> { 
+  static async getAllSteps(): Promise<Step[]> {
     try {
       return await Step.findAll();
     } catch (error) {
@@ -14,7 +14,7 @@ export class StepsService {
   }
 
   // Retrieve a step by ID
-  static async getStepById(id: number): Promise<InstanceType<typeof Step> | null> { 
+  static async getStepById(id: number): Promise<Step | null> {
     try {
       const step = await Step.findByPk(id);
       if (!step) {
@@ -29,7 +29,7 @@ export class StepsService {
   }
 
   // Add a new step
-  static async addStep(stepData: any): Promise<InstanceType<typeof Step>> { 
+  static async addStep(stepData: any): Promise<Step> {
     try {
       const newStep = await Step.create(stepData);
       return newStep;
@@ -40,7 +40,7 @@ export class StepsService {
   }
 
   // Update an existing step
-  static async updateStep(id: number, updateData: any): Promise<InstanceType<typeof Step> | null> { 
+  static async updateStep(id: number, updateData: Partial<Step>): Promise<Step | null> {
     try {
       const step = await Step.findByPk(id);
       if (!step) {
@@ -56,7 +56,7 @@ export class StepsService {
   }
 
   // Delete a step
-  static async deleteStep(id: number): Promise<{ message: string } | null> { 
+  static async deleteStep(id: number): Promise<{ message: string } | null> {
     try {
       const step = await Step.findByPk(id);
       if (!step) {

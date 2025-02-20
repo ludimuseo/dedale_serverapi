@@ -1,5 +1,4 @@
 // medals.controller.ts
-
 import { Request, Response, NextFunction } from "express";
 import { MedalService } from "../services/medals.service";
 import { validationResult } from "express-validator";
@@ -26,7 +25,11 @@ export const getMedalById = async (req: Request, res: Response, next: NextFuncti
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID invalide" });
+    }
+
     const medal = await MedalService.getMedalById(id);
     if (!medal) {
       return res.status(404).json({ message: `Médaille avec l'ID ${id} introuvable.` });
@@ -58,16 +61,25 @@ export const createMedal = async (req: Request, res: Response, next: NextFunctio
 /**
  * Mettre à jour une médaille existante
  */
-export const updateMedal = async (req: Request, res: Response,  next: NextFunction) => {
+export const updateMedal = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID invalide" });
+    }
+
     const updateData = req.body;
-    await MedalService.updateMedal(id, updateData);
+    const updatedMedal = await MedalService.updateMedal(id, updateData);
+    
+    if (!updatedMedal) {
+      return res.status(404).json({ message: `Médaille avec l'ID ${id} introuvable.` });
+    }
+
     res.status(200).json({ message: `Médaille ${id} mise à jour avec succès.` });
   } catch (error) {
     next(error);
@@ -77,15 +89,23 @@ export const updateMedal = async (req: Request, res: Response,  next: NextFuncti
 /**
  * Supprimer une médaille
  */
-export const deleteMedal = async (req: Request, res: Response,  next: NextFunction) => {
+export const deleteMedal = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
   try {
-    const { id } = req.params;
-    await MedalService.deleteMedal(id);
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID invalide" });
+    }
+
+    const deleted = await MedalService.deleteMedal(id);
+    if (!deleted) {
+      return res.status(404).json({ message: `Médaille avec l'ID ${id} introuvable.` });
+    }
+
     res.status(200).json({ message: `Médaille ${id} supprimée avec succès.` });
   } catch (error) {
     next(error);

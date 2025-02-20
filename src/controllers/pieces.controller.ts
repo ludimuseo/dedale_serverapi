@@ -3,6 +3,7 @@
 import { Request, Response, NextFunction } from "express";
 import { PieceService } from "../services/pieces.service";
 import { validationResult } from "express-validator";
+import Piece from "../models/pieces.model";
 
 /**
  * Récupérer toutes les pièces
@@ -26,7 +27,7 @@ export const getPieceById = async (req: Request, res: Response, next: NextFuncti
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     const piece = await PieceService.getPieceById(id);
     if (!piece) {
       return res.status(404).json({ message: `Pièce avec l'ID ${id} introuvable.` });
@@ -49,7 +50,7 @@ export const createPiece = async (req: Request, res: Response, next: NextFunctio
   try {
     const pieceData = req.body;
     const newPiece = await PieceService.addPiece(pieceData);
-    res.status(201).json({ message: "Pièce ajoutée avec succès", pieceId: newPiece.id });
+    res.status(201).json({ message: "Pièce ajoutée avec succès", pieceId: (newPiece as Piece).id});
   } catch (error) {
     next(error);
   }
@@ -65,7 +66,7 @@ export const updatePiece = async (req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     const updateData = req.body;
     await PieceService.updatePiece(id, updateData);
     res.status(200).json({ message: `Pièce ${id} mise à jour avec succès.` });
@@ -84,7 +85,7 @@ export const deletePiece = async (req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     await PieceService.deletePiece(id);
     res.status(200).json({ message: `Pièce ${id} supprimée avec succès.` });
   } catch (error) {

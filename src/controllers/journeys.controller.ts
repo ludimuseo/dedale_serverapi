@@ -3,6 +3,7 @@
 import { Request, Response, NextFunction } from "express";
 import { JourneyService } from "../services/journeys.service";
 import { validationResult } from "express-validator";
+import Journey from "../models/journeys.model";
 
 /**
  * Récupérer tous les parcours
@@ -26,7 +27,7 @@ export const getJourneyById = async (req: Request, res: Response, next: NextFunc
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10); 
     const journey = await JourneyService.getJourneyById(id);
     if (!journey) {
       return res.status(404).json({ message: `Journey avec l'ID ${id} introuvable.` });
@@ -49,7 +50,7 @@ export const createJourney = async (req: Request, res: Response, next: NextFunct
   try {
     const journeyData = req.body;
     const newJourney = await JourneyService.addJourney(journeyData);
-    res.status(201).json({ message: "Journey ajoutée avec succès", journeyId: newJourney.id });
+    res.status(201).json({ message: "Journey ajoutée avec succès", journeyId: (newJourney as Journey).id });
   } catch (error) {
     next(error);
   }
@@ -65,7 +66,7 @@ export const updateJourney = async (req: Request, res: Response, next: NextFunct
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10); 
     const updateData = req.body;
     await JourneyService.updateJourney(id, updateData);
     res.status(200).json({ message: `Journey ${id} mise à jour avec succès.` });
@@ -84,7 +85,7 @@ export const deleteJourney = async (req: Request, res: Response, next: NextFunct
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10); 
     await JourneyService.deleteJourney(id);
     res.status(200).json({ message: `Journey ${id} supprimée avec succès.` });
   } catch (error) {

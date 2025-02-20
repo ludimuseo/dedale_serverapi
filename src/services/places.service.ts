@@ -1,72 +1,77 @@
-//places.service.ts
+// places.service.ts
 
-import Place from "../schemes/place.scheme";
+import Place, { PlaceCreationAttributes } from "../models/places.model";
 
 export class PlacesService {
-  // Retrieve all places
-  static async getAllPlaces(): Promise<InstanceType<typeof Place>[]> {
+  // Récupérer tous les lieux
+  static async getAllPlaces(): Promise<Place[]> {
     try {
       return await Place.findAll();
     } catch (error) {
-      console.error("Error retrieving places:", error);
+      console.error("Erreur lors de la récupération des lieux :", error);
       throw error;
     }
   }
 
-  // Retrieve a place by ID
-  static async getPlaceById(id: number): Promise<InstanceType<typeof Place> | null> {
+  // Récupérer un lieu par son ID
+  static async getPlaceById(id: number): Promise<Place | null> {
     try {
       const place = await Place.findByPk(id);
       if (!place) {
-        console.warn(`Place with ID ${id} not found.`);
+        console.warn(`Lieu avec l'ID ${id} introuvable.`);
         return null;
       }
       return place;
     } catch (error) {
-      console.error(`Error retrieving place with ID ${id}:`, error);
+      console.error(`Erreur lors de la récupération du lieu avec l'ID ${id} :`, error);
       throw error;
     }
   }
 
-  // Add a new place
-  static async addPlace(placeData: any): Promise<InstanceType<typeof Place>> {
+  // Ajouter un nouveau lieu
+  static async addPlace(placeData: PlaceCreationAttributes): Promise<Place> {
     try {
+      // ✅ Vérification stricte de 'type'
+      if (!placeData.type) {
+        throw new Error("Le champ 'type' est obligatoire.");
+      }
+
       const newPlace = await Place.create(placeData);
       return newPlace;
     } catch (error) {
-      console.error("Error adding place:", error);
+      console.error("Erreur lors de l'ajout d'un lieu :", error);
       throw error;
     }
   }
 
-  // Update an existing place
-  static async updatePlace(id: number, updateData: any): Promise<InstanceType<typeof Place> | null> {
+  // Mettre à jour un lieu existant
+  static async updatePlace(id: number, updateData: Partial<PlaceCreationAttributes>): Promise<Place | null> {
     try {
       const place = await Place.findByPk(id);
       if (!place) {
-        console.warn(`Place with ID ${id} not found.`);
+        console.warn(`Lieu avec l'ID ${id} introuvable.`);
         return null;
       }
       await place.update(updateData);
       return place;
     } catch (error) {
-      console.error(`Error updating place with ID ${id}:`, error);
+      console.error(`Erreur lors de la mise à jour du lieu avec l'ID ${id} :`, error);
       throw error;
     }
   }
 
-  // Delete a place
+  // Supprimer un lieu
   static async deletePlace(id: number): Promise<{ message: string } | null> {
     try {
       const place = await Place.findByPk(id);
       if (!place) {
-        console.warn(`Place with ID ${id} not found.`);
+        console.warn(`Lieu avec l'ID ${id} introuvable.`);
         return null;
       }
       await place.destroy();
-      return { message: `Place with ID ${id} deleted.` };
+      return { message: `Lieu avec l'ID ${id} supprimé.` };
     } catch (error) {
-      console.error(`Error deleting place with ID ${id}:`, error);
+      console.error(`Erreur lors de la suppression du lieu avec l'ID ${id} :`, error);
       throw error;
     }
   }

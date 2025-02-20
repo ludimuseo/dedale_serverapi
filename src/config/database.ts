@@ -1,5 +1,5 @@
 // Init Sequelize and connect to DB
-import { Sequelize, DataTypes } from "sequelize";
+import { Sequelize } from "sequelize";
 const sequelize = new Sequelize(
  'dev-dedale_serverapi',
  'dev-dedale_serverapi',

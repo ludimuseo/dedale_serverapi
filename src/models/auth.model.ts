@@ -1,7 +1,9 @@
+//auth.model.ts
+
 import sequelize from "../config/database";
 import { DataTypes, Model, Optional } from "sequelize";
-import { User } from "../schemes/user.scheme";
-import { UserInstance } from './user.scheme';
+import { User } from "./users.model";
+import { UserInstance } from './users.model';
 
 // Définir l'interface des attributs d'Auth (pour la création, la mise à jour, etc.)
 interface AuthAttributes {

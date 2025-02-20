@@ -1,14 +1,10 @@
 // places.controller.ts
 
-import { Request, Response,NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { PlacesService } from "../services/places.service";
 import { validationResult } from "express-validator";
-import { AuthenticatedRequest } from "../utils/types";
 
-
-/**
- * Récupérer tous les lieux
- */
+/** Récupérer tous les lieux */
 export const getAllPlaces = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const places = await PlacesService.getAllPlaces();
@@ -18,9 +14,7 @@ export const getAllPlaces = async (_req: Request, res: Response, next: NextFunct
   }
 };
 
-/**
- * Récupérer un lieu par son ID
- */
+/** Récupérer un lieu par son ID */
 export const getPlaceById = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -28,7 +22,11 @@ export const getPlaceById = async (req: Request, res: Response, next: NextFuncti
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10); 
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID invalide" });
+    }
+
     const place = await PlacesService.getPlaceById(id);
     if (!place) {
       return res.status(404).json({ message: `Lieu avec l'ID ${id} introuvable.` });
@@ -39,11 +37,8 @@ export const getPlaceById = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-/**
- * Ajouter un nouveau lieu
- */
+/** Ajouter un nouveau lieu */
 export const createPlace = async (req: Request, res: Response, next: NextFunction) => {
-  const typedReq = req as AuthenticatedRequest;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -51,17 +46,14 @@ export const createPlace = async (req: Request, res: Response, next: NextFunctio
 
   try {
     const placeData = req.body;
-    const newPlace = await PlacesService.addPlace(placeData, typedReq);
-    
-    res.status(201).json({ message: "Lieu ajouté avec succès", placeId: newPlace});
+    const newPlace = await PlacesService.addPlace(placeData); 
+    res.status(201).json({ message: "Lieu ajouté avec succès", placeId: newPlace.id });
   } catch (error) {
     next(error);
   }
 };
 
-/**
- * Mettre à jour un lieu existant
- */
+/** Mettre à jour un lieu existant */
 export const updatePlace = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -69,7 +61,11 @@ export const updatePlace = async (req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10); 
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID invalide" });
+    }
+
     const updateData = req.body;
     await PlacesService.updatePlace(id, updateData);
     res.status(200).json({ message: `Lieu ${id} mis à jour avec succès.` });
@@ -78,9 +74,7 @@ export const updatePlace = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-/**
- * Supprimer un lieu
- */
+/** Supprimer un lieu */
 export const deletePlace = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -88,7 +82,11 @@ export const deletePlace = async (req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10); 
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID invalide" });
+    }
+
     await PlacesService.deletePlace(id);
     res.status(200).json({ message: `Lieu ${id} supprimé avec succès.` });
   } catch (error) {

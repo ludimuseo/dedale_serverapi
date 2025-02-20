@@ -26,7 +26,7 @@ export const getStepById = async (req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     const step = await StepsService.getStepById(id);
     if (!step) {
       return res.status(404).json({ message: `Étape avec l'ID ${id} introuvable.` });
@@ -65,9 +65,9 @@ export const updateStep = async (req: Request, res: Response, next: NextFunction
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     const updateData = req.body;
-    await StepsService.updateSteps(id, updateData);
+    await StepsService.updateStep(id, updateData);
     res.status(200).json({ message: `Étape ${id} mise à jour avec succès.` });
   } catch (error) {
     next(error);
@@ -84,8 +84,8 @@ export const deleteStep = async (req: Request, res: Response, next: NextFunction
   }
 
   try {
-    const { id } = req.params;
-    await StepsService.deleteSteps(id);
+    const id = parseInt(req.params.id, 10);
+    await StepsService.deleteStep(id);
     res.status(200).json({ message: `Étape ${id} supprimée avec succès.` });
   } catch (error) {
     next(error);

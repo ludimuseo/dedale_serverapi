@@ -1,5 +1,8 @@
+//places.model.ts
+
+
 import sequelize from "../config/database";
-import { Sequelize, DataTypes } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 
 // Interface pour définir les attributs du modèle
 interface PlaceAttributes {
@@ -15,7 +18,7 @@ interface PlaceAttributes {
 }
 
 // Interface pour la création (permet l'absence de `id` car il est auto-incrémenté)
-interface PlaceCreationAttributes extends Optional<PlaceAttributes, "id"> {}
+export interface PlaceCreationAttributes extends Optional<PlaceAttributes, "id"> {}
 
 // Définition du modèle Place
 class Place extends Model<PlaceAttributes, PlaceCreationAttributes> implements PlaceAttributes {

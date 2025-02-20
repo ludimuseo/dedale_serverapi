@@ -1,10 +1,17 @@
 // users.service.ts
 
-import { User } from "../schemes/user.scheme";
+import { Request } from "express";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
+import { User, UserInstance, UserAttributes } from "../models/users.model";
+import { InferCreationAttributes } from "sequelize";
 
 export class UsersService {
+  static connectUser(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>) {
+    throw new Error("Method not implemented.");
+  }
   // Retrieve all users
-  static async getAllUsers(): Promise<InstanceType<typeof User>[]> {
+  static async getAllUsers(): Promise<UserInstance[]> {
     try {
       return await User.findAll();
     } catch (error) {
@@ -14,7 +21,7 @@ export class UsersService {
   }
 
   // Retrieve a user by ID
-  static async getUserById(id: number):Promise<InstanceType<typeof User> | null> { 
+  static async getUserById(id: number): Promise<UserInstance | null> {
     try {
       const user = await User.findByPk(id);
       if (!user) {
@@ -29,7 +36,7 @@ export class UsersService {
   }
 
   // Add a new user
-  static async addUser(userData: any): Promise<InstanceType<typeof User>> {
+  static async addUser(userData: InferCreationAttributes<UserInstance>): Promise<UserInstance> {
     try {
       const newUser = await User.create(userData);
       return newUser;
@@ -40,7 +47,7 @@ export class UsersService {
   }
 
   // Update an existing user
-  static async updateUser(id: number, updateData: any): Promise<InstanceType<typeof User> | null> {
+  static async updateUser(id: number, updateData: Partial<UserAttributes>): Promise<UserInstance | null> {
     try {
       const user = await User.findByPk(id);
       if (!user) {

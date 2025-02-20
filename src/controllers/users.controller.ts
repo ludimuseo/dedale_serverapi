@@ -2,8 +2,10 @@
 
 import { Request, Response, NextFunction } from "express";
 import { UsersService } from "../services/users.service";
+
 import { validationResult } from "express-validator";
 import { log } from "node:console";
+import Piece from "../models/pieces.model";
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -14,7 +16,7 @@ const SALT = Number(process.env.SALT);
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     
-    const user = await UsersService.connectUser(req);
+    const user = UsersService.connectUser(req);
     
     // If user disable return isActiveFalse
     if(user == "isActiveFalse"){return res.status(401).json({ message: "isActiveFalse"});}
@@ -49,7 +51,7 @@ export const getUserById = async (req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     const user = await UsersService.getUserById(id);
     if (!user) {
       return res.status(404).json({ message: `Utilisateur avec l'ID ${id} introuvable.` });
@@ -72,7 +74,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
   try {
     const userData = req.body;
     const newUser = await UsersService.addUser(userData);
-    res.status(201).json({ message: "Utilisateur ajouté avec succès", userId: newUser.id });
+    res.status(201).json({ message: "Utilisateur ajouté avec succès", userId: (newUser as Piece).id});
   } catch (error) {
     next(error);
   }
@@ -82,7 +84,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
  * Mettre à jour un utilisateur existant
  */
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+  const id = parseInt(req.params.id, 10);
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -112,7 +114,7 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
   }
 
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     const user = await UsersService.getUserById(id);
     if (!user) {
       return res.status(404).json({ message: `Utilisateur avec l'ID ${id} introuvable.` });

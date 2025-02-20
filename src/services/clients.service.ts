@@ -1,7 +1,7 @@
 // clients.service.ts = logique métier
 
-import Client from "../schemes/client.scheme";
-import Auth_Log from "../schemes/auth_log.scheme";
+import Client from "../models/clients.model";
+import Auth_Log from "../models/auth_log.model";
 
 export class ClientService {
   

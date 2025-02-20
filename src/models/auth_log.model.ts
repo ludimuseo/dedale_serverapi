@@ -1,3 +1,5 @@
+// auth_log.model.ts
+
 import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/database";  // Assure-toi que ce fichier exporte bien une instance Sequelize
 

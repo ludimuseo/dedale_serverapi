@@ -1,8 +1,8 @@
 // users_login.service.ts
 
-import { Auth } from "../schemes/auth.scheme";
-import  Auth_Log  from "../schemes/auth_log.scheme";
-import { User } from "../schemes/user.scheme";
+import { Auth } from "../models/auth.model";
+import  Auth_Log  from "../models/auth_log.model";
+import { User } from "../models/users.model";
 
 import sequelize from "../config/database";
 

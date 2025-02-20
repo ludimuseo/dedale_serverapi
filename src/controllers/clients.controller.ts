@@ -3,7 +3,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ClientService } from "../services/clients.service";
 import { validationResult } from "express-validator";
-import { AuthenticatedRequest } from "../utils/types";
 
 /**
  * Récupérer la liste des clients
@@ -41,7 +40,7 @@ export const getClientById = async (req: Request, res: Response, next: NextFunct
 /**
  * Créer un nouveau client
  */
-export const createClient = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const createClient = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });

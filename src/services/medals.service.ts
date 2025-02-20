@@ -1,72 +1,61 @@
 // medals.service.ts
 
-import Medal from "../schemes/medal.scheme";
+import  { Medal, MedalAttributes, MedalCreationAttributes } from "../models/medals.model";
 
 export class MedalService {
-  // Retrieve all medals
-  static async getAllMedals(): Promise<InstanceType<typeof Medal>[]> {
+  // Récupérer toutes les médailles
+  static async getAllMedals(): Promise<Medal[]> {
     try {
       return await Medal.findAll();
     } catch (error) {
-      console.error("Error retrieving medals:", error);
+      console.error("Erreur lors de la récupération des médailles :", error);
       throw error;
     }
   }
 
-  // Retrieve a medal by ID
-  static async getMedalById(id: number): Promise<InstanceType<typeof Medal> | null> {
+  // Récupérer une médaille par ID
+  static async getMedalById(id: number): Promise<Medal | null> {
+    try {
+      return await Medal.findByPk(id);
+    } catch (error) {
+      console.error(`Erreur lors de la récupération de la médaille ID ${id} :`, error);
+      throw error;
+    }
+  }
+
+  // Ajouter une médaille
+  static async addMedal(medalData: MedalCreationAttributes): Promise<Medal> {
+    try {
+      return await Medal.create(medalData);
+    } catch (error) {
+      console.error("Erreur lors de l'ajout d'une médaille :", error);
+      throw error;
+    }
+  }
+
+  // Mettre à jour une médaille
+  static async updateMedal(id: number, updateData: Partial<MedalAttributes>): Promise<Medal | null> {
     try {
       const medal = await Medal.findByPk(id);
       if (!medal) {
-        console.warn(`Medal with ID ${id} not found.`);
-        return null;
-      }
-      return medal;
-    } catch (error) {
-      console.error(`Error retrieving medal with ID ${id}:`, error);
-      throw error;
-    }
-  }
-
-  // Add a new medal
-  static async addMedal(medalData: any): Promise<InstanceType<typeof Medal>> {
-    try {
-      const newMedal = await Medal.create(medalData);
-      return newMedal;
-    } catch (error) {
-      console.error("Error adding medal:", error);
-      throw error;
-    }
-  }
-
-  // Update an existing medal
-  static async updateMedal(id: number, updateData: any): Promise<InstanceType<typeof Medal> | null> {
-    try {
-      const medal = await Medal.findByPk(id);
-      if (!medal) {
-        console.warn(`Medal with ID ${id} not found.`);
+        console.warn(`Médaille avec l'ID ${id} introuvable.`);
         return null;
       }
       await medal.update(updateData);
       return medal;
     } catch (error) {
-      console.error(`Error updating medal with ID ${id}:`, error);
+      console.error(`Erreur lors de la mise à jour de la médaille ID ${id} :`, error);
       throw error;
     }
   }
 
-  // Delete a medal
-  static async deleteMedal(id: number): Promise<{ message: string } | null> {
+  // Supprimer une médaille
+  static async deleteMedal(id: number): Promise<boolean> {
     try {
-      const medal = await Medal.findByPk(id);
-      if (!medal) {
-        console.warn(`Medal with ID ${id} not found.`);
-        return null;
-      }
-      await medal.destroy();
-      return { message: `Medal with ID ${id} deleted.` };
+      const deleted = await Medal.destroy({ where: { id } });
+      return deleted > 0;
     } catch (error) {
-      console.error(`Error deleting medal with ID ${id}:`, error);
+      console.error(`Erreur lors de la suppression de la médaille ID ${id} :`, error);
       throw error;
     }
   }

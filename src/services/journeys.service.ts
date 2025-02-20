@@ -1,10 +1,11 @@
 // journeys.service.ts
 
-import Journey from "../schemes/journey.scheme";
+import { Model } from "sequelize";
+import Journey from "../models/journeys.model";
 
 export class JourneyService {
   // Retrieve all journeys
-  static async getAllJourneys(): Promise<InstanceType<typeof Journey>[]> {
+  static async getAllJourneys(): Promise<Model[]> {
     try {
       return await Journey.findAll();
     } catch (error) {
@@ -14,7 +15,7 @@ export class JourneyService {
   }
 
   // Retrieve a journey by ID
-  static async getJourneyById(id: number): Promise<InstanceType<typeof Journey> | null> {
+  static async getJourneyById(id: number): Promise<Model | null> {
     try {
       const journey = await Journey.findByPk(id);
       if (!journey) {
@@ -29,7 +30,7 @@ export class JourneyService {
   }
 
   // Add a new journey
-  static async addJourney(journeyData: any): Promise<InstanceType<typeof Journey>> {
+  static async addJourney(journeyData: any): Promise<Model> {
     try {
       const newJourney = await Journey.create(journeyData);
       return newJourney;
@@ -40,7 +41,7 @@ export class JourneyService {
   }
 
   // Update an existing journey
-  static async updateJourney(id: number, updateData: any): Promise<InstanceType<typeof Journey> | null> {
+  static async updateJourney(id: number, updateData: Partial<any>): Promise<Model | null> {
     try {
       const journey = await Journey.findByPk(id);
       if (!journey) {

@@ -1,10 +1,11 @@
-//pieces.service.ts
+// pieces.service.ts
 
-import Piece from "../schemes/piece.scheme";
+import { Model } from "sequelize";
+import Piece from "../models/pieces.model";
 
 export class PieceService {
   // Retrieve all pieces
-  static async getAllPieces(): Promise<InstanceType<typeof Piece>[]> {
+  static async getAllPieces(): Promise<Model[]> {
     try {
       return await Piece.findAll();
     } catch (error) {
@@ -14,7 +15,7 @@ export class PieceService {
   }
 
   // Retrieve a piece by ID
-  static async getPieceById(id: number): Promise<InstanceType<typeof Piece> | null> {
+  static async getPieceById(id: number): Promise<Model | null> {
     try {
       const piece = await Piece.findByPk(id);
       if (!piece) {
@@ -29,7 +30,7 @@ export class PieceService {
   }
 
   // Add a new piece
-  static async addPiece(pieceData: any): Promise<InstanceType<typeof Piece>> {
+  static async addPiece(pieceData: any): Promise<Model> {
     try {
       const newPiece = await Piece.create(pieceData);
       return newPiece;
@@ -40,7 +41,7 @@ export class PieceService {
   }
 
   // Update an existing piece
-  static async updatePiece(id: number, updateData: any): Promise<InstanceType<typeof Piece> | null> {
+  static async updatePiece(id: number, updateData: any): Promise<Model | null> {
     try {
       const piece = await Piece.findByPk(id);
       if (!piece) {
@@ -71,3 +72,4 @@ export class PieceService {
     }
   }
 }
+

@@ -1,5 +1,7 @@
+//medals.model.ts = modèle sequelize
+
+import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/database";
-import { Sequelize, DataTypes } from "sequelize";
 
 // Interface pour définir les attributs du modèle
 export interface MedalAttributes {
@@ -18,8 +20,8 @@ class Medal extends Model<MedalAttributes, MedalCreationAttributes> implements M
   public id!: number;
   public image!: string;
   public level!: number;
-  public place_id !: string;
-  public journey_id !: string;
+  public place_id !: string; // Changement STRING -> INTEGER si c'est une FK (Sequelize gèrera plus facilement les associations)
+  public journey_id !: string; // Changement STRING -> INTEGER si c'est une FK
 }
 
 // Initialisation du modèle Sequelize
@@ -57,4 +59,4 @@ Medal.init(
   }
 );
 
-export default Medal;
+export { Medal, MedalCreationAttributes };
