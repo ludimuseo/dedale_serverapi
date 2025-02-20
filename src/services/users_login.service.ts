@@ -26,7 +26,7 @@ export class UsersLoginService {
       include: [
         {
           model: User,
-          required: true, // Assurez-vous que User est chargé avec Auth
+          required: true,
         },
       ],
     });

@@ -14,11 +14,9 @@ export const logs = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const authReq = req as AuthenticatedRequest;
-    await securedLogs.logs(authReq);
+    const dataLogs = await securedLogs.logs(authReq);
 
-    res.status(201).json({
-      message: 'logs.',
-    });
+    res.status(200).json( dataLogs );
   } catch (error) {
     next(error);
   }

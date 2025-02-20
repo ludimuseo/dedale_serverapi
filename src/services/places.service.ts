@@ -61,9 +61,11 @@ export class PlacesService {
     } else {
       const timestamp: number = Math.floor(Date.now() / 1000);
       const userAgent: string = req.headers['user-agent'] ?? 'Unknown';
+      const cleanIp = req.socket.remoteAddress?.includes("::ffff:") ? req.socket.remoteAddress.split("::ffff:")[1] : req.socket.remoteAddress ?? "Unknown";
+      
       await Auth_Log.create({
         login_attempt: timestamp,
-        ip_adresse: req.socket.remoteAddress ?? 'Unknown',
+        ip_adresse: cleanIp,
         user_agent: userAgent,
         status: 'failure',
         reason: 'unauthorized: ' + req.url,
