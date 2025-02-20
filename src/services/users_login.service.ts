@@ -63,7 +63,6 @@ export class UsersLoginService {
       });
 
       data = {
-        // userId: authUser.id,
         token: tokenUser,
         name: user.name,
         firstname: user.firstname,
