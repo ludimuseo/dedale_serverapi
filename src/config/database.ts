@@ -14,7 +14,7 @@ const sequelize = new Sequelize(
 );
 sequelize
   .authenticate()
-  .then(() => {
+  .then(async () => {
     console.log('Connection has been established successfully.');
     // await sequelize.sync();
     console.log('All models were synchronized successfully.');

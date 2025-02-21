@@ -6,7 +6,7 @@ const Place = sequelize.define(
   {
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       primaryKey: true,
       autoIncrement: true,
     },
@@ -33,6 +33,26 @@ const Place = sequelize.define(
     isActive: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
+    },
+    created_at: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: () => Math.floor(Date.now() / 1000),
+    },
+    updated_at: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    client_id: {
+      // Clé étrangère
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'client', // Nom de la table référencée
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
     },
   },
   {

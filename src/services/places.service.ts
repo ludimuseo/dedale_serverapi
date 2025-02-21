@@ -6,7 +6,7 @@ import { AuthenticatedRequest } from '../utils/types';
 import { PlaceScheme } from '../schemes/places.scheme';
 import Auth_Log from '../schemes/auth_log.scheme';
 import Place from '../schemes/place.scheme';
-import Medal from '../schemes/medal.scheme';
+// import Medal from '../schemes/medal.scheme';
 // import Description from '../schemes/description.scheme';
 
 export class PlacesService {
@@ -77,11 +77,11 @@ export class PlacesService {
     }
 
     try {
-      if (req.body.medalId !== null) {
-        await Medal.findOne({
-          where: { id: req.body.medalId },
-        });
-      }
+      // if (req.body.medalId !== null) {
+      //   await Medal.findOne({
+      //     where: { id: req.body.medalId },
+      //   });
+      // }
 
       // const adress = req.body.address;
       // const audio = req.body.audio;
@@ -98,7 +98,7 @@ export class PlacesService {
 
       // Add place in DB and get id
       const createPlace = await Place.create({
-        medal_id: req.body.medalId,
+        client_id: req.body.clientId,
         lat: coords.lat,
         long: coords.lon,
         type: content.type,
@@ -107,7 +107,7 @@ export class PlacesService {
         isActive: status.isActive,
         location_required: coords.isLocationRequired,
       });
-      console.log(req.body.description);
+      // console.log(req.body.description);
       return createPlace.dataValues.id;
 
       // Add description in DB

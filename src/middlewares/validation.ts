@@ -76,7 +76,7 @@ const clientUpdateFields = {
 
 // Champs pour la création d'un lieu
 const lieuFields = {
-  'medalId': 'integer',
+  'clientId': 'integer',
   'address.address': 'string',
   'address.city': 'string',
   'address.country': 'string',
