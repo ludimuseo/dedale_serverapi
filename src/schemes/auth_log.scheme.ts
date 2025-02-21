@@ -1,9 +1,9 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database'; // Assure-toi que ce fichier exporte bien une instance Sequelize
 
 // Définir les attributs du modèle
 interface Auth_LogAttributes {
-  log_id: number;
+  log_id?: number;
   login_attempt: number;
   ip_adresse: string;
   user_agent: string;
@@ -13,12 +13,12 @@ interface Auth_LogAttributes {
 }
 
 // Permettre la création de logs sans définir `log_id` (auto-incrémenté)
-interface Auth_LogCreationAttributes
-  extends Optional<Auth_LogAttributes, 'log_id'> {}
+// interface Auth_LogCreationAttributes
+//   extends Optional<Auth_LogAttributes, 'log_id'> {}
 
 // Définition du modèle Sequelize
-class Auth_Log
-  extends Model<Auth_LogAttributes, Auth_LogCreationAttributes>
+export class Auth_Log
+  extends Model<Auth_LogAttributes>
   implements Auth_LogAttributes
 {
   public log_id!: number;
