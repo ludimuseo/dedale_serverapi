@@ -78,11 +78,9 @@ export class UsersLoginService {
       userID = authUser.id;
       reason = 'Login success';
       success = true;
-      // return data;
     } else {
       reason = 'Password invalid';
       success = false;
-      // return null;
     }
 
     !user?.isActive ? (reason = 'User inactive') : null;
