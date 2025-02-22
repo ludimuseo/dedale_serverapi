@@ -1,3 +1,3 @@
-# backoffice-backend
+# dedale_serverapi
 
-Backend application web Dedale
+Dedale Server API
