@@ -84,7 +84,6 @@ export const activePlace = async (
   try {
     const authReq = req as AuthenticatedRequest;
     const activePlace = await PlacesService.activePlace(authReq);
-    console.log(activePlace);
 
     res.status(activePlace.httpCode).json();
   } catch (error) {
