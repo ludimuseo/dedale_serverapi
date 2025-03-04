@@ -9,7 +9,7 @@ const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
 const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN;
 const SALT = Number(process.env.SALT);
 
-const passwd = 'yourPassword';
+const passwd = 'admin1234?^qdqdFQDFQFCqvqsdvqùvds';
 
 bcrypt
   .genSalt(SALT)
