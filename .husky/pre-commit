@@ -1,1 +1,4 @@
-npm run fix
+#!/bin/sh
+set -e
+
+npx lint-staged
