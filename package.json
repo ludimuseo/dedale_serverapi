@@ -14,7 +14,19 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "lint-staged": {
+    "**/*.{js,mjs,cjs,ts}": [
+      "eslint --fix",
+      "prettier --check --write --ignore-unknown"
+    ],
+    "!(*.js|*.mjs|*.cjs|*.ts)": [
+      "prettier --check --write --ignore-unknown"
+    ]
+  },
   "devDependencies": {
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
+    "@commitlint/types": "^19.5.0",
     "@eslint/js": "^9.20.0",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
@@ -24,7 +36,9 @@
     "eslint-plugin-prettier": "^5.2.3",
     "globals": "^15.15.0",
     "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
     "prettier": "^3.5.1",
+    "semantic-commit-emoji": "^2.0.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.2",
@@ -37,7 +51,7 @@
     "express-validator": "^7.2.1",
     "firebase": "^11.0.2",
     "firebase-admin": "^13.0.1",
-    "mysql2": "^3.12.0",
+    "mariadb": "^3.4.0",
     "sequelize": "^6.37.5"
   }
 }

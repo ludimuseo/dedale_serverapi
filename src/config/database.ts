@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
   process.env.DB_PASSWD ?? '',
   {
     host: process.env.CLUSTER_ADDR ?? '',
-    dialect: 'mysql',
+    dialect: 'mariadb',
     // logging: console.log,
   }
 );
