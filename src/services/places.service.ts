@@ -160,7 +160,7 @@ export class PlacesService {
     try {
       const place = await Place.findOne({
         where: { id: req.body.place_id },
-      }); 
+      });
       if (place) {
         // Place exist
         const update = await Place.update(
