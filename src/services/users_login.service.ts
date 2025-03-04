@@ -22,7 +22,7 @@ export class UsersLoginService {
     let isMatch;
 
     const authUser = await Auth.findOne({
-      where: { email: req.body.login },
+      where: { email: req.body.email },
       include: [
         {
           model: User,
@@ -37,7 +37,7 @@ export class UsersLoginService {
 
     // console.log(user?.isActive);
     if (authUser) {
-      isMatch = await bcrypt.compare(req.body.passwd, authUser.password);
+      isMatch = await bcrypt.compare(req.body.password, authUser.password);
     }
 
     if (isMatch && user?.isActive && authUser) {

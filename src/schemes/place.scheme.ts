@@ -10,12 +10,20 @@ const Place = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    lat: {
+    createdBy: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    name: {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    lat: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
     long: {
-      type: DataTypes.STRING,
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
     type: {
@@ -26,12 +34,29 @@ const Place = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    location_required: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     isPublished: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
     isActive: {
       type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
+    clientId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    createdAt: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    updatedAt: {
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
   },

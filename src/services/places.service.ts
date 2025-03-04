@@ -6,8 +6,10 @@ import { AuthenticatedRequest } from '../utils/types';
 import { PlaceScheme } from '../schemes/places.scheme';
 import Auth_Log from '../schemes/auth_log.scheme';
 import Place from '../schemes/place.scheme';
-import Medal from '../schemes/medal.scheme';
-// import Description from '../schemes/description.scheme';
+// import Medal from '../schemes/medal.scheme';
+import Description from '../schemes/description.scheme';
+import { DescriptionData } from '../schemes/description.scheme';
+
 
 export class PlacesService {
   // Récupérer toutes les lieux
@@ -51,11 +53,11 @@ export class PlacesService {
   static async addPlace(req: AuthenticatedRequest) {
     // On retourne l'ID du lieu
 
-    // Only for AWNER, ADMIN, SUPERADMIN
+    // Only for OWNER, ADMIN, SUPERADMIN
     if (!req.auth) {
       throw new Error('Authentification requise');
     }
-    const role = req.auth.role.split('|');
+    const role = req.auth.role;
     if (['OWNER', 'ADMIN', 'SUPERADMIN'].some((r) => role.includes(r))) {
       null;
     } else {
@@ -77,52 +79,52 @@ export class PlacesService {
     }
 
     try {
-      if (req.body.medalId !== null) {
-        await Medal.findOne({
-          where: { id: req.body.medalId },
-        });
-      }
-
-      // const adress = req.body.address;
-      // const audio = req.body.audio;
-      const content = req.body.content;
-      const coords = req.body.coords;
-      // const description = req.body.description;
-      // const name = req.body.name;
-      const status = req.body.status;
 
       // Check content.type
-      if (!['MUSEUM', 'CASTLE', 'OUTDOOR'].includes(content.type)) {
+      if (!['MUSEUM', 'CASTLE', 'OUTDOOR'].includes(req.body.place.type)) {
         return { error: "Type must be 'MUSEUM', 'CASTLE' or 'OUTDOOR'." };
       }
-
+      
       // Add place in DB and get id
-      const createPlace = await Place.create({
-        medal_id: req.body.medalId,
-        lat: coords.lat,
-        long: coords.lon,
-        type: content.type,
-        image: content.image,
-        isPublished: status.isPublished,
-        isActive: status.isActive,
-        location_required: coords.isLocationRequired,
-      });
-      console.log(req.body.description);
-      return createPlace.dataValues.id;
 
+      const createPlace = await Place.create({
+        createdBy: req.body.place.createdBy,
+        clientId: req.body.place.clientId,
+        name: req.body.place.name,
+        lat: req.body.place.lat,
+        long: req.body.place.lon,
+        type: req.body.place.type,
+        image: req.body.place.image,
+        location_required: req.body.place.locationRequired ?? false,
+        isPublished: req.body.place.isPublished ?? false,
+        isActive: req.body.place.isActive ?? false,
+        
+      });
+            
       // Add description in DB
-      // const createDescription = await Description.create({
-      //   place_id: createPlace.dataValues.id,
-      //   code_language: coords.lat,
-      //   standard_title: coords.lon,
-      //   standard: content.type,
-      //   falc: content.image,
-      //   falc_certified: status.isPublished,
-      //   audio: status.isActive,
-      //   audio_falc: coords.isLocationRequired,
-      //   createdAt: coords.isLocationRequired,
-      //   updatedAt: coords.isLocationRequired,
-      // });
+      // check if desc exist
+    if (req.body.description && req.body.description.length > 0) {
+      const descriptionsToInsert = req.body.description.map((desc: DescriptionData) => ({
+        place_id: createPlace.dataValues.id,
+        desc_language: desc.desc_language,
+        clientId: desc.clientId,
+        desc_id: desc.desc_id,
+        desc_order: desc.desc_order,
+        text: desc.text,
+        image_file: desc.image_file,
+        image_alt: desc.image_alt,
+        audio_file: desc.audio_file,
+        audio_desc: desc.audio_desc,
+        is_falc: desc.is_falc ?? false,
+        is_certified_falc: desc.is_certified_falc ?? false,
+        createdby: desc.createdby ?? 0,
+        certifiedBy: desc.certifiedBy ?? null,
+      }));
+
+      // Send all description in DB
+      await Description.bulkCreate(descriptionsToInsert);
+      return createPlace.dataValues.id;
+    }
     } catch (error) {
       console.error("Erreur lors de l'ajout du lieu:", error);
       return { error: 'Erreur interne du serveur' };
