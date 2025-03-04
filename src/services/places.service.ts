@@ -51,16 +51,14 @@ export class PlacesService {
   // Ajouter un nouveau lieu
   static async addPlace(req: AuthenticatedRequest) {
     // On retourne l'ID du lieu
-
     // Only for OWNER, ADMIN, SUPERADMIN
-    if (!req.auth) {
-      throw new Error('Authentification requise');
-    }
+    
     const role = req.auth.role;
+    const timestamp: number = Math.floor(Date.now() / 1000);
+
     if (['OWNER', 'ADMIN', 'SUPERADMIN'].some((r) => role.includes(r))) {
       null;
     } else {
-      const timestamp: number = Math.floor(Date.now() / 1000);
       const userAgent: string = req.headers['user-agent'] ?? 'Unknown';
       const cleanIp = req.socket.remoteAddress?.includes('::ffff:')
         ? req.socket.remoteAddress.split('::ffff:')[1]
@@ -74,19 +72,19 @@ export class PlacesService {
         reason: 'unauthorized: ' + req.url,
         authId: req.auth.userId,
       });
-      return { error: 'Access denied.' };
+      return {httpCode: 401};
     }
 
     try {
       // Check content.type
       if (!['MUSEUM', 'CASTLE', 'OUTDOOR'].includes(req.body.place.type)) {
-        return { error: "Type must be 'MUSEUM', 'CASTLE' or 'OUTDOOR'." };
+        return { httpCode: 400, message: "Type must be 'MUSEUM', 'CASTLE' or 'OUTDOOR'." };
       }
 
       // Add place in DB and get id
 
       const createPlace = await Place.create({
-        createdBy: req.body.place.createdBy,
+        createdBy: req.auth.userId,
         clientId: req.body.place.clientId,
         name: req.body.place.name,
         lat: req.body.place.lat,
@@ -96,6 +94,7 @@ export class PlacesService {
         location_required: req.body.place.locationRequired ?? false,
         isPublished: req.body.place.isPublished ?? false,
         isActive: req.body.place.isActive ?? false,
+        createdAt: timestamp,
       });
 
       // Add description in DB
@@ -114,19 +113,17 @@ export class PlacesService {
             audio_file: desc.audio_file,
             audio_desc: desc.audio_desc,
             is_falc: desc.is_falc ?? false,
-            is_certified_falc: desc.is_certified_falc ?? false,
-            createdby: desc.createdby ?? 0,
-            certifiedBy: desc.certifiedBy ?? null,
+            createdby: req.auth.userId,
           })
         );
 
         // Send all description in DB
         await Description.bulkCreate(descriptionsToInsert);
-        return createPlace.dataValues.id;
+        return { httpCode: 201};
       }
     } catch (error) {
       console.error("Erreur lors de l'ajout du lieu:", error);
-      return { error: 'Erreur interne du serveur' };
+      return { httpCode: 500 };
     }
   }
 
