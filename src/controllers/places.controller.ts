@@ -74,6 +74,24 @@ export const createPlace = async (
 };
 
 /**
+ * Activer/Desactiver un lieu
+ */
+export const activePlace = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const authReq = req as AuthenticatedRequest;
+    const activePlace = await PlacesService.activePlace(authReq);
+
+    res.status(activePlace.httpCode).json();
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * Mettre à jour un lieu existant
  */
 export const updatePlace = async (

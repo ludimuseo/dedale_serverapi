@@ -130,6 +130,61 @@ export class PlacesService {
     }
   }
 
+  // Activer/Desactiver un lieu
+  static async activePlace(req: AuthenticatedRequest) {
+    // On retourne l'ID du lieu
+
+    // Only for OWNER, ADMIN, SUPERADMIN
+
+    const role = req.auth.role;
+    if (['OWNER'].some((r) => role.includes(r))) {
+      null;
+    } else {
+      const timestamp: number = Math.floor(Date.now() / 1000);
+      const userAgent: string = req.headers['user-agent'] ?? 'Unknown';
+      const cleanIp = req.socket.remoteAddress?.includes('::ffff:')
+        ? req.socket.remoteAddress.split('::ffff:')[1]
+        : (req.socket.remoteAddress ?? 'Unknown');
+
+      await Auth_Log.create({
+        login_attempt: timestamp,
+        ip_adresse: cleanIp,
+        user_agent: userAgent,
+        status: 'failure',
+        reason: 'unauthorized: ' + req.url,
+        authId: req.auth.userId,
+      });
+      return { httpCode: 403 };
+    }
+
+    try {
+      const place = await Place.findOne({
+        where: { id: req.body.place_id },
+      });
+      if (place) {
+        // Place exist
+        const update = await Place.update(
+          { isActive: req.body.isActive },
+          {
+            where: {
+              id: req.body.place_id,
+            },
+          }
+        );
+        if (update) {
+          return { httpCode: 200 };
+        } else {
+          throw new Error();
+        }
+      } else {
+        return { httpCode: 404 };
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'activation/désaction:", error);
+      return { httpCode: 500 };
+    }
+  }
+
   // Mettre à jour un lieu existant
   static async updatePlace(
     id: string,
