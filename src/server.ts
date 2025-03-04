@@ -22,14 +22,14 @@ app.use(express.json());
 // Routes
 app.use('/api/clients', clientsRouter);
 app.use('/logs', logsRouter);
-app.use('/places', placesRouter);
+app.use('/api/places', placesRouter);
 app.use('/games', gamesRouter);
 app.use('/journeys', journeysRouter);
 app.use('/steps', stepsRouter);
 app.use('/pieces', piecesRouter);
 app.use('/medals', medalsRouter);
-app.use('/users', usersRouter);
-app.use('/auth', authRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/auth', authRouter);
 app.use(errorHandler);
 
 //--------------------------------------------------------------

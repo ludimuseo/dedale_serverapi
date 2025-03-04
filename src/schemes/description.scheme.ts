@@ -1,6 +1,22 @@
 import sequelize from '../config/database';
 import { DataTypes } from 'sequelize';
 
+export interface DescriptionData {
+  desc_language: string;
+  clientId: number;
+  desc_id: number;
+  desc_order: number;
+  text: string;
+  image_file: string;
+  image_alt: string;
+  audio_file: string;
+  audio_desc: string;
+  is_falc?: boolean;
+  is_certified_falc?: boolean;
+  createdby?: number;
+  certifiedBy?: number | null;
+}
+
 const Description = sequelize.define(
   'description',
   {
@@ -10,166 +26,71 @@ const Description = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    trad_type: {
+    place_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'place', // Assurez-vous que le modèle Place est bien défini
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
+    desc_language: {
+      type: DataTypes.STRING(2),
+      allowNull: false,
+    },
+    clientId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    desc_order: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    text: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    image_file: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    trad_code: {
+    image_alt: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    trad_label: {
+    audio_file: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    trad_title: {
+    audio_desc: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    trad_creatAt: {
-      type: DataTypes.DATE,
+    createdby: {
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
-    trad_updateAt: {
-      type: DataTypes.DATE,
+    certifiedBy: {
+      type: DataTypes.INTEGER,
       allowNull: true,
+      defaultValue: 0,
     },
-    trad_isPublished: {
+    is_falc: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
+      defaultValue: false,
     },
-    trad_description_standard: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    trad_description_falc: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    trad_description_creatAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    trad_isValidate: {
+    is_certified_falc: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
-    },
-    trad_description_audio: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    description_falc_name: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    description_falc: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    description_audio_falc: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    description_certified_falc: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    description_falc_createAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    description_falc_updateAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    quiz_question_standard: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_question_falc: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_question_falc_certified: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_response_true_standard: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_response_true_falc: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_response_true_falc_certified: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_explanation_response_true_standard: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    quiz_explanation_response_true_falc: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    quiz_explanation_response_true_falc_certified: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    quiz_response_1_standard: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_response_1_falc: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_response_1_falc_certified: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_explanation_response_1_standard: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    quiz_explanation_response_1_falc: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    quiz_explanation_response_1_falc_certified: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    quiz_response_2_standard: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_response_2_falc: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_response_2_falc_certified: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    quiz_explanation_response_2_standard: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    quiz_explanation_response_2_falc: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    quiz_explanation_response_2_falc_certified: {
-      type: DataTypes.TEXT,
-      allowNull: true,
+      defaultValue: false,
     },
   },
   {
-    freezeTableName: true, // Empêche Sequelize d'ajouter un "s" à la fin du nom de la table
-    timestamps: false, // Dont add createdAt and updatedAt in the query
+    freezeTableName: true, // Empêche Sequelize d'ajouter un "s" au nom de la table
+    timestamps: false, // Ne pas ajouter createdAt et updatedAt automatiquement
   }
 );
 

@@ -14,6 +14,11 @@ export const validateId = [
 //-------------------------USERS-------------------------------------------
 
 // Champs pour la création d'un utilisateur
+const userLoginFields = {
+  'body.email': 'required_email', // Correction ici
+  'body.password': 'required_string',
+};
+
 const userFields = {
   'profile.username': 'required_string',
   'profile.email': 'required_email', // Correction ici
@@ -34,6 +39,7 @@ const userUpdateFields = {
 // Validation dynamique des utilisateurs
 export const validateUserCreation = generateValidationRules(userFields);
 export const validateUserUpdate = generateValidationRules(userUpdateFields);
+export const validateUserLogin = generateValidationRules(userLoginFields);
 
 //-------------------------CLIENTS-------------------------------------------
 

@@ -64,9 +64,10 @@ export const createPlace = async (
   try {
     const authReq = req as AuthenticatedRequest;
     const newPlace = await PlacesService.addPlace(authReq);
+
     res
       .status(201)
-      .json({ message: 'Lieu ajouté avec succès', placeId: newPlace.id });
+      .json({ message: 'Lieu ajouté avec succès', placeId: newPlace });
   } catch (error) {
     next(error);
   }

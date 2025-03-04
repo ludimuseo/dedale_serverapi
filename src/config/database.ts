@@ -10,11 +10,12 @@ const sequelize = new Sequelize(
   {
     host: process.env.CLUSTER_ADDR ?? '',
     dialect: 'mysql',
+    // logging: console.log,
   }
 );
 sequelize
   .authenticate()
-  .then(() => {
+  .then(async () => {
     console.log('Connection has been established successfully.');
     // await sequelize.sync();
     console.log('All models were synchronized successfully.');
