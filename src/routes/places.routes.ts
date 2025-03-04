@@ -10,14 +10,15 @@ import {
 } from '../controllers/places.controller';
 import { validateId, validateLieuCreation } from '../middlewares/validation';
 import auth from '../middlewares/auth';
+import noMobile from '../middlewares/noMobile';
 
 const router = Router();
 
 router.get('/list', getAllPlaces);
-router.post('/', auth, ...validateLieuCreation, createPlace);
+router.post('/', auth, noMobile, ...validateLieuCreation, createPlace);
 router.get('/find/:id', validateId, getPlaceById);
-router.post('/create', createPlace); // Ajouter des validations supplémentaires si nécessaire
-router.patch('/update/:id', validateId, updatePlace); // Ajouter des validations supplémentaires si nécessaire
-router.delete('/delete/:id', validateId, deletePlace);
+router.post('/create', auth, noMobile, createPlace); // Ajouter des validations supplémentaires si nécessaire
+router.patch('/update/:id', auth, noMobile, validateId, updatePlace); // Ajouter des validations supplémentaires si nécessaire
+router.delete('/delete/:id', auth, noMobile, validateId, deletePlace);
 
 export default router;
