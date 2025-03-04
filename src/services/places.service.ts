@@ -52,7 +52,7 @@ export class PlacesService {
   static async addPlace(req: AuthenticatedRequest) {
     // On retourne l'ID du lieu
     // Only for OWNER, ADMIN, SUPERADMIN
-    
+
     const role = req.auth.role;
     const timestamp: number = Math.floor(Date.now() / 1000);
 
@@ -72,13 +72,16 @@ export class PlacesService {
         reason: 'unauthorized: ' + req.url,
         authId: req.auth.userId,
       });
-      return {httpCode: 401};
+      return { httpCode: 401 };
     }
 
     try {
       // Check content.type
       if (!['MUSEUM', 'CASTLE', 'OUTDOOR'].includes(req.body.place.type)) {
-        return { httpCode: 400, message: "Type must be 'MUSEUM', 'CASTLE' or 'OUTDOOR'." };
+        return {
+          httpCode: 400,
+          message: "Type must be 'MUSEUM', 'CASTLE' or 'OUTDOOR'.",
+        };
       }
 
       // Add place in DB and get id
@@ -119,7 +122,7 @@ export class PlacesService {
 
         // Send all description in DB
         await Description.bulkCreate(descriptionsToInsert);
-        return { httpCode: 201};
+        return { httpCode: 201 };
       }
     } catch (error) {
       console.error("Erreur lors de l'ajout du lieu:", error);

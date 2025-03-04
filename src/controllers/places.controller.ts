@@ -65,16 +65,11 @@ export const createPlace = async (
     const authReq = req as AuthenticatedRequest;
     const newPlace = await PlacesService.addPlace(authReq);
 
-    if(newPlace) {
-      res
-      .status(newPlace.httpCode)
-      .json({ message: newPlace.message ?? null});
+    if (newPlace) {
+      res.status(newPlace.httpCode).json({ message: newPlace.message ?? null });
     } else {
-      res
-      .status(500)
-      .json();
+      res.status(500).json();
     }
-    
   } catch (error) {
     next(error);
   }
