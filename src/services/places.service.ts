@@ -135,7 +135,7 @@ export class PlacesService {
     // On retourne l'ID du lieu
 
     // Only for OWNER, ADMIN, SUPERADMIN
-    
+
     const role = req.auth.role;
     if (['OWNER'].some((r) => role.includes(r))) {
       null;
@@ -158,25 +158,27 @@ export class PlacesService {
     }
 
     try {
-      
       const place = await Place.findOne({
         where: { id: req.body.place_id },
       });
-      if(place) { // Place exist
+      if (place) {
+        // Place exist
         const update = await Place.update(
           { isActive: req.body.isActive },
           {
             where: {
               id: req.body.place_id,
             },
-          },
+          }
         );
-        if(update) {return { httpCode: 200 };} else { throw new Error(); }
-        
+        if (update) {
+          return { httpCode: 200 };
+        } else {
+          throw new Error();
+        }
       } else {
         return { httpCode: 404 };
       }
-      
     } catch (error) {
       console.error("Erreur lors de l'activation/désaction:", error);
       return { httpCode: 500 };
