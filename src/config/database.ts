@@ -10,7 +10,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.CLUSTER_ADDR ?? '',
     dialect: 'mysql',
-    logging: console.log
+    logging: console.log,
   }
 );
 sequelize

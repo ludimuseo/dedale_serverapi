@@ -75,17 +75,17 @@ const Description = sequelize.define(
     certifiedBy: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: 0, 
+      defaultValue: 0,
     },
     is_falc: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: false, 
+      defaultValue: false,
     },
     is_certified_falc: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: false, 
+      defaultValue: false,
     },
   },
   {

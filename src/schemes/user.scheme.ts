@@ -66,13 +66,21 @@ const User = sequelize.define<UserInstance>(
       allowNull: true,
     },
     role: {
-      type: DataTypes.ENUM("OWNER", "DEVELOPPER", "SUPERADMIN","ADMIN", "CONTRIBUTOR", "REFERENT", "CORRECTOR"),
+      type: DataTypes.ENUM(
+        'OWNER',
+        'DEVELOPPER',
+        'SUPERADMIN',
+        'ADMIN',
+        'CONTRIBUTOR',
+        'REFERENT',
+        'CORRECTOR'
+      ),
       allowNull: true,
     },
     isActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: '0'
+      defaultValue: '0',
     },
     authId: {
       // Clé étrangère

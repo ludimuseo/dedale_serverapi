@@ -10,7 +10,6 @@ import Place from '../schemes/place.scheme';
 import Description from '../schemes/description.scheme';
 import { DescriptionData } from '../schemes/description.scheme';
 
-
 export class PlacesService {
   // Récupérer toutes les lieux
   static async getAllPlaces(): Promise<(PlaceScheme & { id: string })[]> {
@@ -79,12 +78,11 @@ export class PlacesService {
     }
 
     try {
-
       // Check content.type
       if (!['MUSEUM', 'CASTLE', 'OUTDOOR'].includes(req.body.place.type)) {
         return { error: "Type must be 'MUSEUM', 'CASTLE' or 'OUTDOOR'." };
       }
-      
+
       // Add place in DB and get id
 
       const createPlace = await Place.create({
@@ -98,33 +96,34 @@ export class PlacesService {
         location_required: req.body.place.locationRequired ?? false,
         isPublished: req.body.place.isPublished ?? false,
         isActive: req.body.place.isActive ?? false,
-        
       });
-            
+
       // Add description in DB
       // check if desc exist
-    if (req.body.description && req.body.description.length > 0) {
-      const descriptionsToInsert = req.body.description.map((desc: DescriptionData) => ({
-        place_id: createPlace.dataValues.id,
-        desc_language: desc.desc_language,
-        clientId: desc.clientId,
-        desc_id: desc.desc_id,
-        desc_order: desc.desc_order,
-        text: desc.text,
-        image_file: desc.image_file,
-        image_alt: desc.image_alt,
-        audio_file: desc.audio_file,
-        audio_desc: desc.audio_desc,
-        is_falc: desc.is_falc ?? false,
-        is_certified_falc: desc.is_certified_falc ?? false,
-        createdby: desc.createdby ?? 0,
-        certifiedBy: desc.certifiedBy ?? null,
-      }));
+      if (req.body.description && req.body.description.length > 0) {
+        const descriptionsToInsert = req.body.description.map(
+          (desc: DescriptionData) => ({
+            place_id: createPlace.dataValues.id,
+            desc_language: desc.desc_language,
+            clientId: desc.clientId,
+            desc_id: desc.desc_id,
+            desc_order: desc.desc_order,
+            text: desc.text,
+            image_file: desc.image_file,
+            image_alt: desc.image_alt,
+            audio_file: desc.audio_file,
+            audio_desc: desc.audio_desc,
+            is_falc: desc.is_falc ?? false,
+            is_certified_falc: desc.is_certified_falc ?? false,
+            createdby: desc.createdby ?? 0,
+            certifiedBy: desc.certifiedBy ?? null,
+          })
+        );
 
-      // Send all description in DB
-      await Description.bulkCreate(descriptionsToInsert);
-      return createPlace.dataValues.id;
-    }
+        // Send all description in DB
+        await Description.bulkCreate(descriptionsToInsert);
+        return createPlace.dataValues.id;
+      }
     } catch (error) {
       console.error("Erreur lors de l'ajout du lieu:", error);
       return { error: 'Erreur interne du serveur' };
