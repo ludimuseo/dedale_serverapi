@@ -1,7 +1,7 @@
 {
   "name": "server_api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Serveur API du projet Dédale de LudiMuseo",
   "keywords": [
     "express",
     "typescript"
