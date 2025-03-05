@@ -6,7 +6,7 @@ import { AuthenticatedRequest } from '../utils/types';
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-// import { AuthLog } from './auth_log.service';
+import { AuthLog } from './auth_log.service';
 
 const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
 const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN;
@@ -92,7 +92,7 @@ export class UsersLoginService {
 
     success ? (successStatus = 'success') : (successStatus = 'failure');
 
-    // await AuthLog.save(req, reason);
+    await AuthLog.save(req, reason, userID);
 
     if (data) {
       return data;
