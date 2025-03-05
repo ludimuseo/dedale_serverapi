@@ -1,5 +1,5 @@
 // users.service.ts
-
+import { StringValue } from 'ms';
 import { Auth } from '../schemes/auth.scheme';
 import Auth_Log from '../schemes/auth_log.scheme';
 import { User } from '../schemes/user.scheme';
@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
-// const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN;
+const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN;
 
 export class UsersLoginService {
   static async connectUser(req: AuthenticatedRequest) {
@@ -58,8 +58,9 @@ export class UsersLoginService {
           'RANDOM_TOKEN_SECRET is not defined in environment variables.'
         );
       }
+      const expiresIn: StringValue = (TOKEN_EXPIRES_IN as StringValue) ?? '20H'; // Default expiration time = 1 day
       const tokenUser = jwt.sign({ userId: authUser.id }, RANDOM_TOKEN_SECRET, {
-        expiresIn: 72000,
+        expiresIn,
       });
 
       data = {
