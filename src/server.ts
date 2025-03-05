@@ -1,5 +1,7 @@
 //src/server.ts
 
+import https from 'https';
+import fs from 'fs';
 import express from 'express';
 import clientsRouter from './routes/clients.routes';
 import placesRouter from './routes/places.routes';
@@ -38,6 +40,21 @@ app.use(errorHandler);
 //TODO Tests avec Jest
 //--------------------------------------------------------------
 
-app.listen(4000, async () => {
-  console.log('Le serveur est lancé sur le port 4000');
-});
+// Active SSL only in server
+const MODE = process.env.MODE;
+if (MODE == 'SERVER') {
+  const options = {
+    cert: fs.readFileSync(
+      '/etc/letsencrypt/live/dev.ludimuseo.fr/fullchain.pem'
+    ),
+    key: fs.readFileSync('/etc/letsencrypt/live/dev.ludimuseo.fr/privkey.pem'),
+  };
+
+  https.createServer(options, app).listen(4000, () => {
+    console.log('HTTPS server listening on port 443');
+  });
+} else {
+  app.listen(4000, async () => {
+    console.log('Le serveur est lancé sur le port 4000');
+  });
+}
