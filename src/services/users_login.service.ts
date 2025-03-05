@@ -1,7 +1,6 @@
 // users.service.ts
 import { StringValue } from 'ms';
 import { Auth } from '../schemes/auth.scheme';
-import Auth_Log from '../schemes/auth_log.scheme';
 import { User } from '../schemes/user.scheme';
 import { AuthenticatedRequest } from '../utils/types';
 
@@ -16,8 +15,10 @@ export class UsersLoginService {
   static async connectUser(req: AuthenticatedRequest) {
     const timestamp: number = Math.floor(Date.now() / 1000);
     let success = false;
+    // @ts-ignore
     let successStatus = '';
     let data;
+    // @ts-ignore
     let userID;
     let reason;
     let isMatch;
