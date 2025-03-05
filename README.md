@@ -49,11 +49,20 @@ The main configuration file is located in `config/`. You can define database con
 
 ## Contributors
 
-| GitHub Profile | Avatar |
-|----------------|--------|
-| [@A-Fidele](https://github.com/A-Fidele) | ![Avatar](https://avatars.githubusercontent.com/u/128374528?v=4) |
-| [@Maeva-RODRIGUES](https://github.com/Maeva-RODRIGUES) | ![Avatar](https://avatars.githubusercontent.com/u/167294285?v=4) |
-| [@Eternal-Grace](https://github.com/Eternal-Grace) | ![Avatar](https://avatars.githubusercontent.com/u/[USER_ID]?v=4) |
-| [@fred2541](https://github.com/fred2541) | ![Avatar](https://avatars.githubusercontent.com/u/3463006?v=4) |
+| ~                                                                                                            | Contributors               |
+| ------------------------------------------------------------------------------------------------------------ | -------------------------- |
+| <img src="https://avatars.githubusercontent.com/u/167294285?v=4" width="50" alt="@Maeva-RODRIGUES avatar" /> | [@Maeva-RODRIGUES][User02] |
+| <img src="https://avatars.githubusercontent.com/u/91600327?v=4" width="50" alt="@Eternal-Grace avatar" />    | [@Eternal-Grace][User03]   |
+| <img src="https://avatars.githubusercontent.com/u/3463006?v=4" width="50" alt="@fred2541 avatar" />          | [@fred2541][User09]        |
+| <img src="https://avatars.githubusercontent.com/u/128374528?v=4" width="50" alt="@A-Fidele avatar" />        | [@A-Fidele][User01]        |
+
+
+[User01]: https://github.com/Maeva-RODRIGUES/
+[User02]: https://github.com/Eternal-Grace/
+[User03]: https://github.com/fred2541/
+[User04]: https://github.com/A-Fidele/
+
+
+---
 
 ```
