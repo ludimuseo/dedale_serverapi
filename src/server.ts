@@ -3,6 +3,8 @@
 import https from 'https';
 import fs from 'fs';
 import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
 import clientsRouter from './routes/clients.routes';
 import placesRouter from './routes/places.routes';
 import logsRouter from './routes/logs.routes';
@@ -19,6 +21,24 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.development' });
 
 const app = express();
+
+// Configuration Helmet
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
+
+// Configuration CORS pour autoriser toutes les origines
+app.use(
+  cors({
+    origin: '*', // Permet à toutes les origines d'accéder à l'API
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Méthodes HTTP autorisées
+    allowedHeaders: ['Content-Type', 'Authorization'], // Headers autorisés
+    credentials: true, // Permet d'envoyer des cookies si besoin
+  })
+);
+
 app.use(express.json());
 
 // Routes
