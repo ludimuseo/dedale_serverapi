@@ -7,16 +7,17 @@
     "format": "prettier . --write --check",
     "fix": "npm run lint && npm run format",
     "start": "ts-node-dev --watch ./src ./src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "express",
+    "typescript"
+  ],
+  "author": "Ludi Museo",
   "license": "ISC",
   "description": "",
   "lint-staged": {
     "**/*.{js,mjs,cjs,ts}": [
-      "eslint --fix",
       "prettier --check --write --ignore-unknown"
     ],
     "!(*.js|*.mjs|*.cjs|*.ts)": [
