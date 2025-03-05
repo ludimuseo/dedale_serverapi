@@ -1,3 +1,3 @@
-# backoffice-backend
+# dedale_serverapi/ludimuseo
 
-Backend application web Dedale
+Serveur API des applications web & mobile Dédale
