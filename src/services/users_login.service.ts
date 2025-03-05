@@ -1,12 +1,12 @@
 // users.service.ts
 import { StringValue } from 'ms';
 import { Auth } from '../schemes/auth.scheme';
-import Auth_Log from '../schemes/auth_log.scheme';
 import { User } from '../schemes/user.scheme';
 import { AuthenticatedRequest } from '../utils/types';
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { AuthLog } from './auth_log.service';
 
 const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
 const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN;
@@ -15,9 +15,12 @@ export class UsersLoginService {
   static async connectUser(req: AuthenticatedRequest) {
     const timestamp: number = Math.floor(Date.now() / 1000);
     let success = false;
+    // @ts-ignore
     let successStatus = '';
     let data;
+    // @ts-ignore
     let userID;
+    // @ts-ignore
     let reason;
     let isMatch;
 
@@ -89,14 +92,7 @@ export class UsersLoginService {
 
     success ? (successStatus = 'success') : (successStatus = 'failure');
 
-    await Auth_Log.create({
-      login_attempt: timestamp,
-      ip_adresse: req.ip || 'undefined',
-      user_agent: req.headers['user-agent'] || 'Unknown',
-      status: successStatus,
-      reason: reason,
-      authId: userID,
-    });
+    await AuthLog.save(req, reason, userID);
 
     if (data) {
       return data;

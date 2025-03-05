@@ -4,11 +4,11 @@ import { db } from '../config/firebase.config';
 import { AuthenticatedRequest } from '../utils/types';
 
 import { PlaceScheme } from '../schemes/places.scheme';
-import Auth_Log from '../schemes/auth_log.scheme';
 import Place from '../schemes/place.scheme';
 // import Medal from '../schemes/medal.scheme';
 import Description from '../schemes/description.scheme';
 import { DescriptionData } from '../schemes/description.scheme';
+import { AuthLog } from './auth_log.service';
 
 export class PlacesService {
   // Récupérer toutes les lieux
@@ -59,20 +59,8 @@ export class PlacesService {
     if (['OWNER', 'ADMIN', 'SUPERADMIN'].some((r) => role.includes(r))) {
       null;
     } else {
-      const userAgent: string = req.headers['user-agent'] ?? 'Unknown';
-      const cleanIp = req.socket.remoteAddress?.includes('::ffff:')
-        ? req.socket.remoteAddress.split('::ffff:')[1]
-        : (req.socket.remoteAddress ?? 'Unknown');
-
-      await Auth_Log.create({
-        login_attempt: timestamp,
-        ip_adresse: cleanIp,
-        user_agent: userAgent,
-        status: 'failure',
-        reason: 'unauthorized: ' + req.url,
-        authId: req.auth.userId,
-      });
-      return { httpCode: 401 };
+      await AuthLog.save(req);
+      return { httpCode: 403 };
     }
 
     try {
@@ -140,20 +128,7 @@ export class PlacesService {
     if (['OWNER'].some((r) => role.includes(r))) {
       null;
     } else {
-      const timestamp: number = Math.floor(Date.now() / 1000);
-      const userAgent: string = req.headers['user-agent'] ?? 'Unknown';
-      const cleanIp = req.socket.remoteAddress?.includes('::ffff:')
-        ? req.socket.remoteAddress.split('::ffff:')[1]
-        : (req.socket.remoteAddress ?? 'Unknown');
-
-      await Auth_Log.create({
-        login_attempt: timestamp,
-        ip_adresse: cleanIp,
-        user_agent: userAgent,
-        status: 'failure',
-        reason: 'unauthorized: ' + req.url,
-        authId: req.auth.userId,
-      });
+      await AuthLog.save(req);
       return { httpCode: 403 };
     }
 

@@ -1,6 +1,6 @@
 import Client from '../schemes/client.scheme';
-import Auth_Log from '../schemes/auth_log.scheme';
 import { AuthenticatedRequest } from '../utils/types';
+import { AuthLog } from './auth_log.service';
 
 export class ClientService {
   static async addClient(req: AuthenticatedRequest) {
@@ -12,15 +12,7 @@ export class ClientService {
     if (role.find((element: string) => element == 'OWNER') === 'OWNER') {
       null;
     } else {
-      const timestamp: number = Math.floor(Date.now() / 1000);
-      await Auth_Log.create({
-        login_attempt: timestamp,
-        ip_adresse: req.ip || 'undefined',
-        user_agent: req.headers['user-agent'] || 'Unknown',
-        status: 'failure',
-        reason: 'unauthorized: ' + req.url,
-        authId: req.auth.userId,
-      });
+      await AuthLog.save(req);
       return { error: 'Accès interdit : vous devez être OWNER.' };
     }
 
