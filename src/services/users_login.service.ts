@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
-const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN;
+// const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN;
 
 export class UsersLoginService {
   static async connectUser(req: AuthenticatedRequest) {
@@ -59,7 +59,7 @@ export class UsersLoginService {
         );
       }
       const tokenUser = jwt.sign({ userId: authUser.id }, RANDOM_TOKEN_SECRET, {
-        expiresIn: TOKEN_EXPIRES_IN,
+        expiresIn: 72000,
       });
 
       data = {
