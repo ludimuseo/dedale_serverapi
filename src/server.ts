@@ -54,7 +54,7 @@ if (MODE == 'SERVER') {
     console.log('HTTPS server listening on port 443');
   });
 } else {
-  app.listen(4000, () => {
+  http.createServer({}, app).listen(4000, () => {
     console.log('Le serveur est lancé sur le port 4000');
   });
 }
