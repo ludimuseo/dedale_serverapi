@@ -27,7 +27,8 @@
     "lint": "eslint .",
     "format": "prettier . --check --ignore-unknown",
     "fix": "npm run lint --fix && npm run format --write",
-    "start": "ts-node-dev --watch ./src ./src/server.ts",
+    "dev": "dotenv -c development -- npx tsx --watch ./src/server.ts",
+    "start": "echo -n \"command in development | use 'npm run dev'\"",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -41,7 +42,6 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-validator": "^7.2.1",
     "firebase": "^11.0.2",
@@ -60,6 +60,7 @@
     "@types/express": "^4.17.21",
     "@types/node": "^22.9.3",
     "cosmiconfig-typescript-loader": "^5.1.0",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
