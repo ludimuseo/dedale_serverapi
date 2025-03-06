@@ -1,21 +1,13 @@
 //src/server.ts
 
-import https from 'https';
-import fs from 'fs';
+import http from 'node:http';
+import https from 'node:https';
+import fs from 'node:fs';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-import clientsRouter from './routes/clients.routes';
-import placesRouter from './routes/places.routes';
-import logsRouter from './routes/logs.routes';
-import gamesRouter from './routes/games.routes';
-import journeysRouter from './routes/journeys.routes';
-import stepsRouter from './routes/steps.routes';
-import piecesRouter from './routes/pieces.routes';
-import medalsRouter from './routes/medals.routes';
-import usersRouter from './routes/users.routes';
-import authRouter from './routes/auth.routes';
-import { errorHandler } from './middlewares/errorHandler';
+
+import { routes } from './routes';
 
 const app = express();
 
@@ -37,19 +29,10 @@ app.use(
 );
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/clients', clientsRouter);
-app.use('/logs', logsRouter);
-app.use('/api/places', placesRouter);
-app.use('/games', gamesRouter);
-app.use('/journeys', journeysRouter);
-app.use('/steps', stepsRouter);
-app.use('/pieces', piecesRouter);
-app.use('/medals', medalsRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/auth', authRouter);
-app.use(errorHandler);
+app.use('/', routes);
 
 //--------------------------------------------------------------
 //TODO Gestion des erreurs et validation des données avec express-validator
@@ -71,7 +54,7 @@ if (MODE == 'SERVER') {
     console.log('HTTPS server listening on port 443');
   });
 } else {
-  app.listen(4000, async () => {
+  app.listen(4000, () => {
     console.log('Le serveur est lancé sur le port 4000');
   });
 }
