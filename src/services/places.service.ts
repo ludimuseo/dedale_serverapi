@@ -105,6 +105,7 @@ export class PlacesService {
             audio_desc: desc.audio_desc,
             is_falc: desc.is_falc ?? false,
             createdby: req.auth.userId,
+            certifiedBy: desc.certifiedBy,
           })
         );
 

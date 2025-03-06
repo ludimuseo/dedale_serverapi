@@ -1,7 +1,29 @@
 // validation.ts : Validation des données des routes
 
 import { param } from 'express-validator';
-import { generateValidationRules } from '../utils/validationHelpers';
+import { check } from 'express-validator';
+// import { generateValidationRules } from '../utils/validationHelpers';
+
+type FieldValidation =
+  | 'string'
+  | 'email'
+  | 'boolean'
+  | 'url'
+  | 'integer'
+  | 'float'
+  | 'array'
+  | {
+      type:
+        | 'string'
+        | 'email'
+        | 'boolean'
+        | 'url'
+        | 'integer'
+        | 'float'
+        | 'array';
+      required?: boolean;
+      notEmpty?: boolean;
+    };
 
 //-------------------------GENERAL-------------------------------------------
 // Validation de l'ID utilisateur pour DELETE, GET et PATCH
@@ -13,27 +35,91 @@ export const validateId = [
 
 //-------------------------USERS-------------------------------------------
 
-// Champs pour la création d'un utilisateur
-const userLoginFields = {
-  'body.email': 'required_email', // Correction ici
-  'body.password': 'required_string',
+// Champs pour la connexion d'un utilisateur
+const userLoginFields: Record<string, FieldValidation> = {
+  'body.email': { type: 'email', required: true, notEmpty: true },
+  'body.password': { type: 'string', required: true, notEmpty: true },
 };
 
-const userFields = {
-  'profile.username': 'required_string',
-  'profile.email': 'required_email', // Correction ici
-  'profile.password': 'required_string',
-  'profile.avatar': 'required_string',
-  'profile.clientId': 'required_string',
+const userFields: Record<string, FieldValidation> = {
+  'profile.username': { type: 'string', required: true, notEmpty: true },
+  'profile.email': { type: 'email', required: true, notEmpty: true },
+  'profile.password': { type: 'string', required: true, notEmpty: true },
+  'profile.avatar': { type: 'string', required: true, notEmpty: true },
+  'profile.clientId': { type: 'string', required: true, notEmpty: true },
 };
 
 // Champs pour la mise à jour d'un utilisateur
-const userUpdateFields = {
+const userUpdateFields: Record<string, FieldValidation> = {
   'profile.username': 'string',
   'profile.email': 'email',
   'profile.password': 'string',
   'profile.avatar': 'string',
   'profile.clientId': 'string',
+};
+
+const generateValidationRules = (fields: Record<string, FieldValidation>) => {
+  return Object.entries(fields).map(([field, rules]) => {
+    let validator = check(field);
+
+    if (typeof rules === 'string') {
+      switch (rules) {
+        case 'string':
+          validator = validator
+            .isString()
+            .withMessage(`${field} doit être une chaîne`);
+          break;
+        case 'email':
+          validator = validator
+            .isEmail()
+            .withMessage(`${field} doit être un email valide`);
+          break;
+        case 'boolean':
+          validator = validator
+            .isBoolean()
+            .withMessage(`${field} doit être un booléen (true/false)`);
+          break;
+        case 'url':
+          validator = validator
+            .isURL()
+            .withMessage(`${field} doit être une URL valide`);
+          break;
+      }
+    } else {
+      if (rules.required) {
+        validator = validator
+          .exists({ checkFalsy: true })
+          .withMessage(`${field} est requis`);
+      }
+      if (rules.notEmpty) {
+        validator = validator
+          .notEmpty()
+          .withMessage(`${field} ne peut pas être vide`);
+      }
+      if (rules.type === 'string') {
+        validator = validator
+          .isString()
+          .withMessage(`${field} doit être une chaîne`);
+      }
+      if (rules.type === 'email') {
+        validator = validator
+          .isEmail()
+          .withMessage(`${field} doit être un email valide`);
+      }
+      if (rules.type === 'boolean') {
+        validator = validator
+          .isBoolean()
+          .withMessage(`${field} doit être un booléen (true/false)`);
+      }
+      if (rules.type === 'url') {
+        validator = validator
+          .isURL()
+          .withMessage(`${field} doit être une URL valide`);
+      }
+    }
+
+    return validator;
+  });
 };
 
 // Validation dynamique des utilisateurs
@@ -44,26 +130,26 @@ export const validateUserLogin = generateValidationRules(userLoginFields);
 //-------------------------CLIENTS-------------------------------------------
 
 // Champs pour la création d'un client
-const clientFields = {
-  'company.name': 'string',
+const clientFields: Record<string, FieldValidation> = {
+  'company.name': { type: 'string', required: true, notEmpty: true },
   'company.siret': 'string',
   'company.tva': 'string',
   'company.website': 'url',
-  'company.type': 'string',
+  'company.type': { type: 'string', required: true, notEmpty: true },
 
-  'address.address': 'required_string',
-  'address.postal': 'required_string',
-  'address.city': 'required_string',
-  'address.country': 'required_string',
+  'address.address': { type: 'string', required: true, notEmpty: true },
+  'address.postal': { type: 'string', required: true, notEmpty: true },
+  'address.city': { type: 'string', required: true, notEmpty: true },
+  'address.country': { type: 'string', required: true, notEmpty: true },
 
-  'contact.name': 'required_string',
+  'contact.name': { type: 'string', required: true, notEmpty: true },
   'contact.note': 'string',
-  'contact.email': 'required_email',
+  'contact.email': { type: 'email', required: true, notEmpty: true },
   'contact.tel': 'string',
 };
 
 // Champs pour la mise à jour d'un client
-const clientUpdateFields = {
+const clientUpdateFields: Record<string, FieldValidation> = {
   'company.name': 'string',
   'company.siret': 'string',
   'company.tva': 'string',
@@ -81,44 +167,25 @@ const clientUpdateFields = {
 };
 
 // Champs pour la création d'un lieu
-const lieuFields = {
-  'medalId': 'integer',
-  'address.address': 'string',
-  'address.city': 'string',
-  'address.country': 'string',
-  'address.postal': 'string',
-
-  'audio.falc.en': 'string',
-  'audio.falc.fr': 'string',
-  'audio.standard.en': 'string',
-  'audio.standard.fr': 'string',
-
-  'content.image': 'string',
-  'content.type': 'string',
-
-  'coords.isLocationRequired': 'boolean',
-  'coords.lat': 'float',
-  'coords.lon': 'float',
+const lieuFields: Record<string, FieldValidation> = {
+  'place.name': { type: 'string', required: true, notEmpty: true },
+  'place.type': { type: 'string', required: true, notEmpty: true },
+  'place.lat': 'float',
+  'place.lon': 'float',
+  'place.location_required': { type: 'boolean', required: true },
+  'place.image': 'string',
+  'place.isPublished': { type: 'boolean', required: true },
+  'place.isActive': { type: 'boolean', required: true },
 
   'description': 'array',
-  'description.*.falc.en': 'string',
-  'description.*.falc.fr': 'string',
-  'description.*.falc.falcCertified': 'boolean',
-  'description.*.falc.userId': 'string',
+  'description.*.desc_language': 'string',
+  'description.*.desc_order': 'integer',
+  'description.*.text': 'string',
+  'description.*.image_file': 'string',
 
-  'description.*.falc.status.isValidate': 'boolean',
-  'description.*.falc.status.isCertified': 'boolean',
-  'description.*.falc.status.certifiedDate': 'string',
-  'description.*.falc.status.isCorrected': 'boolean',
-
-  'description.*.standard.en': 'string',
-  'description.*.standard.fr': 'string',
-
-  'name.en': 'string',
-  'name.fr': 'string',
-
-  'status.isActive': 'boolean',
-  'status.isPublished': 'boolean',
+  'description.*.image_alt': 'string',
+  'description.*.audio_file': 'string',
+  'description.*.audio_desc': 'string',
 };
 
 // Validation dynamique des clients et lieux

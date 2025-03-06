@@ -30,7 +30,7 @@ const Description = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'place', // Assurez-vous que le modèle Place est bien défini
+        model: 'place',
         key: 'id',
       },
       onUpdate: 'CASCADE',
@@ -43,6 +43,12 @@ const Description = sequelize.define(
     clientId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'client',
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
     },
     desc_order: {
       type: DataTypes.INTEGER,
@@ -72,22 +78,25 @@ const Description = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'user', // Assurez-vous que le modèle Place est bien défini
+
+        model: 'user',
         key: 'id',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'CASCADE',
+      onDelete: 'RESTRICT',
+
     },
     certifiedBy: {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: null,
       references: {
-        model: 'user', // Assurez-vous que le modèle Place est bien défini
+        model: 'user',
         key: 'id',
       },
       onUpdate: 'CASCADE',
-      onDelete: 'CASCADE',
+      onDelete: 'RESTRICT',
+
     },
     is_falc: {
       type: DataTypes.BOOLEAN,
