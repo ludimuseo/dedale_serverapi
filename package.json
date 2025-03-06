@@ -14,9 +14,15 @@
     "type": "git",
     "url": "git+https://github.com/LudiMuseo/dedale_serverapi.git"
   },
-  "author": "LudiMuseo",
-  "license": "ISC",
   "private": true,
+  "author": "LudiMuseo <ludimuseo@gmail.com> (https://www.linkedin.com/company/ludi-museo/)",
+  "license": "UNLICENSED",
+  "funding": [
+    {
+      "type": "individual",
+      "url": "https://www.ludimuseo.fr/nous-soutenir"
+    }
+  ],
   "scripts": {
     "lint": "eslint .",
     "format": "prettier . --check --ignore-unknown",
