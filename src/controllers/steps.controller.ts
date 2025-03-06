@@ -1,6 +1,6 @@
 // steps.controller.ts
 
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { StepsService } from '../services/steps.service';
 import { validationResult } from 'express-validator';
 

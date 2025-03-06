@@ -1,7 +1,7 @@
 // clients.service.ts = logique métier
 
 import { db } from '../config/firebase.config';
-import { ClientScheme } from '../schemes/clients.scheme';
+import type { ClientScheme } from '../schemes/clients.scheme';
 
 export class ClientsService {
   // Récupérer tous les clients

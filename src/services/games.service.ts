@@ -1,7 +1,7 @@
 // games.service.ts
 
 import { db } from '../config/firebase.config';
-import { GameScheme } from '../schemes/games.scheme';
+import type { GameScheme } from '../schemes/games.scheme';
 
 export class GamesService {
   // Récupérer tous les jeux

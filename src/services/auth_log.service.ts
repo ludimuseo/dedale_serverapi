@@ -1,5 +1,5 @@
 import Auth_Log from '../schemes/auth_log.scheme';
-import { AuthenticatedRequest } from '../utils/types';
+import type { AuthenticatedRequest } from '../utils/types';
 
 export class AuthLog {
   static async save(

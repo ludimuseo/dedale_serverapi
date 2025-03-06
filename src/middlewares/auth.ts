@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { User } from '../schemes/user.scheme';
+import jwt from 'jsonwebtoken';
 
 export interface AuthenticatedRequest extends Request {
   auth: {
@@ -7,8 +8,6 @@ export interface AuthenticatedRequest extends Request {
     role: string;
   };
 }
-
-const jwt = require('jsonwebtoken');
 
 const authMiddleware = async (
   req: Request,

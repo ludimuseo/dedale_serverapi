@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { securedLogs } from '../services/logs.service';
 import { validationResult } from 'express-validator';
-import { AuthenticatedRequest } from '../utils/types';
+import type { AuthenticatedRequest } from '../utils/types';
 
 /**
  * Créer un nouveau client

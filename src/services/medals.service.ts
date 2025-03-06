@@ -1,7 +1,7 @@
 // medals.service.ts
 
 import { db } from '../config/firebase.config';
-import { MedalScheme } from '../schemes/medals.scheme';
+import type { MedalScheme } from '../schemes/medals.scheme';
 
 export class MedalsService {
   // Récupérer toutes les médailles

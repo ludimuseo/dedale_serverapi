@@ -1,9 +1,9 @@
 // places.controller.ts
 
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { PlacesService } from '../services/places.service';
 import { validationResult } from 'express-validator';
-import { AuthenticatedRequest } from '../utils/types';
+import type { AuthenticatedRequest } from '../utils/types';
 
 /**
  * Récupérer tous les lieux

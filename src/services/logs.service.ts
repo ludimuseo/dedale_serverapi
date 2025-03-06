@@ -1,9 +1,9 @@
 // import Auth_Log from '../schemes/auth_log.scheme';
-import { Op, WhereOptions } from 'sequelize';
+import { Op, type WhereOptions } from 'sequelize';
 import { User } from '../schemes';
 import Auth_Log from '../schemes/auth_log.scheme';
 import Auth_LogAttributes from '../schemes/auth_log.scheme';
-import { AuthenticatedRequest } from '../utils/types';
+import type { AuthenticatedRequest } from '../utils/types';
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class securedLogs {

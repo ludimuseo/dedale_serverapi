@@ -1,7 +1,7 @@
 //pieces.service.ts
 
 import { db } from '../config/firebase.config';
-import { PieceScheme } from '../schemes/pieces.scheme';
+import type { PieceScheme } from '../schemes/pieces.scheme';
 
 export class PiecesService {
   // Récupérer toutes les pièces

@@ -1,6 +1,6 @@
 // pieces.controller.ts
 
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { PiecesService } from '../services/pieces.service';
 import { validationResult } from 'express-validator';
 

@@ -1,13 +1,13 @@
 //places.service.ts
 
 import { db } from '../config/firebase.config';
-import { AuthenticatedRequest } from '../utils/types';
+import type { AuthenticatedRequest } from '../utils/types';
 
-import { PlaceScheme } from '../schemes/places.scheme';
+import type { PlaceScheme } from '../schemes/places.scheme';
 import Place from '../schemes/place.scheme';
 // import Medal from '../schemes/medal.scheme';
 import Description from '../schemes/description.scheme';
-import { DescriptionData } from '../schemes/description.scheme';
+import type { DescriptionData } from '../schemes/description.scheme';
 import { AuthLog } from './auth_log.service';
 
 export class PlacesService {

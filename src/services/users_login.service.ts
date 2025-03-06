@@ -1,8 +1,9 @@
 // users.service.ts
-import { StringValue } from 'ms';
+
+import type { StringValue } from 'ms';
 import { Auth } from '../schemes/auth.scheme';
 import { User } from '../schemes/user.scheme';
-import { AuthenticatedRequest } from '../utils/types';
+import type { AuthenticatedRequest } from '../utils/types';
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
