@@ -1,7 +1,7 @@
 //steps.services.ts
 
 import { db } from '../config/firebase.config';
-import { StepScheme } from '../schemes/steps.scheme';
+import type { StepScheme } from '../schemes/steps.scheme';
 
 export class StepsService {
   // Récupérer toutes les étapes

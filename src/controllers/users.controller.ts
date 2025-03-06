@@ -1,10 +1,10 @@
 // users.controller.ts
 
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { UsersService } from '../services/users.service';
 import { UsersLoginService } from '../services/users_login.service';
 import { validationResult } from 'express-validator';
-import { AuthenticatedRequest } from '../utils/types';
+import type { AuthenticatedRequest } from '../utils/types';
 
 export const login = async (
   req: Request,

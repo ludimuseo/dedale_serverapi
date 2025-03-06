@@ -1,7 +1,7 @@
 // journeys.service.ts
 
 import { db } from '../config/firebase.config';
-import { JourneyScheme } from '../schemes/journeys.scheme';
+import type { JourneyScheme } from '../schemes/journeys.scheme';
 
 export class JourneysService {
   // Récupérer tous les parcours

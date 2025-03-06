@@ -1,7 +1,7 @@
 // users.service.ts
 
 import { db } from '../config/firebase.config';
-import { UserScheme } from '../schemes/users.scheme';
+import type { UserScheme } from '../schemes/users.scheme';
 
 export class UsersService {
   // Récupérer tous les utilisateurs

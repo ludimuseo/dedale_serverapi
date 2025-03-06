@@ -1,7 +1,7 @@
 import sequelize from '../config/database';
 import { DataTypes, Model } from 'sequelize';
 import { User } from '../schemes/user.scheme';
-import { UserInstance } from './user.scheme';
+import type { UserInstance } from './user.scheme';
 
 // Définir l'interface des attributs d'Auth (pour la création, la mise à jour, etc.)
 interface AuthAttributes {

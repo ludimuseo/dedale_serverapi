@@ -1,6 +1,6 @@
 // medals.controller.ts
 
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { MedalsService } from '../services/medals.service';
 import { validationResult } from 'express-validator';
 

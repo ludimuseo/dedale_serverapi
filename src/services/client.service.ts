@@ -1,5 +1,5 @@
 import Client from '../schemes/client.scheme';
-import { AuthenticatedRequest } from '../utils/types';
+import type { AuthenticatedRequest } from '../utils/types';
 import { AuthLog } from './auth_log.service';
 
 export class ClientService {
