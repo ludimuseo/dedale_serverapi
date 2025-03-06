@@ -13,6 +13,22 @@ const Place = sequelize.define(
     createdBy: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      references: {
+        model: 'user', // Assurez-vous que le modèle Place est bien défini
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'RESTRICT',
+    },
+    certifiedBy: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'user', // Assurez-vous que le modèle Place est bien défini
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'RESTRICT',
     },
     name: {
       type: DataTypes.STRING,
@@ -49,7 +65,13 @@ const Place = sequelize.define(
     },
     clientId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
+      references: {
+        model: 'client', // Assurez-vous que le modèle Place est bien défini
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
     },
     createdAt: {
       type: DataTypes.INTEGER,
