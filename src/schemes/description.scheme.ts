@@ -78,13 +78,11 @@ const Description = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-
         model: 'user',
         key: 'id',
       },
       onUpdate: 'CASCADE',
       onDelete: 'RESTRICT',
-
     },
     certifiedBy: {
       type: DataTypes.INTEGER,
@@ -96,7 +94,6 @@ const Description = sequelize.define(
       },
       onUpdate: 'CASCADE',
       onDelete: 'RESTRICT',
-
     },
     is_falc: {
       type: DataTypes.BOOLEAN,

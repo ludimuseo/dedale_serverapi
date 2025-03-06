@@ -1,11 +1,5 @@
 //src/config/firebase.config.ts => db connexion
-
-import * as dotenv from 'dotenv';
 import admin from 'firebase-admin';
-
-const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
-dotenv.config({ path: envFile });
-// charge les variables du fichier .env.development
 
 // Initialisation de Firebase
 if (!admin.apps.length) {

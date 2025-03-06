@@ -17,9 +17,6 @@ import usersRouter from './routes/users.routes';
 import authRouter from './routes/auth.routes';
 import { errorHandler } from './middlewares/errorHandler';
 
-import dotenv from 'dotenv';
-dotenv.config({ path: '.env.development' });
-
 const app = express();
 
 // Configuration Helmet

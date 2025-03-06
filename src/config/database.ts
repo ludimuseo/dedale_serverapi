@@ -1,7 +1,5 @@
 // Init Sequelize and connect to DB
 import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
-dotenv.config({ path: '.env.development' });
 
 const sequelize = new Sequelize(
   process.env.DB_NAME ?? '',

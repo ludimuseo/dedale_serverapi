@@ -2,10 +2,9 @@ import eslintPrettierConfig from 'eslint-config-prettier';
 import eslintPrettierPlugin from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import tseslint, { type ConfigArray } from 'typescript-eslint';
 
-/** @type {import('eslint').Linter.Config[]} */
-export default tseslint.config(
+const config: ConfigArray = tseslint.config(
   { files: ['**/*.{js,mjs,cjs,ts}'] },
   {
     languageOptions: {
@@ -14,15 +13,15 @@ export default tseslint.config(
         sourceType: 'module',
         ecmaVersion: 'latest',
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        // tsconfigRootDir: import.meta.dirname,
       },
-    },
-    plugins: {
-      prettier: eslintPrettierPlugin,
     },
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
-  eslintPrettierConfig
+  eslintPrettierConfig,
+  eslintPrettierPlugin
 );
+
+export default config;
