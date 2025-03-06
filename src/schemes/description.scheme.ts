@@ -30,7 +30,7 @@ const Description = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'place', // Assurez-vous que le modèle Place est bien défini
+        model: 'place',
         key: 'id',
       },
       onUpdate: 'CASCADE',
@@ -44,7 +44,7 @@ const Description = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'client', // Assurez-vous que le modèle Place est bien défini
+        model: 'client',
         key: 'id',
       },
       onUpdate: 'CASCADE',
@@ -78,7 +78,7 @@ const Description = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'user', // Assurez-vous que le modèle Place est bien défini
+        model: 'user',
         key: 'id',
       },
       onUpdate: 'CASCADE',
@@ -89,7 +89,7 @@ const Description = sequelize.define(
       allowNull: true,
       defaultValue: null,
       references: {
-        model: 'user', // Assurez-vous que le modèle Place est bien défini
+        model: 'user',
         key: 'id',
       },
       onUpdate: 'CASCADE',
