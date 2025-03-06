@@ -2,9 +2,9 @@ import eslintPrettierConfig from 'eslint-config-prettier';
 import eslintPrettierPlugin from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import tseslint, { type ConfigArray } from 'typescript-eslint';
 
-export default tseslint.config(
+const config: ConfigArray = tseslint.config(
   { files: ['**/*.{js,mjs,cjs,ts}'] },
   {
     languageOptions: {
@@ -23,3 +23,5 @@ export default tseslint.config(
   eslintPrettierConfig,
   eslintPrettierPlugin
 );
+
+export default config;
