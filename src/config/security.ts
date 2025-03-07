@@ -6,14 +6,18 @@ const security = Router();
 
 security.use(json());
 security.use(urlencoded({ extended: true }));
+
 // Configuration Helmet
 security.use(
+  // https://www.npmjs.com/package/helmet
   helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
-// Configuration CORS pour autoriser toutes les origines
+
+// Configuration CORS
 security.use(
+  // https://www.npmjs.com/package/cors
   cors({
     origin: '*', // Permet à toutes les origines d'accéder à l'API
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Méthodes HTTP autorisées

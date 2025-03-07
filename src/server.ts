@@ -1,7 +1,7 @@
 //src/server.ts
 
 import http from 'node:http';
-import https from 'node:https';
+import https, { type ServerOptions } from 'node:https';
 import fs from 'node:fs';
 import express from 'express';
 import { routes } from './routes';
@@ -23,19 +23,22 @@ app.use('/', routes);
 
 // Active SSL only in server
 const MODE = process.env.MODE;
-if (MODE == 'SERVER') {
-  const options = {
-    cert: fs.readFileSync(
-      '/etc/letsencrypt/live/dev.ludimuseo.fr/fullchain.pem'
-    ),
-    key: fs.readFileSync('/etc/letsencrypt/live/dev.ludimuseo.fr/privkey.pem'),
-  };
+const serverOptions: Partial<ServerOptions> = {};
 
-  https.createServer(options, app).listen(4000, () => {
-    console.log('HTTPS server listening on port 443');
+if (MODE == 'SERVER') {
+  // 🚨 For security reasons. Please move the file paths to '.env.production'
+  // Then remove lines 31 & 32
+  const fullChain = '/etc/letsencrypt/live/dev.ludimuseo.fr/fullchain.pem';
+  const privKey = '/etc/letsencrypt/live/dev.ludimuseo.fr/privkey.pem';
+  Object.assign(serverOptions, {
+    cert: fs.readFileSync(process.env.SSL_FULLCHAIN ?? fullChain),
+    key: fs.readFileSync(process.env.SSL_PRIVKEY ?? privKey),
+  });
+  https.createServer(serverOptions, app).listen(4000, () => {
+    console.log('Le serveur est lancé sur le port 4000');
   });
 } else {
-  http.createServer({}, app).listen(4000, () => {
+  http.createServer(serverOptions, app).listen(4000, () => {
     console.log('Le serveur est lancé sur le port 4000');
   });
 }
