@@ -15,7 +15,7 @@ const noMobile = async (req: Request, res: Response, next: NextFunction) => {
     } else {
       next();
     }
-  } catch (error) {
+  } catch (_error: unknown) {
     res.status(500).json();
   }
 };
