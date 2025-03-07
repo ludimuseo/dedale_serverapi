@@ -8,14 +8,14 @@ const sequelize = new Sequelize(
   {
     host: process.env.CLUSTER_ADDR ?? '',
     dialect: 'mariadb',
-    logging: console.log,
+    // logging: console.log,
   }
 );
 sequelize
   .authenticate()
   .then(async () => {
     console.log('Connection has been established successfully.');
-    await sequelize.sync();
+    // await sequelize.sync();
     console.log('All models were synchronized successfully.');
   })
   .catch((error: unknown) => {

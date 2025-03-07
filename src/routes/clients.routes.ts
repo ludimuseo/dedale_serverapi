@@ -14,13 +14,26 @@ import {
   updateClient,
   deleteClient,
 } from '../controllers/clients.controller';
+import noMobile from '../middlewares/noMobile';
 
 const router = Router();
 
 router.get('/list', getAllClients);
 router.get('/find/:id', validateId, getClientById);
-router.post('/create', authMiddleware, validateClientCreation, createClient);
-router.patch('/update/:id', validateId, validateClientUpdate, updateClient);
-router.delete('/delete/:id', validateId, deleteClient);
+router.post(
+  '/create',
+  authMiddleware,
+  noMobile,
+  validateClientCreation,
+  createClient
+);
+router.patch(
+  '/update/:id',
+  noMobile,
+  validateId,
+  validateClientUpdate,
+  updateClient
+);
+router.delete('/delete/:id', noMobile, validateId, deleteClient);
 
 export default router;

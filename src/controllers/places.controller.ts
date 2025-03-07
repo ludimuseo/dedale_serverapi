@@ -66,7 +66,7 @@ export const createPlace = async (
     const newPlace = await PlacesService.addPlace(authReq);
 
     if (newPlace) {
-      res.status(newPlace.httpCode).json();
+      res.status(newPlace.httpCode).json(newPlace.message);
     } else {
       res.status(500).json();
     }

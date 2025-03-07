@@ -56,9 +56,7 @@ export class PlacesService {
     const role = req.auth.role;
     const timestamp: number = Math.floor(Date.now() / 1000);
 
-    if (['OWNER', 'ADMIN', 'SUPERADMIN'].some((r) => role.includes(r))) {
-      null;
-    } else {
+    if (!['OWNER', 'ADMIN', 'SUPERADMIN'].some((r) => role.includes(r))) {
       await AuthLog.save(req);
       return { httpCode: 403 };
     }
