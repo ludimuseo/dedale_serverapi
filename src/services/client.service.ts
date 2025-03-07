@@ -9,9 +9,7 @@ export class ClientService {
       throw new Error('Authentification requise');
     }
     const role = req.auth.role.split('|');
-    if (role.find((element: string) => element == 'OWNER') === 'OWNER') {
-      null;
-    } else {
+    if (!role.find((element: string) => element == 'OWNER') === 'OWNER') {
       await AuthLog.save(req);
       return { error: 'Accès interdit : vous devez être OWNER.' };
     }
@@ -52,6 +50,7 @@ export class ClientService {
       phone: req.body.contact.tel,
       isActive: req.body.status.isActive,
     });
-    return createClient.dataValues;
+
+    return { createClient, httpCode: 201 };
   }
 }

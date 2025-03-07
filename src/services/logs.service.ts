@@ -12,7 +12,7 @@ export class securedLogs {
     const user = await User.findOne({
       where: { id: req.auth.userId },
     });
-    if (['SUPERADMIN', 'DEVELOPPER'].includes(user?.dataValues.role ?? '')) {
+    if (['OWNER', 'DEVELOPPER'].includes(user?.dataValues.role ?? '')) {
       // OK return logs
       interface RequestBody {
         length?: number;

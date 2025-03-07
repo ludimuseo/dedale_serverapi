@@ -70,9 +70,8 @@ export const createClient = async (
       return res.status(400).json({ error: newClient.error });
     }
 
-    res.status(201).json({
+    res.status(newClient.httpCode).json({
       message: 'Le client a été créé avec succès.',
-      client_id: newClient.id,
     });
   } catch (error) {
     next(error);
