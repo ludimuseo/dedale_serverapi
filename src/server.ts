@@ -7,6 +7,12 @@ import express from 'express';
 import { routes } from './routes';
 import { security } from './config/security';
 
+// Environment Data
+const mode = String(process.env.MODE ?? 'UNDEFINED');
+const port: number = parseInt(process.env.PORT ?? '4000');
+let server;
+
+// Express
 const app = express();
 
 // Security
@@ -22,23 +28,20 @@ app.use('/', routes);
 //--------------------------------------------------------------
 
 // Active SSL only in server
-const MODE = process.env.MODE;
-const serverOptions: Partial<ServerOptions> = {};
-
-if (MODE == 'SERVER') {
+if (mode == 'SERVER') {
   // 🚨 For security reasons. Please move the file paths to '.env.production'
-  // Then remove lines 31 & 32
+  // Then remove lines 34 & 35
   const fullChain = '/etc/letsencrypt/live/dev.ludimuseo.fr/fullchain.pem';
   const privKey = '/etc/letsencrypt/live/dev.ludimuseo.fr/privkey.pem';
-  Object.assign(serverOptions, {
+  const serverOptions: ServerOptions = {
     cert: fs.readFileSync(process.env.SSL_FULLCHAIN ?? fullChain),
     key: fs.readFileSync(process.env.SSL_PRIVKEY ?? privKey),
-  });
-  https.createServer(serverOptions, app).listen(4000, () => {
-    console.log('Le serveur est lancé sur le port 4000');
-  });
+  };
+  server = https.createServer(serverOptions, app);
 } else {
-  http.createServer(serverOptions, app).listen(4000, () => {
-    console.log('Le serveur est lancé sur le port 4000');
-  });
+  server = http.createServer(app);
 }
+
+server.listen(port, () => {
+  console.log(`Le serveur est lancé sur le port ${port.toString()}`);
+});
