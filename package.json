@@ -21,6 +21,10 @@
     {
       "type": "individual",
       "url": "https://www.ludimuseo.fr/nous-soutenir"
+    },
+    {
+      "type": "helloasso",
+      "url": "https://www.helloasso.com/associations/ludi-museo"
     }
   ],
   "type": "module",
