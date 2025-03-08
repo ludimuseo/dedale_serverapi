@@ -22,12 +22,14 @@ const authMiddleware = async (
   try {
     const RANDOM_TOKEN_SECRET = process.env.RANDOM_TOKEN_SECRET;
     if (!RANDOM_TOKEN_SECRET) {
-      next(Error);
+      next(new Error('Missing token secret'));
+      return;
     }
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      next(Error);
+      next(new Error('Token missing'));
+      return;
     }
 
     const decodedToken = jwt.verify(
@@ -35,14 +37,16 @@ const authMiddleware = async (
       RANDOM_TOKEN_SECRET
     ) as unknown as AuthTokenPayload;
     if (typeof decodedToken === 'string') {
-      next(Error);
+      next(new Error('Invalid token'));
+      return;
     }
 
     let userId;
     if (typeof decodedToken === 'object' && 'userId' in decodedToken) {
       userId = (decodedToken as { userId: string }).userId;
     } else {
-      next(Error);
+      next(new Error('User ID missing in token'));
+      return;
     }
 
     const UserRole = await User.findOne({
@@ -57,6 +61,7 @@ const authMiddleware = async (
   } catch (error) {
     console.log(error);
     res.status(401).json({ message: 'tokenError' });
+    next(error);
   }
 };
 
