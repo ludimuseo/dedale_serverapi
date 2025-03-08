@@ -56,10 +56,11 @@ export const createClient = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    res.status(400).json({ errors: errors.array() });
+    return;
   }
 
   try {
@@ -67,12 +68,11 @@ export const createClient = async (
     const newClient = await ClientService.addClient(authReq);
 
     if ('error' in newClient) {
-      return res.status(400).json({ error: newClient.error });
+      res.status(400).json({ error: newClient.error });
+      return;
     }
 
-    res.status(newClient.httpCode).json({
-      message: 'Le client a été créé avec succès.',
-    });
+    res.status(newClient.httpCode).json();
   } catch (error) {
     next(error);
   }
