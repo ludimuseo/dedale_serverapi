@@ -81,7 +81,7 @@ export class UsersLoginService {
         role: user.role,
       };
       userID = authUser.id;
-      reason = 'Login success';
+      reason = 'Success';
       success = true;
     } else {
       reason = 'Password invalid';
@@ -92,6 +92,7 @@ export class UsersLoginService {
     !authUser ? (reason = 'user not found') : null;
 
     success ? (successStatus = 'success') : (successStatus = 'failure');
+    console.log('Login', userID);
 
     await AuthLog.save(req, reason, userID);
 
