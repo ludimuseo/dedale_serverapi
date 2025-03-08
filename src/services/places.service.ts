@@ -10,6 +10,8 @@ import Description from '../schemes/description.scheme';
 import type { DescriptionData } from '../schemes/description.scheme';
 import { AuthLog } from './auth_log.service';
 
+const place_type = process.env.place_type;
+
 export class PlacesService {
   // Récupérer toutes les lieux
   static async getAllPlaces(): Promise<(PlaceScheme & { id: string })[]> {
@@ -63,10 +65,15 @@ export class PlacesService {
 
     try {
       // Check content.type
-      if (!['MUSEUM', 'CASTLE', 'OUTDOOR'].includes(req.body.place.type)) {
+
+      const placeTypes =
+        process.env.place_type
+          ?.split(',')
+          .map((type) => type.trim().replace(/['"]+/g, '')) ?? [];
+      if (!req.body.place || !placeTypes.includes(req.body.place.type)) {
         return {
           httpCode: 400,
-          message: "Type must be 'MUSEUM', 'CASTLE' or 'OUTDOOR'.",
+          message: 'Type must be ' + placeTypes.join(', '),
         };
       }
 
