@@ -7,7 +7,7 @@ export interface AuthenticatedRequest extends Request {
   };
 }
 
-const noMobile = async (req: Request, res: Response, next: NextFunction) => {
+const noMobile = (req: Request, res: Response, next: NextFunction) => {
   try {
     if ((req as AuthenticatedRequest).auth.role == 'MOBILE') {
       res.status(403).json();
@@ -15,8 +15,8 @@ const noMobile = async (req: Request, res: Response, next: NextFunction) => {
     } else {
       next();
     }
-  } catch (_error: unknown) {
-    res.status(500).json();
+  } catch (error: unknown) {
+    res.status(500).json({ error });
   }
 };
 

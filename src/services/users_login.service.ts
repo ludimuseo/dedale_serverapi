@@ -47,7 +47,7 @@ export class UsersLoginService {
     if (isMatch && user?.isActive && authUser) {
       // Update the time of connection
 
-      Auth.update(
+      await Auth.update(
         { log: timestamp }, // update timestamp pour le champ 'log'
         {
           where: {
