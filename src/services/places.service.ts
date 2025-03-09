@@ -9,6 +9,7 @@ import Place from '../schemes/place.scheme';
 import Description from '../schemes/description.scheme';
 import type { DescriptionData } from '../schemes/description.scheme';
 import { AuthLog } from './auth_log.service';
+import Client_Admin from '../schemes/client_admin.scheme';
 
 const place_type = process.env.place_type;
 
@@ -126,24 +127,30 @@ export class PlacesService {
 
   // Activer/Desactiver un lieu
   static async activePlace(req: AuthenticatedRequest) {
-    // On retourne l'ID du lieu
-
-    // Only for OWNER, ADMIN, SUPERADMIN
-
-    const role = req.auth.role;
-    if (['OWNER'].some((r) => role.includes(r))) {
-      null;
-    } else {
-      await AuthLog.save(req);
-      return { httpCode: 403 };
-    }
-
     try {
       const place = await Place.findOne({
         where: { id: req.body.place_id },
       });
       if (place) {
         // Place exist
+
+        // Check if user is admin
+        const userAdmin = await Client_Admin.findOne({
+          where: { user_id: req.auth?.userId },
+        });
+
+        // Only for OWNER, ADMIN, SUPERADMIN
+        const role = req.auth.role;
+        if (
+          ['OWNER', 'SUPERADMIN'].some((r) => role.includes(r)) ||
+          userAdmin?.dataValues.client_id == place.clientId
+        ) {
+          null;
+        } else {
+          await AuthLog.save(req);
+          return { httpCode: 403 };
+        }
+
         const update = await Place.update(
           { isActive: req.body.isActive },
           {
