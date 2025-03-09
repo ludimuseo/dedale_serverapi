@@ -17,18 +17,7 @@ interface Auth_LogAttributes {
 //   extends Optional<Auth_LogAttributes, 'log_id'> {}
 
 // Définition du modèle Sequelize
-export class Auth_Log
-  extends Model<Auth_LogAttributes>
-  implements Auth_LogAttributes
-{
-  public log_id!: number;
-  public login_attempt!: number;
-  public ip_adresse!: string;
-  public user_agent!: string;
-  public status?: string;
-  public reason?: string;
-  public authId?: number;
-}
+export class Auth_Log extends Model<Auth_LogAttributes> {}
 
 // Initialisation du modèle
 Auth_Log.init(
