@@ -4,7 +4,7 @@ import type { AuthenticatedRequest } from '../utils/types';
 export class AuthLog {
   static async save(
     req?: AuthenticatedRequest,
-    raison?: string,
+    reason?: string,
     userId?: number
   ) {
     const timestamp: number = Math.floor(Date.now() / 1000);
@@ -14,7 +14,7 @@ export class AuthLog {
       login_attempt: timestamp,
       ip_adresse: req?.ip ?? 'undefined',
       user_agent: req?.headers['user-agent'] ?? 'Unknown',
-      status: raison ?? 'FAILURE',
+      status: reason ?? 'FAILURE',
       reason: req?.originalUrl,
       authId: authId,
     });
