@@ -173,6 +173,54 @@ export class PlacesService {
     }
   }
 
+  // Puble/Depublie un lieu
+  static async publishPlace(req: AuthenticatedRequest) {
+    try {
+      const place = await Place.findOne({
+        where: { id: req.body.place_id },
+      });
+      if (place) {
+        // Place exist
+
+        // Check if user is admin
+        const userAdmin = await Client_Admin.findOne({
+          where: { user_id: req.auth?.userId },
+        });
+
+        // Only for OWNER, SUPERADMIN
+        const role = req.auth.role;
+        if (
+          ['OWNER', 'SUPERADMIN'].some((r) => role.includes(r)) ||
+          userAdmin?.dataValues.client_id == place.clientId
+        ) {
+          null;
+        } else {
+          await AuthLog.save(req);
+          return { httpCode: 403 };
+        }
+
+        const update = await Place.update(
+          { isPublished: req.body.isPublished },
+          {
+            where: {
+              id: req.body.place_id,
+            },
+          }
+        );
+        if (update) {
+          return { httpCode: 200 };
+        } else {
+          throw new Error();
+        }
+      } else {
+        return { httpCode: 404 };
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'activation/désaction:", error);
+      return { httpCode: 500 };
+    }
+  }
+
   // Mettre à jour un lieu existant
   static async updatePlace(
     id: string,

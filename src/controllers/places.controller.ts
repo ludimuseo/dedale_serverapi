@@ -94,6 +94,24 @@ export const activePlace = async (
 };
 
 /**
+ * Publie/Depublie un lieu
+ */
+export const publishPlace = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const authReq = req as AuthenticatedRequest;
+    const publishPlace = await PlacesService.publishPlace(authReq);
+
+    res.status(publishPlace.httpCode).json();
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * Mettre à jour un lieu existant
  */
 export const updatePlace = async (
